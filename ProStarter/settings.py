@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'appstarter',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,7 +59,7 @@ WSGI_APPLICATION = 'ProStarter.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'prostarter'),
+        'NAME': 'prostarter',
         'USER': 'root',
         'PASSWORD': 'agilekaizen',
         'PORT': '3306',
