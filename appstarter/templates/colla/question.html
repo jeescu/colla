@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>results</title>
+</head>
+<body>
+{% if latest_poll_list %}
+<ul>
+{% for poll in latest_poll_list %}
+    <li><a href="{% url 'colla:detail' poll.id %}">{{ poll.question_text }}</a></li>
+<!--    precise way of doing link-->
+{% endfor %}
+</ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+</body>
+</html>

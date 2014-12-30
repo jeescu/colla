@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+<head>
+{% load staticfiles %}
+<title>98Colla</title>
+
+    <meta name="viewport" 
+    content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">  
+    <link rel="stylesheet"
+           type="text/css" href="{% static 'colla/style.css' %}">   
+    <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}">
+    </script>
+    <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
+    <link rel="import"
+      href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
+    <link rel="import"
+      href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import"
+      href="{% static 'plugin/polymer/components/paper-tabs/paper-tabs.html' %}">
+    <link rel="import"
+      href="{% static 'plugin/polymer/components/paper-button/paper-button.html' %}">
+    <link rel="import"
+      href="{% static 'plugin/polymer/components/paper-input/paper-input.html' %}">
+     <link rel="import"
+      href="{% static 'plugin/polymer/components/paper-checkbox/paper-checkbox.html' %}">
+     <link rel="import"
+      href="{% static 'plugin/polymer/components/core-input/core-input.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.htm' %}l">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-drawer-panel/core-drawer-panel.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-icons/core-icons.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/paper-icon-button/paper-icon-button.html' %}">
+    <link rel="import" 
+      href="{% static 'plugin/polymer/components/core-scaffold/core-scaffold.html' %}">
+
+</head>
+
+<body unresolved>
+    
+<core-drawer-panel id="drawerPanel">
+    <core-header-panel drawer>
+        <core-toolbar id="sec-color">
+            <span>Menu</span>
+        </core-toolbar>
+        <core-menu>
+            <core-item label="Getting Started"></core-item>
+            <core-item label="Documentation"></core-item>
+            <core-item label="Components"></core-item>
+            <core-item label="Services"></core-item>
+            <core-item label="Developers"></core-item>
+            <core-item label="Plugins"></core-item>
+            <core-item label="Framework"></core-item>
+            <core-item label="Advanced"></core-item>
+            <core-item label="About Colla"></core-item>
+        </core-menu>
+    </core-header-panel>
+
+    <core-header-panel main>
+        <core-toolbar id="mainheader">
+            <paper-icon-button 
+            id="navicon" icon="menu"></paper-icon-button>
+            <span><img id="logo" src="/static/colla/images/logo.png"></span><span flex>Colla</span>
+            <paper-icon-button id="morebutton" icon="more-vert"></paper-icon-button>
+        </core-toolbar>
+        <div class="content">
+            <paper-shadow z="0" class="app-detail">
+                <h2>Open source software to collaborate on code</h2>
+                <p>Manage and monitor project development that keep your code secure and clean.
+                Perform code reviews and enhance collaboration with chats.
+                    Each project can also have an issue tracker and a wiki.</p>
+            </paper-shadow><br/><br/>
+                    
+                    
+            <paper-shadow z="1" class="span-shadow">
+                <h4>Sign in:<h4>
+                <paper-input-decorator label="USERNAME" floatinglabel="true">
+                   <input id="username" is="core-input" name="username"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="PASSWORD" floatinglabel="true">
+                   <input id="password" is="core-input" name="password" type="password" value="{{j_password}}"/>
+                </paper-input-decorator><br/>
+                <paper-checkbox label="Remember me"></paper-checkbox>    
+                <br/><br/>
+                <div class="btn-action">
+                    <a href="dashboard">
+                        <paper-button class="btn-post">
+                          LOGIN
+                        </paper-button>
+                    </a>    
+                    <a href="signup">
+                        <paper-button class="btn-link">
+                      SIGNUP
+                        </paper-button>
+                    </a>
+                </div>
+            </paper-shadow>
+            
+    </core-header-panel>
+</core-drawer-panel>
+
+<script>
+document.addEventListener('polymer-ready', function() {
+  var navicon = document.getElementById('navicon');
+  var drawerPanel = document.getElementById('drawerPanel');
+  navicon.addEventListener('click', function() {
+    drawerPanel.togglePanel();
+  });
+});
+</script>
+    
+</body>
+</html>

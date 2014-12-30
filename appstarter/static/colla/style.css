@@ -1,0 +1,135 @@
+html,body {
+    height: 100%;
+    margin: 0;
+    background-color: white;
+    font-family: 'RobotoDraft', sans-serif;
+    color: white;
+}
+
+core-header-panel {
+    background: white;
+}
+
+core-toolbar {
+    background-color: #263238;
+}
+
+core-menu {
+    color: #263238;
+}
+paper-input {
+    width: 100%;
+}
+paper-tab {
+    cursor: pointer;
+}
+input {
+    color: #263238;
+}
+h3,h4,h2 {
+    color: #546E7A;
+}
+
+.btn-post {
+    background: #ECEFF1;
+    text-align: right;
+}
+
+.btn-link {
+    background:  #3F51B5;
+    color: white;
+    align-self: right;
+}
+.btn-action {
+    text-align: right;
+}
+
+#logo {
+    height: 25px;
+    margin-bottom: -2px;
+}
+
+#sec-color {
+  background-color: #37474F;
+    color: white;
+}
+
+.content {
+    padding: 20px;
+    color: #546E7A;
+}
+
+.span-shadow {
+    padding: 25px;
+    border-radius: 3px;
+    width: 376px;
+}
+
+/*index*/
+paper-fab {
+    color: #fff;
+    margin-left: 0.5em;
+}
+.new-msg {
+    background: #263238;
+}
+
+.new-issue {
+    background: #263238;
+}
+
+.new-act {
+    background: #263238;
+}
+
+#action-new {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+}
+
+.indx-fragment {
+    position: absolute;
+    top: 20px;
+    border-color: 546E7A;
+    right: 20px;
+    left:20px;
+}
+/*register*/
+
+#form-register {
+    padding: 25px;
+    border-radius: 3px;
+    width: 376px;
+    margin: 15px;
+}
+
+/*login*/
+
+ .login-form {
+    margin: auto;
+    margin-top: 50px;
+    height: 200px;
+    width: 500px;
+    background: white;
+    vertical-align: center;
+}
+
+.btn-action {
+    text-align: right;
+}
+
+#logo {
+    height: 25px;
+    margin-bottom: -2px;
+}
+/* drawer is always visible on a wide screen
+   so menu button isn't required */
+core-drawer-panel:not([narrow]) #navicon {
+  display: none;
+}
+
+.app-detail {
+    width: 100%;
+}
+
