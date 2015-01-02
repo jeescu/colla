@@ -3,6 +3,7 @@ from appstarter.controller import views
 
 urlpatterns = patterns('',
     url(r'^$', views.LoginView.as_view(), name='login'),
+    url(r'^logout', views.BaseController().logout, name='logout'),                 
     url(r'^dashboard/$', views.HomeView.as_view(), name='home'),
     url(r'^signup/$', views.SignupView.as_view(), name='signup'),
     url(r'^(?P<pk>\d+)/$', views.DetailView.as_view(), name='detail'),

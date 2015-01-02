@@ -9,7 +9,9 @@
      <meta name="viewport" 
     content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <link rel="stylesheet"
-           type="text/css" href="{% static 'colla/style.css' %}">
+           type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+        type="text/css" href="{% static 'colla/css/style.css' %}">
     <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}">
     </script>
     <link rel="import"
@@ -25,7 +27,11 @@
     <link rel="import"
         href="{% static 'plugin/polymer/components/paper-input/paper-input.html' %}">
     <link rel="import"
+        href="{% static 'plugin/polymer/components/paper-input/paper-autogrow-textarea.html' %}">
+    <link rel="import"
         href="{% static 'plugin/polymer/components/paper-checkbox/paper-checkbox.html' %}">
+    <link rel="import"
+        href="{% static 'plugin/polymer/components/paper-autogrow-textarea/paper-autogrow-textarea.html' %}">
     <link rel="import"
         href="{% static 'plugin/polymer/components/core-input/core-input.html' %}">
     <link rel="import"
@@ -50,66 +56,145 @@
 </head>
 
 <body fullbleed vertical layout unresolved>
-    <core-header-panel flex>
+    <core-header-panel flex class="indx-color">
         <core-toolbar id="mainheader" class="medium-tall">
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
-            <span flex>Dashboard</span>
+            <span flex>Dashboard {{ auth_user.username }}</span>
+            <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
-                <paper-icon-button id="helpbutton" icon="help"></paper-icon-button>
-                <paper-icon-button id="explorebutton" icon="explore"></paper-icon-button>
-                <paper-icon-button id="addbutton" icon="add"></paper-icon-button>
-                <paper-icon-button id="exitbutton" icon="exit-to-app"></paper-icon-button>
-                <paper-icon-button id="userbutton" icon="supervisor-account"></paper-icon-button>
-            
+                <paper-icon-button class="hidden-xs" id="helpbutton" icon="help"></paper-icon-button>
+                <paper-icon-button class="hidden-xs" id="explorebutton" icon="explore"></paper-icon-button>
+                <paper-icon-button class="hidden-xs" id="addbutton" icon="add"></paper-icon-button>
+                <paper-icon-button class="hidden-xs" id="exitbutton" icon="exit-to-app" onClick="window.location.href='/colla/logout'"></paper-icon-button>
+                <paper-icon-button class="hidden-xs" id="userbutton" icon="supervisor-account"></paper-icon-button>
+            </span>
+            <span class="hidden-md hidden-lg hidden-sm">
+                <paper-icon-button id="morebutton" icon="more-vert"></paper-icon-button>
+            </span>
             <paper-tabs class="bottom fit" selected="0" noink>
-                <paper-tab>Activity</paper-tab>
-                <paper-tab>Projects</paper-tab>
-                <paper-tab>Monitor</paper-tab>
-                <paper-tab>Graphs</paper-tab>
-                <paper-tab>Issues</paper-tab>
+                <paper-tab id="tab-activity">Activity</paper-tab>
+                <paper-tab id="tab-project">Projects</paper-tab>
+                <paper-tab id="tab-monitor">Monitor</paper-tab>
+                <paper-tab id="tab-graph">Graphs</paper-tab>
+                <paper-tab id="tab-issue">Issues</paper-tab>
             </paper-tabs>
         </core-toolbar>
         
-        <div class="content">
-            <div class="indx-fragment" id="fragment-activity">
-                <paper-shadow z="0">
-                    <span>Users activities.</span>
-                </paper-shadow>
+        <div class="content col-xs-12 col-sm-offset-1 col-sm-8">
+            
+            <div id="fragment-activity" class="page-frm">
+                <paper-shadow class="indx-fragment" z="0">
+                    <div class="row">
+                        <div class="col-xs-1 frm-av"><img src="{% static 'colla/images/qlt.png' %}"/></div>
+                        <div class="col-xs-8">
+                            <div class="col-xs-12 frm-name">John Edward Escuyos</div>
+                            <div class="col-xs-12 frm-share">Shared Publicly</div>
+                        </div>
+                        <div class="frm-date">2 days ago</div>
+                        <div class="col-xs-12 frm-txt">
+                            <p>Stop defining the future, make a future yourself instead.</p>
+                        </div>
+                        <div class="col-xs-12 frm-pic"><img class="img-responsive" src="{% static 'colla/images/google.jpg' %}"/></div>
+                        <div class="col-xs-12 frm-dtl">
+                            <div class="frm-dtl-info">
+                                <paper-button class="btn-frm-info">
+                                    <core-icon icon="thumb-up">
+                                    </core-icon>
+                                    <span>&emsp;27</span>
+                                </paper-button>
+                                <paper-button  class="btn-frm-info">
+                                    <core-icon icon="question-answer">
+                                    </core-icon>
+                                    <span>&emsp;12</span>
+                                </paper-button>
+                            </div>
+                            <div class="txt-comm" >
+                                <paper-input-decorator label="Add new comment...">
+                                    <paper-autogrow-textarea id="a1">
+                                        <textarea id="t1"></textarea>
+                                    <paper-autogrow-textarea>
+                                </paper-input-decorator>
+                            </div>
+                            <div class="snd-comm hidden-xs">
+                                <paper-icon-button id="snd-comment" icon="send"></paper-icon-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row con-comm">
+                        <div class="col-xs-12 frm-comm">
+                            <paper-shadow z="0" class="comment-board">
+                                <div class="col-xs-2 comm-av"><img src="{% static 'colla/images/qlt.png' %}"/></div>
+                                <div class="col-xs-10">
+                                    <div class="col-xs-12 comm-name">John Edward Escuyos</div>
+                                    <div class="col-xs-12 comm-time">10:00 AM</div>
+                                </div>
+                                <div class="col-xs-12 comm-text">
+                                    <p>Theres nothing that can beat imagination!</p>
+                                </div>
+                            </paper-shadow>
+                        </div>
+                    </div>
+                </paper-shadow><br/>
+                        
+                <div class="more">
+                    <paper-icon-button id="more" icon="autorenew" class="more-refresh"></paper-icon-button>
+                </div>
             </div>
-            <div class="indx-fragment" id="fragment-project">
-                <paper-shadow z="0">
+                    
+            <div id="fragment-project" class="page-frm hidden">
+                <paper-shadow class="indx-fragment" z="0">
                     <span>Users projects.</span>
                 </paper-shadow>
             </div>
-            <div class="indx-fragment" id="fragment-monitor">
-                <paper-shadow z="0">
+                    
+            <div id="fragment-monitor" class="page-frm hidden">
+                <paper-shadow class="indx-fragment" z="0">
                     <span>project monitors.</span>
                 </paper-shadow>
             </div>
-            <div class="indx-fragment" id="fragment-graph">
-                <paper-shadow z="0">
+                    
+            <div id="fragment-graph" class="page-frm hidden">
+                <paper-shadow class="indx-fragment" z="0">
                     <span>project graphs</span>
                 </paper-shadow>
             </div>
-            <div class="indx-fragment" id="fragment-issue">
-                <paper-shadow z="0">
+                    
+            <div id="fragment-issue" class="page-frm hidden">
+                <paper-shadow class="indx-fragment" z="0">
                     <span>Project Issues.</span>
                 </paper-shadow>
             </div>
+                    
+             
         </div>
+        <div class="col-sm-2 hidden-xs">
+            <paper-shadow class="side-bar" z="0">
+                <div class="side-bar-act">
+                    <paper-icon-button id="notification" icon="markunread-mailbox"></paper-icon-button>
+                    <paper-icon-button id="chat" icon="question-answer"></paper-icon-button>
+                </div>
+                <paper-shadow class="side-bar-content" z="0">
+                    <span>Notification - People - Chat</span>
+                </paper-shadow>
+            </paper-shadow>
+        </div>
+    
         <div id="action-new">
             <paper-fab class="new-act" icon="create"></paper-fab>
             <paper-fab class="new-issue" icon="announcement"></paper-fab>
-            <paper-fab class="new-msg" icon="question-answer"></paper-fab>
+            <paper-fab class="new-msg" icon="mail"></paper-fab>
         </div>
+        
     </core-header-panel>
 
-<script type="text/javascript" src="{% static 'colla/dashboard.js' %}"></script>
-<script type="text/javascript" src="{% static 'colla/activity.js' %}"></script>
-<script type="text/javascript" src="{% static 'colla/project.js' %}"></script>
-<script type="text/javascript" src="{% static 'colla/monitor.js' %}"></script>
-<script type="text/javascript" src="{% static 'colla/graph.js' %}"></script>
-<script type="text/javascript" src="{% static 'colla/issue.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/dashboard.js' %}"></script>
+<!--
+<script type="text/javascript" src="{% static 'colla/js/activity.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/project.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/monitor.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/graph.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/issue.js' %}"></script>
+-->
     
 </body>
 
