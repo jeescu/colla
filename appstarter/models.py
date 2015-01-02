@@ -11,18 +11,19 @@ class User(models.Model):
     
     
 class Profile(models.Model):
-    user_id = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     display_name = models.CharField(max_length=50)
+    profile_pic = models.CharField(max_length=200)
     first_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
-    lastname = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     position = models.CharField(max_length=30)
     company_name = models.CharField(max_length=30)
     mail_address = models.CharField(max_length=30)
 
     
 class Post(models.Model):
-    user_id = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     share_type = models.CharField(max_length=50)
     date = models.DateTimeField('date published')
     title = models.CharField(max_length=50)
@@ -32,7 +33,7 @@ class Post(models.Model):
     
     
 class Comment(models.Model):
-    post_id = models.ForeignKey(Post)
+    post = models.ForeignKey(Post)
     user_pic_url = models.CharField(max_length=200)
     user_name = models.CharField(max_length=50)
     comment_date = models.DateTimeField('date published')
@@ -47,7 +48,7 @@ class Group(models.Model):
     group_users = models.IntegerField(default=0)
     
 class GroupUser(models.Model):
-    group_id = models.ForeignKey(Post)
+    group = models.ForeignKey(Post)
     group_joined_user_id = models.IntegerField(default=0)
     group_joined_date = models.DateTimeField('date published')
     

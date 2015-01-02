@@ -9,7 +9,9 @@
     <meta name="viewport" 
     content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <link rel="stylesheet"
-           type="text/css" href="{% static 'colla/style.css' %}">
+           type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+           type="text/css" href="{% static 'colla/css/style.css' %}">
     <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}">
     </script>
     <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
@@ -48,52 +50,57 @@
 </head>
 
 <body fullbleed vertical layout unresolved>
-  <core-header-panel flex>
+<core-header-panel flex>
     <core-toolbar id="sec-color">
-      <paper-icon-button id="navicon" 
+        <paper-icon-button id="navicon" 
         icon="arrow-back"></paper-icon-button>
-      <span flex>Registration</span>
+        <span flex>Registration</span>
     </core-toolbar>
-    <paper-shadow z="1" id="form-register">
-        <h3>Collaboration starts here.</h3>
-        <paper-input-decorator label="USERNAME" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="FIRST NAME" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="LAST NAME" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="POSITION" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="COMPANY NAME" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="PROJECT NAME (OPTIONAL)" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="E-MAIL ADDRESS" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="CONFIRM E-MAIL" floatinglabel="true">
-            <input id="username" is="core-input" name="username"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="PASSWORD" floatinglabel="true">
-           <input id="password" is="core-input" name="password" type="password" value="{{j_password}}"/>
-        </paper-input-decorator>
-          <paper-input-decorator label="CONFIRM PASSWORD" floatinglabel="true">
-           <input id="password" is="core-input" name="password" type="password" value="{{j_password}}"/>
-        </paper-input-decorator><br/>
-        
-        <div class="btn-action">
-            <paper-button class="btn-link">
-              Register
-            </paper-button>
-        </div>
-      </paper-shadow>
-  </core-header-panel>
+    <span class="col-xs-12 col-md-4 col-md-offset-4">
+        <paper-shadow z="1" id="form-register">
+            <form method="post" type="post" action="/colla/register">
+            {% csrf_token %}
+                <h3>Collaboration starts here.</h3>
+                <paper-input-decorator label="USERNAME" floatinglabel="true">
+                    <input id="username" is="core-input" name="username"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="FIRST NAME" floatinglabel="true">
+                    <input id="firstname" is="core-input" name="first_name"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="LAST NAME" floatinglabel="true">
+                    <input id="lastname" is="core-input" name="last_name"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="M.I." floatinglabel="true">
+                    <input id="mi" is="core-input" name="middle_name"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="POSITION" floatinglabel="true">
+                    <input id="position" is="core-input" name="position"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="COMPANY NAME" floatinglabel="true">
+                    <input id="company" is="core-input" name="company"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="E-MAIL ADDRESS" floatinglabel="true">
+                    <input id="mail" is="core-input" name="mail"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="CONFIRM E-MAIL" floatinglabel="true">
+                    <input id="cmail" is="core-input" name="cmail"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="PASSWORD" floatinglabel="true">
+                    <input id="pass" is="core-input" name="password" type="password" value="{{j_password}}"/>
+                </paper-input-decorator>
+                <paper-input-decorator label="CONFIRM PASSWORD" floatinglabel="true">
+                    <input id="cpass" is="core-input" name="cpassword" type="password" value="{{j_password}}"/>
+                </paper-input-decorator><br/>
+
+                <div class="btn-action">
+                    <paper-button class="btn-signup">
+                        <button class="btn-submit" type="submit">REGISTER</button>
+                    </paper-button>
+                </div>
+            </form>
+        </paper-shadow>
+    </span>
+</core-header-panel>
 
 <script type="text/javascript" src="{% static 'colla/signup.js' %}"></script>
 </body>

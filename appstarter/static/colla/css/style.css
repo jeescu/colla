@@ -3,7 +3,11 @@ html,body {
     margin: 0;
     background-color: white;
     font-family: 'RobotoDraft', sans-serif;
-    color: white;
+    color: #546E7A;
+}
+
+body[unresolved] {
+  opacity: 1;
 }
 
 core-header-panel {
@@ -28,8 +32,29 @@ paper-tab {
 input {
     color: #263238;
 }
+
 h3,h4,h2 {
     color: #546E7A;
+}
+
+.btn-post .button-content,
+.btn-signup .button-content {
+    padding: 0;
+}
+
+.btn-submit {
+    color: inherit;
+    font-family: 'RobotoDraft', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: transparent;
+    border-color: transparent;
+    outline: 0;
+    height: 41px;
+}
+
+.btn-submit::-moz-focus-inner {
+    border: 0;
 }
 
 .btn-post {
@@ -38,6 +63,12 @@ h3,h4,h2 {
     padding:0;
 }
 
+.btn-signup {
+    background:  #3F51B5;
+    text-align: right;
+    padding:0;
+    color: white;
+}
 .btn-post::shadow .button-content {
     padding:0;
   }
@@ -49,6 +80,12 @@ h3,h4,h2 {
 }
 .btn-action {
     text-align: right;
+/*    max-height: 20px;*/
+}
+
+.btn-signup {
+    background: #3F51B5;
+    padding:0;
 }
 
 #logo {
@@ -92,7 +129,7 @@ paper-fab {
 #action-new {
     position: fixed;
     bottom: 10px;
-    right: 15px;
+    right: 20px;
 }
 
 .indx-fragment {
@@ -279,10 +316,6 @@ paper-fab {
     vertical-align: center;
 }
 
-.btn-action {
-    text-align: right;
-}
-
 #logo {
     height: 25px;
     margin-bottom: -2px;
@@ -294,21 +327,6 @@ core-drawer-panel:not([narrow]) #navicon {
 
 .app-detail {
     width: 100%;
-}
-
-.btn-submit {
-    color: inherit;
-    font-family: 'RobotoDraft', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    background-color: transparent;
-    border-color: transparent;
-    outline: 0;
-    height: 41px;
-}
-
-.btn-submit::-moz-focus-inner {
-    border: 0;
 }
 
 .more paper-icon-button {
