@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from appstarter.models import Question, Choice
-from appstarter.models import User, Profile
+from appstarter.models import User, Profile, Post, Comment, Group, GroupUser
 from django.http import Http404
 from django.views import generic
-from django.contrib.auth import logout
+from django.utils import timezone
 
+import json
 
 class LoginView(generic.ListView):
     model = User
@@ -20,22 +21,34 @@ class LoginView(generic.ListView):
             user_state = User.objects.get(req_token = session_id)
             # active session
             if user_state.log != 'out':
-                return render(request, 'colla/index.html', {'auth_user': user_state})
+                
+                user_profile = Profile.objects.get(user_id = user_state.id)
+                post = Post.objects.all().order_by('-date')[:10]
+#                comment = Comment.objects.all().order_by(post_id = post.id)
+                return render(request,
+                              'colla/index.html',
+                              {'auth_user': user_state,'prof_user': user_profile, 'post':post})
         except:
             # log in
 			return render(request, 'colla/login.html', {})
     
     def post(self, request, *args, **kwargs):
         authen_request = request.COOKIES
-        try:
-            auth_user = User.objects.get(username = request.POST['username'])
-            if auth_user.password == request.POST['password']:
-                auth_user.log = 'in'
-                auth_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
-                auth_user.save()
-                return render(request, 'colla/index.html', {'auth_user': auth_user})
-        except:
-            return HttpResponse('Wrong Username Password')
+#        try:
+        auth_user = User.objects.get(username = request.POST['username'])
+        if auth_user.password == request.POST['password']:
+            auth_user.log = 'in'
+            auth_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
+            auth_user.save()
+
+            user_profile = Profile.objects.get(user_id = auth_user.id)
+            post = Post.objects.all().order_by('-date')[:10]
+#            comment = Comment.objects.all().order_by(post_id = post.id)
+            return render(request,
+                          'colla/index.html',
+                          {'auth_user': auth_user,'prof_user': user_profile, 'post':post})
+#        except:
+#            return HttpResponse('Wrong Username Password')
 
         
 class SignupView(generic.ListView):
@@ -53,6 +66,9 @@ class HomeView(generic.ListView):
     
     
 class BaseController(object):
+    # Get New Posts 5 secs interval
+    def get_new_post(self, request):
+        pass
     
     # menu action
     def search(self, request):
@@ -70,7 +86,18 @@ class BaseController(object):
         
     # new activity
     def add_post(self, request):
-        pass
+        user_post = User.objects.get(pk=request.GET.get('userid'))
+        user_post.post_set.create(
+            share_type = request.GET.get('sharetype'),
+            title = request.GET.get('title') or '',
+            content_text = request.GET.get('text') or '',
+            content_image = request.GET.get('image') or '',
+            content_link = request.GET.get('link') or '',
+            date = timezone.now()
+        )
+        view_posts = {'status' : 'saved'}
+        return HttpResponse(json.dumps(view_posts), content_type = "application/json")
+    
     def add_issue(self, request):
         pass
     def add_message(self, request):
@@ -85,6 +112,7 @@ class BaseController(object):
             )
             new_user.save()
             new_user.profile_set.create(
+                dis_name = request.POST['first_name'],
                 first_name = request.POST['first_name'],
                 last_name = request.POST['last_name'],
                 middle_name = request.POST['middle_name'],
