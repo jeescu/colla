@@ -7,12 +7,11 @@ class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=200)
     req_token = models.CharField(max_length=200)
-    log = models.CharField(max_length=5)
-    
+    log = models.CharField(max_length=5) 
     
 class Profile(models.Model):
     user = models.ForeignKey(User)
-    display_name = models.CharField(max_length=50)
+    dis_name = models.CharField(max_length=50)
     profile_pic = models.CharField(max_length=200)
     first_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -20,14 +19,21 @@ class Profile(models.Model):
     position = models.CharField(max_length=30)
     company_name = models.CharField(max_length=30)
     mail_address = models.CharField(max_length=30)
-
+    
+    def __unicode__(self):
+        return self.dis_name
+    
+    def display_name(self):
+        return self.dis_name
     
 class Post(models.Model):
     user = models.ForeignKey(User)
     share_type = models.CharField(max_length=50)
     date = models.DateTimeField('date published')
     title = models.CharField(max_length=50)
-    content = models.CharField(max_length=500)
+    content_text = models.CharField(max_length=500)
+    content_image = models.CharField(max_length=500)
+    content_link = models.CharField(max_length=500)
     agrees = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
     

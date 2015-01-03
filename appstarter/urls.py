@@ -9,7 +9,8 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/results/$', views.ResultsView.as_view(), name='results'),
     url(r'^question/$', views.IndexView.as_view(), name='index'),
     url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
-    
+                       
+    url(r'^new-post/$', views.BaseController().add_post, name='new_post'),
                        
     url(r'^register', views.BaseController().register, name='register'), 
     url(r'^logout', views.BaseController().logout, name='logout'), 
