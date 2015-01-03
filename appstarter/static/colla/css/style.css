@@ -110,20 +110,28 @@ h3,h4,h2 {
 }
 
 /*index*/
+
+/*new post*/
+.frm-txtfield {
+    padding:15px;
+    border: 1px solid;
+    border-color:#E6E9EC;
+}
+
 paper-fab {
     color: #fff;
     margin-left: 0.5em;
 }
-.new-msg {
-    background: #263238;
-}
-
-.new-issue {
-    background: #263238;
-}
-
+.new-msg,
+.new-issue,
 .new-act {
     background: #263238;
+}
+
+#activity-dialog,
+#issue-dialog,
+#message-dialog {
+    border-radius: 3px;
 }
 
 #action-new {
@@ -194,10 +202,6 @@ paper-fab {
     font-weight: bold;
     color:  #455A64;
     font-size: 15px;
-}
-
-.frm-share {
-    
 }
 
 .frm-date {
@@ -274,6 +278,12 @@ paper-fab {
     border-color: #CFD8DC;
 }
 
+.tool-selected {
+    background: white;
+    border-radius: 50%;
+    color: #2E7D32;
+}
+
 /*comment board*/
 .comm-av {
     width: 25px;
@@ -295,6 +305,47 @@ paper-fab {
     padding-top: 15px;
     padding-left: 56px;
 }
+
+.new-frm-av {
+/*
+    margin-left: 15px;
+    float: left;
+    width: 54px;
+*/
+}
+
+.new-frm-av img {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.new-frm-msg {
+/*
+    margin-left: 20px;
+    float:left;
+*/
+}
+.new-frm-msg .frm-txtfield  paper-autogrow-textarea{
+    width: inherit;
+}
+
+.new-post-btn {
+    float: right;
+}
+
+.btn-hide {
+    visibility:hidden;
+    opacity:0;
+    transition:visibility 0s linear 0.2s,opacity 0.2s linear;
+}
+
+.btn-show {
+    visibility:visible;
+    opacity:1;
+    transition-delay:0s;
+}
+
 
 /*register*/
 
@@ -359,4 +410,33 @@ core-drawer-panel:not([narrow]) #navicon {
     border-radius: 50%;
     background: white;
     color: #E53935;
+}
+
+/*google plus*/
+.eg {
+    display: block;
+    background-color: white;
+    border-top: 1px solid #e4e4e4;
+    cursor: text;
+    height: 15px;
+    left: -15px;
+    position: absolute;
+    top: -1px;
+    width: 20px;
+}
+.oo {
+    border-bottom: 16px solid #e4e4e4;
+    border-right: 16px solid transparent;
+    left: -1px;
+    top: -1px;
+    }
+.VK {
+    border-bottom: 15px solid white;
+    border-right: 15px solid transparent;
+    left: -1px;
+}
+.yw {
+    height: 0;
+    position: absolute;
+    width: 0;
 }
