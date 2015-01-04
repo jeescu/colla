@@ -33,7 +33,7 @@ function AJAXRequest(url, type, data, func) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function(data) { 
-            func();
+            func(data);
             console.log('Success');
         },
         error: function(ts) { 
@@ -42,32 +42,40 @@ function AJAXRequest(url, type, data, func) {
     });
 }
 
+var postUpdate = function(post) {
+//    documentdocument.getElementById('new-post').classList.remove('new-post-show');
+//    document.getElementById('new-post').classList.add('new-post-hide');
+    console.log(post);
+    
+//    TODO: Make a Loop of elements for new posts to be added at the top of older posts..
+}
+
 //refresh post with limit of 10
 function autoloadPost() {
+    latest_post = document.getElementById('post_activity').getElementsByTagName('input')[0].value
     console.log('autoloadpost');
-    document.getElementById('new-post').classList.add('hidden');
+
     
-    var postUpdate = function() {
-//        for loop paper shadow
-        alert(data);
-    }
+    var latestPost = { "latest" : latest_post }
     
     setInterval(function() {
-        AJAXRequest("update-post", "GET", {}, postUpdate)
-    }, 10000);
+        AJAXRequest("update-post", "GET", latestPost, postUpdate)
+    }, 5000);
 }
 
 function sendNewPost() {
     var post = {
         "userid" : token,
+        "title" : "None",
         "text" : postTEXT.value,
         "image" : postIMAGE || "None",
         "link" : postLINK || "None",
         "sharetype" : "Shared Publicly"
     }
     
-    var newPost = function() {
-        document.getElementById('new-post').classList.remove('hidden');
+    var newPost = function(post) {
+        document.getElementById('new-post').classList.remove('new-post-hide');
+        document.getElementById('new-post').classList.add('new-post-show');
         document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
         document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
         document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";

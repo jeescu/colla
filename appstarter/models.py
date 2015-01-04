@@ -28,6 +28,8 @@ class Profile(models.Model):
     
 class Post(models.Model):
     user = models.ForeignKey(User)
+    user_pic = models.CharField(max_length=200)
+    user_dis_name = models.CharField(max_length=50)
     share_type = models.CharField(max_length=50)
     date = models.DateTimeField('date published')
     title = models.CharField(max_length=50)

@@ -24,7 +24,7 @@ class LoginView(generic.ListView):
                 
                 user_profile = Profile.objects.get(user_id = user_state.id)
                 post = Post.objects.all().order_by('-date')[:10]
-#                comment = Comment.objects.all().order_by(post_id = post.id)
+                # comment = Comment.objects.all().order_by(post_id = post.id)
                 return render(request,
                               'colla/index.html',
                               {'auth_user': user_state,'prof_user': user_profile, 'post':post})
@@ -34,21 +34,21 @@ class LoginView(generic.ListView):
     
     def post(self, request, *args, **kwargs):
         authen_request = request.COOKIES
-#        try:
-        auth_user = User.objects.get(username = request.POST['username'])
-        if auth_user.password == request.POST['password']:
-            auth_user.log = 'in'
-            auth_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
-            auth_user.save()
+        try:
+            auth_user = User.objects.get(username = request.POST['username'])
+            if auth_user.password == request.POST['password']:
+                auth_user.log = 'in'
+                auth_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
+                auth_user.save()
 
-            user_profile = Profile.objects.get(user_id = auth_user.id)
-            post = Post.objects.all().order_by('-date')[:10]
-#            comment = Comment.objects.all().order_by(post_id = post.id)
-            return render(request,
-                          'colla/index.html',
-                          {'auth_user': auth_user,'prof_user': user_profile, 'post':post})
-#        except:
-#            return HttpResponse('Wrong Username Password')
+                user_profile = Profile.objects.get(user_id = auth_user.id)
+                post = Post.objects.all().order_by('-date')[:10]
+                comment = Comment.objects.all().order_by(post_id = post.id)
+                return render(request,
+                              'colla/index.html',
+                              {'auth_user': auth_user,'prof_user': user_profile, 'post':post})
+        except:
+            return HttpResponse('Wrong Username Password')
 
         
 class SignupView(generic.ListView):
@@ -68,7 +68,39 @@ class HomeView(generic.ListView):
 class BaseController(object):
     # Get New Posts 5 secs interval
     def get_new_post(self, request):
-        pass
+        post_update = dict()
+        
+        get_client_latest_post = int(request.GET.get('latest'))
+        
+        check_post = Post.objects.all().order_by('-date').first()
+        
+        # check if there is a post update
+        if check_post.id == get_client_latest_post:
+            # post is already updated
+            post_update['status'] = 'updated'
+            pass
+        else:
+            count = 0
+            get_update_post = Post.objects.all().order_by('-date')
+            
+            for posts in get_update_post:
+                count=count + 1
+                if posts.id !=  get_client_latest_post:
+                    post_update['post'+str(count)] = {
+                        # "pic" : posts.user_pic,
+                        "display_name" : posts.user_dis_name,
+                        "share" : posts.share_type, 
+                        "date" : str(posts.date),
+                        "title" : posts.title,
+                        "text" : posts.content_text,
+                        "image" : posts.content_image,
+                        "link" : posts.content_link,
+                        "agrees" : posts.agrees,
+                        "comments" : posts.comments
+                    }
+                else:
+                    break
+        return HttpResponse(json.dumps(post_update), content_type = "application/json")
     
     # menu action
     def search(self, request):
@@ -84,15 +116,19 @@ class BaseController(object):
     def agree_post(self, request):
         pass
         
-    # new activity
+    # DONE
     def add_post(self, request):
         user_post = User.objects.get(pk=request.GET.get('userid'))
+        user_post_profile = user_post.profile_set.get(user=user_post.id)
+            
         user_post.post_set.create(
+            user_pic = user_post_profile.profile_pic,
+            user_dis_name = user_post_profile.dis_name,
             share_type = request.GET.get('sharetype'),
-            title = request.GET.get('title') or '',
-            content_text = request.GET.get('text') or '',
-            content_image = request.GET.get('image') or '',
-            content_link = request.GET.get('link') or '',
+            title = request.GET.get('title') if request.GET.get('title') != "None" else "",
+            content_text = request.GET.get('text'),
+            content_image = request.GET.get('image') if request.GET.get('image') != "None" else "",
+            content_link = request.GET.get('link') if request.GET.get('link') != "None" else "",
             date = timezone.now()
         )
         view_posts = {'status' : 'saved'}
@@ -113,6 +149,7 @@ class BaseController(object):
             new_user.save()
             new_user.profile_set.create(
                 dis_name = request.POST['first_name'],
+                profile_pic = "/static/colla/images/profile_img/av-default.png",
                 first_name = request.POST['first_name'],
                 last_name = request.POST['last_name'],
                 middle_name = request.POST['middle_name'],
