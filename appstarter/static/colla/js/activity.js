@@ -158,6 +158,10 @@ function sendNewPost() {
     AJAXRequest("new-post","GET", post, newPost);
 }
 
+function sendNewComment() {
+    
+}
+
 function loadMorePost() {
     postLimit+=10;
 }

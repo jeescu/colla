@@ -14,6 +14,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
 
+# Add Host for Production
 ALLOWED_HOSTS = ['localhost']
 
 

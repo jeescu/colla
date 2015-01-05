@@ -66,10 +66,8 @@ class HomeView(generic.ListView):
     
     
 class BaseController(object):
-
     # Get New Posts 5 secs interval
     def get_new_post(self, request):
-
         post_update = dict()
 
         if request.GET.get('latest') == "None":
@@ -81,12 +79,11 @@ class BaseController(object):
                 post_update['status'] = 'Unavailable'
         else:
             get_client_latest_post = int(request.GET.get('latest'))
-        
             check_post = Post.objects.all().order_by('-date').first()
             
             # check if there is a post update
             if check_post.id == get_client_latest_post:
-                # post is already updated
+                # posts are already updated
                 post_update['status'] = 'updated'
                 pass
             else:
@@ -116,16 +113,36 @@ class BaseController(object):
     # menu action
     def search(self, request):
         pass
+
     def get_profile(self, request):
+        pass
+
+    def update_profile(self, request):
         pass
     
     # comment post
     def comment_post(self, request):
-        pass
-        
+        post_id = request.GET.get('post_id')
+        post_comment = Post.objects.get(pk=post_id)
+        post_comment.comments = post_comment.comment + 1
+        post_comment.comment_set.create (
+            user_pic_url = request.GET.get('pic_url'),
+            user_name = request.GET.get('user_name'),
+            comment_date = timezone.now(),
+            comment = request.GET.get('comment')
+        )
+        return HttpResponse(json.dumps({'status':'saved'}), content_type = "application/json")
+
     # agree post
     def agree_post(self, request):
-        pass
+        post_id = request.GET.get('post_id'),
+        post_agree = Post.objects.get(pk=post_id)
+        post_agree.agrees = post_agree.agrees + 1
+        post_agree.save()
+        post_agree.agree_set.create(
+            user_name = request.GET.get('user_name')
+        )
+        return HttpResponse(json.dumps({'status':'saved'}), content_type = "application/json")
         
     # DONE
     def add_post(self, request):

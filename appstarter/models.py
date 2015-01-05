@@ -39,7 +39,10 @@ class Post(models.Model):
     agrees = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
     
-    
+class Agree(models.Model):
+    post = models.ForeignKey(Post)
+    user_name = models.CharField(max_length=50) 
+
 class Comment(models.Model):
     post = models.ForeignKey(Post)
     user_pic_url = models.CharField(max_length=200)

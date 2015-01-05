@@ -1,6 +1,6 @@
 Deploying to production:
 
-1) Install Virtualenv, pip and apt-get install libapache2-mod-wsgi first
+1) Install Virtualenv and apt-get install libapache2-mod-wsgi first
 2) cd /var/www/ and put your project
 3) cd your-project and run:
     virtualenv env
@@ -19,9 +19,9 @@ Deploying to production:
 	    ServerAdmin webmaster@localhost
 	    DocumentRoot /var/www/proStarter
 	
-	    Alias /static/admin "/var/www/YourProject/env/lib/python2.7/site-packages/django/contrib/admin/static"
+	    Alias /static/admin "/var/www/YourProject/env/lib/python2.7/site-packages/django/contrib/admin/static/admin"
 	    Alias /static "/var/www/YourProject/appstarter/static"
-	    <Directory "/var/www/YourProject/env/lib/python2.7/site-packages/django/contrib/admin/static">
+	    <Directory "/var/www/YourProject/env/lib/python2.7/site-packages/django/contrib/admin/static/admin">
 		    Order allow,deny
 		    Options Indexes
 		    Allow from all
