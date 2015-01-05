@@ -28,7 +28,39 @@ var postUpdate = function(post) {
 
         console.log('append my post secretly');
 
+        var userPost = post[Object.keys(post)[0]];
 
+        var post = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
+            post += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
+            post +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
+            post +=     '<div class="col-xs-12 frm-share">'+userPost['share']+'</div>';
+            post +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
+            post +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text']+'</p></div>';
+            post +=         '<div class="col-xs-12 frm-pic"><img class="img-responsive" src="'+userPost['image']+'"/></div>';
+            post +=         '<div class="col-xs-12 frm-dtl"><div class="frm-dtl-info"><paper-button class="btn-frm-info"><core-icon icon="thumb-up"></core-icon>';
+            post +=                     '<span>&emsp;'+userPost['agrees']+'</span>'
+            post +=                 '</paper-button><paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
+            post +=                     '<span>&emsp;'+userPost['comments']+'</span>';
+            post +=                 '</paper-button></div><div class="txt-comm" ><paper-input-decorator label="Add new comment..."><paper-autogrow-textarea id="a1"><textarea id="t1"></textarea></paper-autogrow-textarea></paper-input-decorator></div>';
+            post +=             '<div class="snd-comm hidden-xs"><paper-icon-button id="snd-comment" icon="send"></paper-icon-button></div></div></div>';
+
+            post +=     '<div class="row con-comm"><div class="col-xs-12 frm-comm">';
+
+            // for loop comments
+            //                    <paper-shadow z="0" class="comment-board">
+            //                         <div class="col-xs-2 comm-av"><img src="{% static 'colla/images/qlt.png' %}"/></div>
+            //                         <div class="col-xs-10">
+            //                             <div class="col-xs-12 comm-name">John Edward Escuyos</div>
+            //                             <div class="col-xs-12 comm-time">10:00 AM</div>
+            //                         </div>
+            //                         <div class="col-xs-12 comm-text">
+            //                             <p>Nothing beats my imagination!</p>
+            //                         </div>
+            //                  </paper-shadow>
+
+            post +=      '</div></div></paper-shadow><br/></div>';
+            console.log('Writing posts');
+            $("#dynamic").prepend(post);
 
     }
     else if (post.status)
