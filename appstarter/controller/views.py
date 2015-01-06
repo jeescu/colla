@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from appstarter.models import Question, Choice
 from appstarter.models import User, Profile, Post, Comment, Group, GroupUser
+from appstarter.models import PostImage
+from appstarter.forms import ImageUploadForm
 from django.http import Http404
 from django.views import generic
 from django.utils import timezone
@@ -67,6 +69,20 @@ class HomeView(generic.ListView):
     
 class BaseController(object):
     # Get New Posts 5 secs interval
+    def new_post_image(self, request):
+        if request.method == 'POST':
+            form = ImageUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+
+                img = PostImage(post_image=form.cleaned_data['image'])
+                img.save()
+
+                save_this = img.post_image.url[10:]
+
+                return HttpResponse(save_this)
+
+        return HttpResponseForbidden('allowed only via POST')
+
     def get_new_post(self, request):
         post_update = dict()
 

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        
     url(r'^new-post/$', views.BaseController().add_post, name='new_post'),
     url(r'^update-post/$', views.BaseController().get_new_post, name='update_post'),
+    url(r'^upload-image/$', views.BaseController().new_post_image, name='upload_image'),
                        
     url(r'^register', views.BaseController().register, name='register'), 
     url(r'^logout', views.BaseController().logout, name='logout'), 

@@ -83,8 +83,13 @@
                                 </div>
 
                                 <div id="image-field" class="col-xs-12 frm-imgfield hidden">
-                                    <paper-icon-button id="add-image" icon="add" size="50"></paper-icon-button>
-
+                                    <paper-icon-button id="add-image" icon="add"></paper-icon-button>
+                                        <form action="upload-image/" method="post" enctype="multipart/form-data">{% csrf_token %}
+                                            <p>
+                                                <input id="id_image" type="file" class="" name="image">
+                                            </p>
+                                            <input type="submit" value="Submit" />
+                                        </form>
                                 </div>
 
 

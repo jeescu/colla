@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 import datetime
-
+import os
+import uuid
 
 class User(models.Model):
     username = models.CharField(max_length=50)
@@ -34,7 +35,7 @@ class Post(models.Model):
     date = models.DateTimeField('date published')
     title = models.CharField(max_length=50)
     content_text = models.CharField(max_length=500)
-    content_image = models.CharField(max_length=500)
+    content_image = models.CharField(max_length=200)
     content_link = models.CharField(max_length=500)
     agrees = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
@@ -62,7 +63,25 @@ class GroupUser(models.Model):
     group = models.ForeignKey(Post)
     group_joined_user_id = models.IntegerField(default=0)
     group_joined_date = models.DateTimeField('date published')
-    
+
+
+def gen_post_file_name(instance, filename):
+    path = 'appstarter/static/colla/images/post_img/'
+    f, ext = os.path.splitext(filename)
+    return path+'%s%s' % (uuid.uuid4().hex, ext)
+
+def gen_profile_file_name(instance, filename):
+    path = 'appstarter/static/colla/images/profile_img/'
+    f, ext = os.path.splitext(filename)
+    return path+'%s%s' % (uuid.uuid4().hex, ext)
+
+class PostImage(models.Model):
+    post_image = models.ImageField(upload_to = gen_post_file_name)
+
+class ProfileImage(models.Model):
+    profile_image = models.ImageField(upload_to = gen_profile_file_name)
+
+
 # Poll App
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
