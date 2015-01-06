@@ -118,6 +118,25 @@ h3,h4,h2 {
     border-color:#E6E9EC;
 }
 
+.frm-imgfield {
+    padding:15px;
+    border: 5px solid;
+    border-style: dotted;
+    border-color:#E6E9EC;
+    color: #E6E9EC;
+    height: 95px;
+}
+
+.frm-imgfield #add-image {
+    margin-left: 45%;
+
+}
+
+.frm-imgfield > paper-icon-button::shadow #icon {
+    width: 43px;
+    height: 43px;
+}
+
 paper-fab {
     color: #fff;
     margin-left: 0.5em;
@@ -353,7 +372,7 @@ paper-fab {
     -o-transition: visibility 0s 0s, opacity 2s linear;
     transition: visibility 0s 2s, opacity 2s linear;*/
     
-    margin-top: -304px;/*
+    margin-top: -303px;/*
     -webkit-transition: margin-top 0s 2s;
     -moz-transition: margin-top 0s 2s;
     -o-transition: margin-top 0s 2s;

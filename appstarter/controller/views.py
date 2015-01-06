@@ -72,8 +72,24 @@ class BaseController(object):
 
         if request.GET.get('latest') == "None":
             try:
+                count = 0
                 # Get Post if Someone added
                 post = Post.objects.all().order_by('-date')[:10]
+                for posts in post:
+                    count=count + 1
+                    post_update['post'+str(count)] = {
+                        "post_id" : posts.id,
+                        "pic" : posts.user_pic,
+                        "display_name" : posts.user_dis_name,
+                        "share" : posts.share_type, 
+                        "date" : str(posts.date),
+                        "title" : posts.title,
+                        "text" : posts.content_text,
+                        "image" : posts.content_image,
+                        "link" : posts.content_link,
+                        "agrees" : posts.agrees,
+                        "comments" : posts.comments
+                    }
             except:
                 # No posts
                 post_update['status'] = 'Unavailable'

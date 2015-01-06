@@ -72,7 +72,7 @@
                             <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ prof_user.profile_pic }}"/></div>
                             <input type="hidden" id="user-post-name" value="{{ prof_user.dis_name }}"/>
                             <div class="new-frm-msg col-xs-10 col-sm-10 col-md-10.5 col-lg-11">
-                                <div class="col-xs-12 frm-txtfield">
+                                <div id="text-field" class="col-xs-12 frm-txtfield">
                                     <div class="eg">
                                         <div class="yw oo"></div>
                                         <div class="yw VK"></div>
@@ -81,6 +81,13 @@
                                         <textarea id="post-text" placeholder="Share What's New.." onkeyup="postBtn()"></textarea>
                                     </paper-autogrow-textarea>
                                 </div>
+
+                                <div id="image-field" class="col-xs-12 frm-imgfield hidden">
+                                    <paper-icon-button id="add-image" icon="add" size="50"></paper-icon-button>
+
+                                </div>
+
+
                             </div>
                         </div>
                         <div class="row con-comm">
@@ -90,7 +97,7 @@
                                     <span><paper-icon-button class="" id="new-image" icon="picture-in-picture"></paper-icon-button></span>&nbsp;
                                     <span><paper-icon-button class="" id="new-link" icon="link"></paper-icon-button></span>
                                     <div id="post-btn" class="new-post-btn btn-hide">
-                                        <paper-button style="background: white">CLEAR</paper-button>
+                                        <paper-button id="reset-text" style="background: white">CLEAR</paper-button>
                                         <paper-button id="send-post" class="btn-lnk">POST</paper-button>
                                     </div>
                                 </paper-shadow>

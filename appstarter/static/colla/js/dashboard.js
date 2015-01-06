@@ -16,7 +16,7 @@ var sendPost = document.getElementById('send-post');
 var postTEXT = document.getElementById('post-text');
 var postIMAGE = "";
 var postLINK = "";
-
+var resetText = document.getElementById('reset-text');
 var postLimit = 10;
 var loadMore = document.getElementById('more');
 
@@ -66,12 +66,16 @@ function textToolSelected() {
     document.getElementById('new-text').classList.add('tool-selected');
     document.getElementById('new-image').classList.remove('tool-selected');
     document.getElementById('new-link').classList.remove('tool-selected');
+    document.getElementById('text-field').classList.remove('hidden');
+    document.getElementById('image-field').classList.add('hidden');
 }
 
 function imageToolSelected () {
     document.getElementById('new-image').classList.add('tool-selected');
     document.getElementById('new-text').classList.remove('tool-selected');
     document.getElementById('new-link').classList.remove('tool-selected');
+    document.getElementById('text-field').classList.add('hidden');
+    document.getElementById('image-field').classList.remove('hidden');
 }
 
 function linkToolSelected () {
@@ -100,6 +104,7 @@ function init() {
     
 //  New Post Tool
     sendPost.addEventListener("click", sendNewPost);
+    resetText.addEventListener("click", clearText);
     
     newText.addEventListener("click", textToolSelected);
     newImage.addEventListener("click", imageToolSelected);
