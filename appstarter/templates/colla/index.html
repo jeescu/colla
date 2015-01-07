@@ -40,7 +40,6 @@
     <core-header-panel flex class="indx-color">
         <core-toolbar id="mainheader" class="medium-tall">
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
-            <input type="hidden" id="_token" value="{{ auth_user.id }}"/>
             <span flex>Dashboard {{ prof_user.first_name }}</span>
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
@@ -67,47 +66,57 @@
             <div id="fragment-activity" class="page-frm">
 <!--                create-->
                 <div>
-                     <paper-shadow class="indx-fragment" z="0">
-                        <div class="row">
-                            <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ prof_user.profile_pic }}"/></div>
-                            <input type="hidden" id="user-post-name" value="{{ prof_user.dis_name }}"/>
-                            <div class="new-frm-msg col-xs-10 col-sm-10 col-md-10.5 col-lg-11">
-                                <div id="text-field" class="col-xs-12 frm-txtfield">
-                                    <div class="eg">
-                                        <div class="yw oo"></div>
-                                        <div class="yw VK"></div>
+                    <paper-shadow class="indx-fragment" z="0">
+                        <form id="imageUploadForm" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                            <div class="row">
+                               
+                                    <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ prof_user.profile_pic }}"/></div>
+                                    <input type="hidden" id="user-post-name" value="{{ prof_user.dis_name }}"/>
+                                    <div class="new-frm-msg col-xs-10 col-sm-10 col-md-10.5 col-lg-11">
+                                    <div id="text-field" class="col-xs-12 frm-txtfield">
+                                        <div class="eg">
+                                            <div class="yw oo"></div>
+                                            <div class="yw VK"></div>
+                                        </div>
+                                        <paper-autogrow-textarea id="a1">
+                                            <textarea id="post-text" placeholder="Share What's New.." onkeyup="postBtn()" name="text"></textarea>
+                                        </paper-autogrow-textarea>
                                     </div>
-                                    <paper-autogrow-textarea id="a1">
-                                        <textarea id="post-text" placeholder="Share What's New.." onkeyup="postBtn()"></textarea>
-                                    </paper-autogrow-textarea>
-                                </div>
 
-                                <div id="image-field" class="col-xs-12 frm-imgfield hidden">
-                                    <paper-icon-button id="add-image" icon="add"></paper-icon-button>
-                                        <form action="upload-image/" method="post" enctype="multipart/form-data">{% csrf_token %}
-                                            <p>
-                                                <input id="id_image" type="file" class="" name="image">
-                                            </p>
-                                            <input type="submit" value="Submit" />
-                                        </form>
-                                </div>
+                                    <div id="image-field" class="col-xs-12 frm-imgfield hidden">
+                                        <label id="label-img" icon="add" class="custom-btn add-image"> 
+                                            <input id="id_image" type="file"  name="image" onchange="readURL(this);">
+                                            <paper-icon-button id="image-input" icon="add"></paper-icon-button>
+                                            <img class="img-responsive" id="thumb" src=""/>
+                                        </label>
 
-
-                            </div>
-                        </div>
-                        <div class="row con-comm">
-                            <div class="col-xs-12 frm-comm">
-                                <paper-shadow z="0" class="comment-board">
-                                    <span><paper-icon-button class="tool-selected" id="new-text" icon="text-format"></paper-icon-button></span>&nbsp;
-                                    <span><paper-icon-button class="" id="new-image" icon="picture-in-picture"></paper-icon-button></span>&nbsp;
-                                    <span><paper-icon-button class="" id="new-link" icon="link"></paper-icon-button></span>
-                                    <div id="post-btn" class="new-post-btn btn-hide">
-                                        <paper-button id="reset-text" style="background: white">CLEAR</paper-button>
-                                        <paper-button id="send-post" class="btn-lnk">POST</paper-button>
+                                            <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userid"/>
+                                            <input type="hidden" id="title" value="None" name="title">
+                                            <input type="hidden" value="Shared Publicly" name="share" >
+                                            <input type="hidden" value="" name="link">
+                                            
                                     </div>
-                                </paper-shadow>
+
+
+                                </div>
                             </div>
-                        </div>
+                            <div class="row con-comm">
+                                <div class="col-xs-12 frm-comm">
+                                    <paper-shadow z="0" class="comment-board">
+                                        <span><paper-icon-button class="tool-selected" id="new-text" icon="text-format"></paper-icon-button></span>&nbsp;
+                                        <span><paper-icon-button class="" id="new-image" icon="picture-in-picture"></paper-icon-button></span>&nbsp;
+                                        <span><paper-icon-button class="" id="new-link" icon="link"></paper-icon-button></span>
+                                        <div id="post-btn" class="new-post-btn btn-hide">
+                                            <paper-button id="reset-text" style="background: white">CLEAR</paper-button>
+                                            <paper-button class="btn-lnk">
+                                                <button class="btn-submit btn-new-post" type="submit" style="height: inherit;">POST</button>
+                                            </paper-button>
+                                        </div>
+                                    </paper-shadow>
+                                </div>
+                            </div>
+                        </form>
                     </paper-shadow><br/>
                 </div>
 <!--                create-->

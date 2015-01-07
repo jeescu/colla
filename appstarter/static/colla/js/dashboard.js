@@ -20,6 +20,8 @@ var resetText = document.getElementById('reset-text');
 var postLimit = 10;
 var loadMore = document.getElementById('more');
 
+var imgInput = document.getElementById('image-input');
+
 var token;
 
 function actShow() {
@@ -92,6 +94,25 @@ function messageDialog() {
     newMsgDialog.toggle();
 }
 
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#thumb')
+                    .attr('src', e.target.result)
+                    .height(166);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    document.getElementById('thumb').classList.add('img-thumb');
+    imgInput.classList.add('hidden');
+    document.getElementById('label-img').classList.remove('add-image');
+    document.getElementById('label-img').classList.add('full-width');
+}
+
 function init() {
     token = document.getElementById('_token').value;
     
@@ -103,7 +124,6 @@ function init() {
     issue.addEventListener("click", issueShow);
     
 //  New Post Tool
-    sendPost.addEventListener("click", sendNewPost);
     resetText.addEventListener("click", clearText);
     
     newText.addEventListener("click", textToolSelected);

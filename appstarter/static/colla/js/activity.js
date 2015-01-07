@@ -143,29 +143,74 @@ function getlatest() {
     return latestPost;
 }
 
-function sendNewPost() {
-    var post = {
-        "userid" : token,
-        "title" : "None",
-        "text" : postTEXT.value,
-        "image" : postIMAGE || "None",
-        "link" : postLINK || "None",
-        "sharetype" : "Shared Publicly"
-    }
+// function sendNewPost() {
+//     var post = {
+//         "userid" : token,
+//         "title" : "None",
+//         "text" : postTEXT.value,
+//         "image" : postIMAGE || "None",
+//         "link" : postLINK || "None",
+//         "sharetype" : "Shared Publicly"
+//     }
     
-    var newPost = function(post) {
-        document.getElementById('new-post').classList.remove('new-post-hide');
-        document.getElementById('new-post').classList.add('new-post-show');
-        document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
-        document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
-        document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
-        document.getElementById('new-post-date').innerHTML = "Now";
-        document.getElementById('new-post-text').innerHTML = postTEXT.value;
-        document.getElementById('new-post-pic').src = "";
-    }
+//     var newPost = function(post) {
+//         document.getElementById('new-post').classList.remove('new-post-hide');
+//         document.getElementById('new-post').classList.add('new-post-show');
+//         document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
+//         document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
+//         document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
+//         document.getElementById('new-post-date').innerHTML = "Now";
+//         document.getElementById('new-post-text').innerHTML = postTEXT.value;
+//         document.getElementById('new-post-pic').src = "";
+//     }
     
-    AJAXRequest("new-post","GET", post, newPost);
-}
+//     AJAXRequest("new-post","GET", post, newPost);
+// }
+
+$('#imageUploadForm').on('submit',(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        console.log('Pressed upload ajax POST')
+
+        formData.userid = token;
+        formData.title = "None";
+        formData.text = postTEXT.value;
+        formData.image =  postIMAGE || "None";
+        formData.link = postLINK || "None";
+        formData.sharetype = "Shared Publicly";
+
+        var newPost = function() {
+            document.getElementById('new-post').classList.remove('new-post-hide');
+            document.getElementById('new-post').classList.add('new-post-show');
+            document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
+            document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
+            document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
+            document.getElementById('new-post-date').innerHTML = "Now";
+            document.getElementById('new-post-text').innerHTML = postTEXT.value;
+            document.getElementById('new-post-pic').src = "";
+        }
+
+        console.log(formData);
+
+        $.ajax({
+            type:'POST',
+            url: 'new-post/',
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                console.log("success");
+                newPost();
+                console.log(data);
+            },
+            error: function(data){
+                console.log("error");
+                console.log(data);
+            }
+        });
+    }));
 
 function sendNewComment() {
     

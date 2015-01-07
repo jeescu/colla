@@ -37,7 +37,17 @@ h3,h4,h2 {
     color: #546E7A;
 }
 
+input[type="file"] {
+    display: None;
+}
+
+.custom-btn {
+    display: inline-block;
+    cursor: pointer;
+}
+
 .btn-post .button-content,
+.btn-new-post .button-content,
 .btn-signup .button-content {
     padding: 0;
 }
@@ -119,22 +129,32 @@ h3,h4,h2 {
 }
 
 .frm-imgfield {
-    padding:15px;
+    padding: 2px;
     border: 5px solid;
     border-style: dotted;
     border-color:#E6E9EC;
     color: #E6E9EC;
-    height: 95px;
+    height: 200px;
 }
 
-.frm-imgfield #add-image {
+.frm-imgfield .add-image {
     margin-left: 45%;
-
 }
 
-.frm-imgfield > paper-icon-button::shadow #icon {
+.img-thumb {
+    border: 10px solid;
+    border-radius: 8px;
+    margin: auto;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.add-image > paper-icon-button::shadow #icon {
     width: 43px;
     height: 43px;
+    margin-top: 65px;
 }
 
 paper-fab {

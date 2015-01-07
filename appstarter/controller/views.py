@@ -69,19 +69,6 @@ class HomeView(generic.ListView):
     
 class BaseController(object):
     # Get New Posts 5 secs interval
-    def new_post_image(self, request):
-        if request.method == 'POST':
-            form = ImageUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-
-                img = PostImage(post_image=form.cleaned_data['image'])
-                img.save()
-
-                save_this = img.post_image.url[10:]
-
-                return HttpResponse(save_this)
-
-        return HttpResponseForbidden('allowed only via POST')
 
     def get_new_post(self, request):
         post_update = dict()
@@ -178,21 +165,35 @@ class BaseController(object):
         
     # DONE
     def add_post(self, request):
-        user_post = User.objects.get(pk=request.GET.get('userid'))
-        user_post_profile = user_post.profile_set.get(user=user_post.id)
-            
-        user_post.post_set.create(
-            user_pic = user_post_profile.profile_pic,
-            user_dis_name = user_post_profile.dis_name,
-            share_type = request.GET.get('sharetype'),
-            title = request.GET.get('title') if request.GET.get('title') != "None" else "",
-            content_text = request.GET.get('text'),
-            content_image = request.GET.get('image') if request.GET.get('image') != "None" else "",
-            content_link = request.GET.get('link') if request.GET.get('link') != "None" else "",
-            date = timezone.now()
-        )
-        view_posts = {'status' : 'saved'}
-        return HttpResponse(json.dumps(view_posts), content_type = "application/json")
+
+        if request.method == 'POST':
+
+            post_img = ""
+            form = ImageUploadForm(request.POST, request.FILES)
+
+            if form.is_valid():
+
+                img = PostImage(post_image=form.cleaned_data['image'])
+                img.save()
+                post_img = img.post_image.url[10:]
+
+            user_post = User.objects.get(pk=request.POST.get('userid'))
+            user_post_profile = user_post.profile_set.get(user=user_post.id)
+                
+            user_post.post_set.create(
+                user_pic = user_post_profile.profile_pic,
+                user_dis_name = user_post_profile.dis_name,
+                share_type = request.POST.get('share'),
+                title = request.POST.get('title') if request.POST.get('title') != "None" else "",
+                content_text = request.POST.get('text'),
+                content_image = post_img,
+                content_link = request.POST.get('link') if request.POST.get('link') != "None" else "",
+                date = timezone.now()
+            )
+
+            view_posts = {'status' : 'saved'}
+
+            return HttpResponse(json.dumps(view_posts), content_type = "application/json")
     
     def add_issue(self, request):
         pass
