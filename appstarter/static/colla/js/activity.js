@@ -1,13 +1,13 @@
-function AJAXRequest(url, type, data, func) {
+function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
     console.log('ajax sending..')
     $.ajax({
         url: url,
         type: type,
         data: data, 
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
+        contentType: contentType,
+        dataType: dataType,
         success: function(data) { 
-            func(data);
+            fn(data);
             console.log('Success');
         },
         error: function(ts) { 
@@ -33,9 +33,9 @@ var postUpdate = function(post) {
         var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
             post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
             post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
-            post_form +=     '<div class="col-xs-12 frm-share">'+userPost['share']+'</div>';
+            post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
             post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
-            post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text']+'</p></div>';
+            post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
             post_form +=         '<div class="col-xs-12 frm-pic"><img class="img-responsive" src="'+userPost['image']+'"/></div>';
             post_form +=         '<div class="col-xs-12 frm-dtl"><div class="frm-dtl-info"><paper-button class="btn-frm-info"><core-icon icon="thumb-up"></core-icon>';
             post_form +=                     '<span>&emsp;'+userPost['agrees']+'</span>'
@@ -51,7 +51,7 @@ var postUpdate = function(post) {
             //                         <div class="col-xs-2 comm-av"><img src="{% static 'colla/images/qlt.png' %}"/></div>
             //                         <div class="col-xs-10">
             //                             <div class="col-xs-12 comm-name">John Edward Escuyos</div>
-            //                             <div class="col-xs-12 comm-time">10:00 AM</div>
+            //                             <div class="col-xs-12 comm-time sub-color">10:00 AM</div>
             //                         </div>
             //                         <div class="col-xs-12 comm-text">
             //                             <p>Nothing beats my imagination!</p>
@@ -59,6 +59,7 @@ var postUpdate = function(post) {
             //                  </paper-shadow>
 
             post_form +=      '</div></div></paper-shadow><br/></div>';
+            document.getElementById('new-post-pic').src="";
             console.log('Writing posts');
             $("#dynamic").prepend(post_form);
 
@@ -82,9 +83,9 @@ var postUpdate = function(post) {
             var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
                 post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
                 post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
-                post_form +=     '<div class="col-xs-12 frm-share">'+userPost['share']+'</div>';
+                post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
                 post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
-                post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text']+'</p></div>';
+                post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
                 post_form +=         '<div class="col-xs-12 frm-pic"><img class="img-responsive" src="'+userPost['image']+'"/></div>';
                 post_form +=         '<div class="col-xs-12 frm-dtl"><div class="frm-dtl-info"><paper-button class="btn-frm-info"><core-icon icon="thumb-up"></core-icon>';
                 post_form +=                     '<span>&emsp;'+userPost['agrees']+'</span>'
@@ -100,7 +101,7 @@ var postUpdate = function(post) {
                 //                         <div class="col-xs-2 comm-av"><img src="{% static 'colla/images/qlt.png' %}"/></div>
                 //                         <div class="col-xs-10">
                 //                             <div class="col-xs-12 comm-name">John Edward Escuyos</div>
-                //                             <div class="col-xs-12 comm-time">10:00 AM</div>
+                //                             <div class="col-xs-12 comm-time sub-color">10:00 AM</div>
                 //                         </div>
                 //                         <div class="col-xs-12 comm-text">
                 //                             <p>Nothing beats my imagination!</p>
@@ -109,6 +110,7 @@ var postUpdate = function(post) {
 
                 post_form +=      '</div></div></paper-shadow><br/></div>';
                 console.log('Writing posts');
+                document.getElementById('new-post-pic').src="";
                 $("#dynamic").prepend(post_form);
         }
 
@@ -122,7 +124,7 @@ function autoloadPost() {
     console.log('autoloadpost');
     
     setInterval(function() {
-        AJAXRequest("update-post", "GET", getlatest(), postUpdate)
+        AJAXRequest("update-post", "GET", getlatest(), postUpdate, "application/json;charset=utf-8", "json")
     }, 5000);
 }
 
@@ -143,84 +145,100 @@ function getlatest() {
     return latestPost;
 }
 
-// function sendNewPost() {
-//     var post = {
-//         "userid" : token,
-//         "title" : "None",
-//         "text" : postTEXT.value,
-//         "image" : postIMAGE || "None",
-//         "link" : postLINK || "None",
-//         "sharetype" : "Shared Publicly"
-//     }
-    
-//     var newPost = function(post) {
-//         document.getElementById('new-post').classList.remove('new-post-hide');
-//         document.getElementById('new-post').classList.add('new-post-show');
-//         document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
-//         document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
-//         document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
-//         document.getElementById('new-post-date').innerHTML = "Now";
-//         document.getElementById('new-post-text').innerHTML = postTEXT.value;
-//         document.getElementById('new-post-pic').src = "";
-//     }
-    
-//     AJAXRequest("new-post","GET", post, newPost);
-// }
+var newUserPost = function(post) {
+    document.getElementById('new-post').classList.remove('new-post-hide');
+    document.getElementById('new-post').classList.add('new-post-show');
+    document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
+    document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
+    document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
+    document.getElementById('new-post-date').innerHTML = "Now";
+    document.getElementById('new-post-text').innerHTML = postTEXT.value.replace(/\n/g, "<br />");
+    document.getElementById('new-post-pic').src = document.getElementById('thumb').src;
+}
 
 $('#imageUploadForm').on('submit',(function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
+    e.preventDefault();
+    var formData = new FormData(this);
 
-        console.log('Pressed upload ajax POST')
+    console.log('Pressed upload ajax POST')
 
-        formData.userid = token;
-        formData.title = "None";
-        formData.text = postTEXT.value;
-        formData.image =  postIMAGE || "None";
-        formData.link = postLINK || "None";
-        formData.sharetype = "Shared Publicly";
+    formData.userid = token;
+    formData.title = "None";
+    formData.text = postTEXT.value.replace(/\n/g, "<br />");      
+    formData.image =  postIMAGE || "None";
+    formData.link = postLINK || "None";
+    formData.sharetype = "Shared Publicly";
 
-        var newPost = function() {
-            document.getElementById('new-post').classList.remove('new-post-hide');
-            document.getElementById('new-post').classList.add('new-post-show');
-            document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
-            document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
-            document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
-            document.getElementById('new-post-date').innerHTML = "Now";
-            document.getElementById('new-post-text').innerHTML = postTEXT.value;
-            document.getElementById('new-post-pic').src = "";
+
+    console.log(formData);
+
+    $.ajax({
+        type:'POST',
+        url: 'new-post/',
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+            console.log("success");
+            newUserPost();
+            console.log(data);
+        },
+        error: function(data){
+            console.log("error");
+            console.log(data);
         }
+    });
 
-        console.log(formData);
+    clearText();
 
-        $.ajax({
-            type:'POST',
-            url: 'new-post/',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(data){
-                console.log("success");
-                newPost();
-                console.log(data);
-            },
-            error: function(data){
-                console.log("error");
-                console.log(data);
-            }
-        });
-    }));
+}));
 
-function sendNewComment() {
-    
-}
+
+var parentFormID;
+
+$('.send-comment').on('click', function() {
+    parentFormID = $(this).closest('form').attr("id");
+    $('#submit-comment'+parentFormID).trigger('click');
+});
+
+$('form').on('submit', (function(e) {
+    e.preventDefault();
+    var commentData = new FormData(this);
+
+    console.log('woo ajax comment');
+
+    $.ajax({
+        type:'POST',
+        url: 'new-comment/',
+        data:commentData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+            console.log("success");
+            console.log(data);
+        },
+        error: function(data){
+            console.log("error");
+            console.log(data);
+        }
+    });
+}));
+
 
 function loadMorePost() {
     postLimit+=10;
 }
 
 function clearText() {
+    $("#id_image").closest('form').trigger('reset');
+    document.getElementById('thumb').src="";
+    document.getElementById('thumb').classList.remove('img-thumb');
+    document.getElementById("thumb").removeAttribute("style"); 
+    document.getElementById('label-img').classList.remove('full-width');
+    document.getElementById('label-img').classList.add('add-image');
+    document.getElementById('image-input').classList.remove('hidden');
     document.getElementById('post-text').value = "";
 }
 

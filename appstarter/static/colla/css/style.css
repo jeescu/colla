@@ -46,7 +46,11 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.btn-post .button-content,
+.submit-post::shadow .button-content {
+    padding: 0;
+    height: 39px;
+}
+
 .btn-new-post .button-content,
 .btn-signup .button-content {
     padding: 0;
@@ -387,12 +391,13 @@ paper-fab {
     overflow: hidden;
     visibility: hidden;
     opacity: 0;
+    height: 0;
 /*    -webkit-transition: visibility 0s 0s, opacity 2s linear;
     -moz-transition: visibility 0s 0s, opacity 2s linear;
     -o-transition: visibility 0s 0s, opacity 2s linear;
     transition: visibility 0s 2s, opacity 2s linear;*/
     
-    margin-top: -303px;/*
+    /*
     -webkit-transition: margin-top 0s 2s;
     -moz-transition: margin-top 0s 2s;
     -o-transition: margin-top 0s 2s;
@@ -503,4 +508,8 @@ core-drawer-panel:not([narrow]) #navicon {
     height: 0;
     position: absolute;
     width: 0;
+}
+
+.sub-color {
+    color: #90A4AE;
 }

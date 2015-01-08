@@ -21,15 +21,15 @@ class LoginView(generic.ListView):
             # directing uri
             session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
             user_state = User.objects.get(req_token = session_id)
+            auth_user = User.objects.get(pk=user_state.id)
             # active session
             if user_state.log != 'out':
                 
-                user_profile = Profile.objects.get(user_id = user_state.id)
                 post = Post.objects.all().order_by('-date')[:10]
-                # comment = Comment.objects.all().order_by(post_id = post.id)
-                return render(request,
+
+                return render(request, 
                               'colla/index.html',
-                              {'auth_user': user_state,'prof_user': user_profile, 'post':post})
+                              {'auth_user': auth_user, 'post':post})
         except:
             # log in
 			return render(request, 'colla/login.html', {})
@@ -37,18 +37,18 @@ class LoginView(generic.ListView):
     def post(self, request, *args, **kwargs):
         authen_request = request.COOKIES
         try:
-            auth_user = User.objects.get(username = request.POST['username'])
-            if auth_user.password == request.POST['password']:
-                auth_user.log = 'in'
-                auth_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
-                auth_user.save()
+            ver_user = User.objects.get(username = request.POST['username'])
+            auth_user = User.objects.get(pk=ver_user.id)
+            if ver_user.password == request.POST['password']:
+                ver_user.log = 'in'
+                ver_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
+                ver_user.save()
 
-                user_profile = Profile.objects.get(user_id = auth_user.id)
                 post = Post.objects.all().order_by('-date')[:10]
-                # comment = Comment.objects.all().order_by(post = post.id)
+
                 return render(request,
                               'colla/index.html',
-                              {'auth_user': auth_user,'prof_user': user_profile, 'post':post})
+                              {'auth_user': auth_user, 'post':post})
         except:
                 return HttpResponse('Wrong Username Password')
 
@@ -140,17 +140,18 @@ class BaseController(object):
         pass
     
     # comment post
-    def comment_post(self, request):
-        post_id = request.GET.get('post_id')
+    def add_comment(self, request):
+        post_id = request.POST.get('post_id')
         post_comment = Post.objects.get(pk=post_id)
-        post_comment.comments = post_comment.comment + 1
+        post_comment.comments = post_comment.comments + 1
+        post_comment.save()
         post_comment.comment_set.create (
-            user_pic_url = request.GET.get('pic_url'),
-            user_name = request.GET.get('user_name'),
+            user_pic_url = request.POST.get('pic'),
+            user_name = request.POST.get('user_name'),
             comment_date = timezone.now(),
-            comment = request.GET.get('comment')
+            comment = request.POST.get('comment')
         )
-        return HttpResponse(json.dumps({'status':'saved'}), content_type = "application/json")
+        return HttpResponse(json.dumps({'status':'comment saved'}), content_type = "application/json")
 
     # agree post
     def agree_post(self, request):

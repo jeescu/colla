@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
                        
     url(r'^new-post/$', views.BaseController().add_post, name='new_post'),
+    url(r'^new-comment/$', views.BaseController().add_comment, name='new_comment'),
+
     url(r'^update-post/$', views.BaseController().get_new_post, name='update_post'),
                        
     url(r'^register', views.BaseController().register, name='register'), 

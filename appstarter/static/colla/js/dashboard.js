@@ -22,6 +22,8 @@ var loadMore = document.getElementById('more');
 
 var imgInput = document.getElementById('image-input');
 
+var sndComm = document.getElementById('send-comment');
+
 var token;
 
 function actShow() {
@@ -129,12 +131,18 @@ function init() {
     newText.addEventListener("click", textToolSelected);
     newImage.addEventListener("click", imageToolSelected);
     newLink.addEventListener("click", linkToolSelected);
+
 //    action new button
     newIssue.addEventListener("click", issueDialog);
     newMessage.addEventListener("click", messageDialog);
+
+//   post action
+    // if (sndComm) {
+    //     sndComm.addEventListener("click", sendNewComment);
+    // }
     
 //    activity
-    loadMore.addEventListener("click", loadMorePost);
+    loadMore.addEventListener("click", loadMorePost);    
     
 //    issue
     

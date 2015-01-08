@@ -9,6 +9,9 @@ class User(models.Model):
     password = models.CharField(max_length=200)
     req_token = models.CharField(max_length=200)
     log = models.CharField(max_length=5) 
+
+    def profile(self):
+        return Profile.objects.filter(user = self.id)
     
 class Profile(models.Model):
     user = models.ForeignKey(User)
@@ -20,12 +23,6 @@ class Profile(models.Model):
     position = models.CharField(max_length=30)
     company_name = models.CharField(max_length=30)
     mail_address = models.CharField(max_length=30)
-    
-    def __unicode__(self):
-        return self.dis_name
-    
-    def display_name(self):
-        return self.dis_name
     
 class Post(models.Model):
     user = models.ForeignKey(User)
@@ -39,6 +36,9 @@ class Post(models.Model):
     content_link = models.CharField(max_length=500)
     agrees = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
+
+    def comment(self):
+        return Comment.objects.filter(post = self.id)
     
 class Agree(models.Model):
     post = models.ForeignKey(Post)
@@ -49,7 +49,7 @@ class Comment(models.Model):
     user_pic_url = models.CharField(max_length=200)
     user_name = models.CharField(max_length=50)
     comment_date = models.DateTimeField('date published')
-    comment = models.CharField(max_length=200)
+    comment = models.CharField(max_length=500)
 
 # Groups - A private Collaboration for teams (Page Spec)
 class Group(models.Model):
