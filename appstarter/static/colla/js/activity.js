@@ -1,5 +1,4 @@
 function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
-    console.log('ajax sending..')
     $.ajax({
         url: url,
         type: type,
@@ -7,11 +6,11 @@ function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
         contentType: contentType,
         dataType: dataType,
         success: function(data) { 
+            console.info('Success');
             fn(data);
-            console.log('Success');
         },
         error: function(ts) { 
-            console.log('Error');
+            console.error('Error');
         }
     });
 }
@@ -36,7 +35,7 @@ var postUpdate = function(post) {
             post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
             post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
             post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
-            post_form +=         '<div class="col-xs-12 frm-pic"><img class="img-responsive" src="'+userPost['image']+'"/></div>';
+            post_form +=         '<div class="col-xs-12 frm-pic"><img id="user-new-image-post" class="img-responsive" src="'+userPost['image']+'"/></div>';
             post_form +=         '<div class="col-xs-12 frm-dtl"><div class="frm-dtl-info"><paper-button class="btn-frm-info"><core-icon icon="thumb-up"></core-icon>';
             post_form +=                     '<span>&emsp;'+userPost['agrees']+'</span>'
             post_form +=                 '</paper-button><paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
@@ -59,9 +58,10 @@ var postUpdate = function(post) {
             //                  </paper-shadow>
 
             post_form +=      '</div></div></paper-shadow><br/></div>';
-            document.getElementById('new-post-pic').src="";
+            // document.getElementById('new-post-pic').src="";
             console.log('Writing posts');
             $("#dynamic").prepend(post_form);
+             userPost['image'] == "" ? document.getElementById('user-new-image-post').style.display="none":true;
 
     }
     else if (post.status)
@@ -86,7 +86,7 @@ var postUpdate = function(post) {
                 post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
                 post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
                 post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
-                post_form +=         '<div class="col-xs-12 frm-pic"><img class="img-responsive" src="'+userPost['image']+'"/></div>';
+                post_form +=         '<div class="col-xs-12 frm-pic"><img id="user-new-image-post" class="img-responsive" src="'+userPost['image']+'"/></div>';
                 post_form +=         '<div class="col-xs-12 frm-dtl"><div class="frm-dtl-info"><paper-button class="btn-frm-info"><core-icon icon="thumb-up"></core-icon>';
                 post_form +=                     '<span>&emsp;'+userPost['agrees']+'</span>'
                 post_form +=                 '</paper-button><paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
@@ -112,6 +112,7 @@ var postUpdate = function(post) {
                 console.log('Writing posts');
                 document.getElementById('new-post-pic').src="";
                 $("#dynamic").prepend(post_form);
+                userPost['image'] == "" ? document.getElementById('user-new-image-post').style.display="none":true;
         }
 
         console.error('Finish writing posts');
@@ -145,22 +146,13 @@ function getlatest() {
     return latestPost;
 }
 
-var newUserPost = function(post) {
-    document.getElementById('new-post').classList.remove('new-post-hide');
-    document.getElementById('new-post').classList.add('new-post-show');
-    document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
-    document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
-    document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
-    document.getElementById('new-post-date').innerHTML = "Now";
-    document.getElementById('new-post-text').innerHTML = postTEXT.value.replace(/\n/g, "<br />");
-    document.getElementById('new-post-pic').src = document.getElementById('thumb').src;
-}
-
+var formPostId = 0;
 $('#imageUploadForm').on('submit',(function(e) {
     e.preventDefault();
     var formData = new FormData(this);
 
     console.log('Pressed upload ajax POST')
+    formPostId = 1;
 
     formData.userid = token;
     formData.title = "None";
@@ -169,8 +161,25 @@ $('#imageUploadForm').on('submit',(function(e) {
     formData.link = postLINK || "None";
     formData.sharetype = "Shared Publicly";
 
-
-    console.log(formData);
+    var newUserPost = function() {
+        document.getElementById('new-post').classList.remove('new-post-hide');
+        document.getElementById('new-post').classList.add('new-post-show');
+        document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
+        document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
+        document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
+        document.getElementById('new-post-date').innerHTML = "Now";
+        document.getElementById('new-post-text').innerHTML = postTEXT.value.replace(/\n/g, "<br />");
+        // Need To fix for production
+        if (document.getElementById('thumb').src != "http://localhost:8080/colla/")
+        {
+            document.getElementById('new-post-pic').removeAttribute("style"); 
+            document.getElementById('new-post-pic').src = document.getElementById('thumb').src;
+        }
+        else
+        {
+            document.getElementById('new-post-pic').style.display = "none";
+        }
+    }
 
     $.ajax({
         type:'POST',
@@ -180,17 +189,14 @@ $('#imageUploadForm').on('submit',(function(e) {
         contentType: false,
         processData: false,
         success:function(data){
-            console.log("success");
             newUserPost();
-            console.log(data);
+            clearText();
+            formPostId = 0;
         },
         error: function(data){
-            console.log("error");
-            console.log(data);
+            console.error("error");
         }
     });
-
-    clearText();
 
 }));
 
@@ -208,22 +214,24 @@ $('form').on('submit', (function(e) {
 
     console.log('woo ajax comment');
 
-    $.ajax({
-        type:'POST',
-        url: 'new-comment/',
-        data:commentData,
-        cache:false,
-        contentType: false,
-        processData: false,
-        success:function(data){
-            console.log("success");
-            console.log(data);
-        },
-        error: function(data){
-            console.log("error");
-            console.log(data);
-        }
-    });
+    if (formPostId == 0) {
+        $.ajax({
+            type:'POST',
+            url: 'new-comment/',
+            data:commentData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                console.info("success");
+                console.debug(data);
+            },
+            error: function(data){
+                console.error("error");
+            }
+        });
+    }
+
 }));
 
 
