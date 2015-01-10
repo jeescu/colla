@@ -155,14 +155,34 @@ class BaseController(object):
 
     # agree post
     def agree_post(self, request):
-        post_id = request.GET.get('post_id'),
+        post_id = request.POST.get('post_id')
+        post_name_agreed = request.POST.get('user_name')
         post_agree = Post.objects.get(pk=post_id)
-        post_agree.agrees = post_agree.agrees + 1
-        post_agree.save()
-        post_agree.agree_set.create(
-            user_name = request.GET.get('user_name')
-        )
-        return HttpResponse(json.dumps({'status':'saved'}), content_type = "application/json")
+        
+        # Checks only anybody who agreed
+        if  post_agree.user_dis_name != post_name_agreed:
+            user_agreed = "Nobody"
+            post_agree_checked = post_agree.agree_set.filter(user_name = post_name_agreed)
+            for post in post_agree_checked:
+                user_agreed = post.user_name
+                
+            if user_agreed == post_name_agreed:
+                data = {'status': 'Already agreed'}
+                return HttpResponse(json.dumps(data),
+                                content_type = "application/json")
+            else:
+                post_agree.agrees = post_agree.agrees + 1
+                post_agree.save()
+                post_agree.agree_set.create(
+                    user_name = post_name_agreed
+                )
+                data = {'status': 'agreed'}
+                return HttpResponse(json.dumps(data),
+                                    content_type = "application/json")
+        else:
+            data = {'status':'You owned the post'}
+            return HttpResponse(json.dumps(data),
+                                content_type = "application/json")
         
     # DONE
     def add_post(self, request):

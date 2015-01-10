@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        
     url(r'^new-post/$', views.BaseController().add_post, name='new_post'),
     url(r'^new-comment/$', views.BaseController().add_comment, name='new_comment'),
+    url(r'^new-agree/$', views.BaseController().agree_post, name='agree_post'),
 
     url(r'^update-post/$', views.BaseController().get_new_post, name='update_post'),
                        

@@ -2,25 +2,24 @@ function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
     $.ajax({
         url: url,
         type: type,
-        data: data, 
+        data: data,
         contentType: contentType,
         dataType: dataType,
-        success: function(data) { 
+        success: function (data) {
             console.info('Success');
             fn(data);
         },
-        error: function(ts) { 
+        error: function (ts) {
             console.error('Error');
         }
     });
 }
 
-var postUpdate = function(post) {
-    var newPost = document.getElementById('new-post');
-    var post_number = Object.keys(post).length;
+var postUpdate = function (post) {
+    var newPost = document.getElementById('new-post'), post_number = Object.keys(post).length;
     console.log(post);
 
-    if (post_number == 1 && newPost.className == 'new-post-show') {
+    if (post_number === 1 && newPost.className === 'new-post-show') {
         console.log('1 updated post , and you did it');
         document.getElementById('new-post').classList.remove('new-post-show');
         document.getElementById('new-post').classList.add('new-post-hide');
@@ -200,41 +199,55 @@ $('#imageUploadForm').on('submit',(function(e) {
 
 }));
 
+// comment and agree post
+var commentFormId;
+var agreeFormId;
+var agreeOrCommentUrl;
 
-var parentFormID;
+$('.agree-comment').on('click', function() {
+    agreeFormId = $(this).closest('form').attr("id");
+    agreeOrCommentUrl = 'new-agree/';
+    $('#submit-agree'+agreeFormId).trigger('click');
+    console.info('submitting agree');
+});
 
 $('.send-comment').on('click', function() {
-    parentFormID = $(this).closest('form').attr("id");
-    $('#submit-comment'+parentFormID).trigger('click');
+    commentFormId = $(this).closest('form').attr("id");
+    agreeOrCommentUrl = 'new-comment/';
+    $('#submit-comment'+commentFormId).trigger('click');
+    console.info('submitting comment');
 });
 
 $('form').on('submit', (function(e) {
     e.preventDefault();
-    var commentData = new FormData(this);
-
-    console.log('woo ajax comment');
+    var formData = new FormData(this);
 
     if (formPostId == 0) {
-        $.ajax({
-            type:'POST',
-            url: 'new-comment/',
-            data:commentData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(data){
-                console.info("success");
-                console.debug(data);
-            },
-            error: function(data){
-                console.error("error");
-            }
-        });
+        console.debug(agreeOrCommentUrl);
+        postAgreeComment(agreeOrCommentUrl, formData);
     }
 
 }));
 
+function postAgreeComment(url, data) {
+    $.ajax({
+        type:'POST',
+        url: url,
+        data: data,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+            console.info("success");
+            console.debug(data);
+        },
+        error: function(data){
+            console.error("error");
+        }
+    });
+}
 
+// load more post vert pagination
 function loadMorePost() {
     postLimit+=10;
 }

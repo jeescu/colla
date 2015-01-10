@@ -197,16 +197,24 @@
                             <div class="col-xs-12 frm-pic"><img class="img-responsive" src="{{ user_post.content_image }}"/></div>
                             <div class="col-xs-12 frm-dtl">
                                 <div class="frm-dtl-info">
-                                    <paper-button class="btn-frm-info">
-                                        <core-icon icon="thumb-up">
-                                        </core-icon>
-                                        <span>&emsp;{{ user_post.agrees }}</span>
-                                    </paper-button>
-                                    <paper-button  class="btn-frm-info">
-                                        <core-icon icon="question-answer">
-                                        </core-icon>
-                                        <span>&emsp;{{ user_post.comments }}</span>
-                                    </paper-button>
+                                    <form id="{{ user_post.id }}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ user_post.id }}" name="post_id">
+                                        {% for profile in auth_user.profile %}
+                                        <input type="hidden" value="{{ profile.dis_name }}" name="user_name">
+                                        {% endfor %}
+                                        <input id="submit-agree{{ user_post.id }}" type="submit" class="hidden">
+                                        <paper-button class="btn-frm-info agree-comment">
+                                            <core-icon icon="thumb-up">
+                                            </core-icon>
+                                            <span>&emsp;{{ user_post.agrees }}</span>
+                                        </paper-button>
+                                        <paper-button  class="btn-frm-info">
+                                            <core-icon icon="question-answer">
+                                            </core-icon>
+                                            <span>&emsp;{{ user_post.comments }}</span>
+                                        </paper-button>
+                                    </form>
                                 </div>
                                 <form id="{{ user_post.id }}" method="post">
                                     {% csrf_token %}
@@ -214,8 +222,8 @@
                                         <input type="hidden" value="{{ user_post.id }}" name="post_id" />
                                         {% for profile in auth_user.profile %}
                                         <input type="hidden" value="{{ profile.profile_pic }}" name="pic" />
-                                        {% endfor %}
-                                        <input type="hidden" value="{{ user_post.user_dis_name  }}" name="user_name" />
+                                        <input type="hidden" value="{{ profile.dis_name  }}" name="user_name" />
+                                         {% endfor %}
                                         <paper-input-decorator label="Add new comment...">
                                             <paper-autogrow-textarea id="a1">
                                                 <textarea id="t1" name="comment"></textarea>
