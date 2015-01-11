@@ -143,6 +143,7 @@ input[type="file"] {
 
 .frm-imgfield .add-image {
     margin-left: 45%;
+    margin-top: 9%;
 }
 
 .img-thumb {
@@ -158,7 +159,6 @@ input[type="file"] {
 .add-image > paper-icon-button::shadow #icon {
     width: 43px;
     height: 43px;
-    margin-top: 65px;
 }
 
 paper-fab {

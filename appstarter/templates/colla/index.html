@@ -25,6 +25,7 @@
     <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-action-dialog.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog-transition.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-fab/paper-fab.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-toast/paper-toast.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
@@ -42,6 +43,7 @@
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
             {%  for profile in auth_user.profile %}
             <span flex>Dashboard {{ profile.dis_name }}</span>
+            <input type="hidden" id="user-prof-pic" value="{{ profile.profile_pic }}">
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="helpbutton" icon="help"></paper-icon-button>
@@ -89,7 +91,7 @@
                                         <label id="label-img" icon="add" class="custom-btn add-image"> 
                                             <input id="id_image" type="file"  name="image" onchange="readURL(this);">
                                             <paper-icon-button id="image-input" icon="add"></paper-icon-button>
-                                            <img class="img-responsive" id="thumb" src=""/>
+                                            <img class="img-responsive resp-img" id="thumb" src=""/>
                                         </label>
 
                                             <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userid"/>
@@ -138,7 +140,7 @@
                             <div class="col-xs-12 frm-pic"><img id="new-post-pic" class="img-responsive"/></div>
                             <div class="col-xs-12 frm-dtl">
                                 <div class="frm-dtl-info">
-                                    <paper-button class="btn-frm-info">
+                                    <paper-button class="btn-frm-info dy-agree-post">
                                         <core-icon icon="thumb-up">
                                         </core-icon>
                                         <span>&emsp;0</span>
@@ -194,7 +196,7 @@
                             <div class="col-xs-12 frm-txt">
                                 <p>{{ user_post.content_text|linebreaksbr }}</p>
                             </div>
-                            <div class="col-xs-12 frm-pic"><img class="img-responsive" src="{{ user_post.content_image }}"/></div>
+                            <div class="col-xs-12 frm-pic"><img class="img-responsive resp-img" src="{{ user_post.content_image }}"/></div>
                             <div class="col-xs-12 frm-dtl">
                                 <div class="frm-dtl-info">
                                     <form id="{{ user_post.id }}" method="post">
@@ -204,7 +206,7 @@
                                         <input type="hidden" value="{{ profile.dis_name }}" name="user_name">
                                         {% endfor %}
                                         <input id="submit-agree{{ user_post.id }}" type="submit" class="hidden">
-                                        <paper-button class="btn-frm-info agree-comment">
+                                        <paper-button class="btn-frm-info agree-post">
                                             <core-icon icon="thumb-up">
                                             </core-icon>
                                             <span>&emsp;{{ user_post.agrees }}</span>
@@ -264,79 +266,25 @@
                 </div>
                 {% endif %}
 <!--                end loop-->
-                
-                
-                
-                
-<!--               My UI ref-->
-                <paper-shadow class="indx-fragment hidden" z="0">
-                        <div class="row">
-                            <div class="col-xs-1 frm-av"><img src=""/></div>
-                            <div class="col-xs-8">
-                                <div class="col-xs-12 frm-name">John Edward Escuyos</div>
-                                <div class="col-xs-12 frm-share sub-color">Shared Publicly</div>
-                            </div>
-                            <div class="frm-date">2 days ago</div>
-                            <div class="col-xs-12 frm-txt">
-                                <p>Stop defining the future, make a future yourself instead.</p>
-                            </div>
-                            <div class="col-xs-12 frm-pic"><img class="img-responsive" src="{% static 'colla/images/google.jpg' %}"/></div>
-                            <div class="col-xs-12 frm-dtl">
-                                <div class="frm-dtl-info">
-                                    <paper-button class="btn-frm-info">
-                                        <core-icon icon="thumb-up">
-                                        </core-icon>
-                                        <span>&emsp;27</span>
-                                    </paper-button>
-                                    <paper-button  class="btn-frm-info">
-                                        <core-icon icon="question-answer">
-                                        </core-icon>
-                                        <span>&emsp;12</span>
-                                    </paper-button>
-                                </div>
-                                <div class="txt-comm" >
-                                    <paper-input-decorator label="Add new comment...">
-                                        <paper-autogrow-textarea id="a1">
-                                            <textarea id="t1"></textarea>
-                                        </paper-autogrow-textarea>
-                                    </paper-input-decorator>
-                                </div>
-                                <div class="snd-comm hidden-xs">
-                                    <paper-icon-button id="snd-comment" icon="send"></paper-icon-button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row con-comm">
-                            <div class="col-xs-12 frm-comm">
-                                <paper-shadow z="0" class="comment-board">
-                                    <div class="col-xs-2 comm-av"><img src=""/></div>
-                                    <div class="col-xs-10">
-                                        <div class="col-xs-12 comm-name">John Edward Escuyos</div>
-                                        <div class="col-xs-12 comm-time sub-color">10:00 AM</div>
-                                    </div>
-                                    <div class="col-xs-12 comm-text">
-                                        <p>Nothing beats my imagination!</p>
-                                    </div>
-                                </paper-shadow>
-                                <paper-shadow z="0" class="comment-board">
-                                    <div class="col-xs-2 comm-av"><img src=""/></div>
-                                    <div class="col-xs-10">
-                                        <div class="col-xs-12 comm-name">John Edward Escuyos</div>
-                                        <div class="col-xs-12 comm-time sub-color">10:00 AM</div>
-                                    </div>
-                                    <div class="col-xs-12 comm-text">
-                                        <p>Nothing beats my imagination</p>
-                                    </div>
-                                </paper-shadow>
-                            </div>
-                        </div>
-                    </paper-shadow><br/>
-<!--                UI ref-->
-                
-                
+     
                 <div class="more">
                     <paper-icon-button id="more" icon="autorenew" class="more-refresh"></paper-icon-button>
                 </div>
+<!--
+                <paper-button raised onclick="document.querySelector('#toast1').show()">Discard Draft</paper-button>
+
+                <paper-button raised onclick="document.querySelector('#toast2').show()">Get Messages</paper-button>
+-->
+                <paper-toast id="toastPost" text="Your post has been posted."></paper-toast>
+                <paper-toast id="toastAgree" text="You agreed on a post."></paper-toast>
+                <paper-toast id="toastComment" text="Your comment has been written."></paper-toast>
+                
+                <paper-toast id="toastNewPost" text="New posts are available now.">
+                    <div style="color: #eeff41;" onclick="console.log('CHECK')">Check</div>
+                </paper-toast>
+                <paper-toast id="toastConnectionOut" role="alert" text="Connection timed out. Please check your internet.">
+                    <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div>
+                </paper-toast>
             </div>
                     
             <div id="fragment-project" class="page-frm hidden">
