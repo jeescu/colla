@@ -30,22 +30,7 @@ var postUpdate = function (post) {
         console.log('append my post secretly');
 
         var userPost = post[Object.keys(post)[0]];
-
-//        var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
-//            post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
-//            post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
-//            post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
-//            post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
-//            post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
-//            post_form +=         '<div class="col-xs-12 frm-pic"><img id="user-new-image-post" class="img-responsive" src="'+userPost['image']+'"/></div>';
-//            post_form +=         '<div class="col-xs-12 frm-dtl"><div class="frm-dtl-info"><paper-button class="btn-frm-info"><core-icon icon="thumb-up"></core-icon>';
-//            post_form +=                     '<span>&emsp;'+userPost['agrees']+'</span>';
-//            post_form +=                 '</paper-button><paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
-//            post_form +=                     '<span>&emsp;'+userPost['comments']+'</span>';
-//            post_form +=                 '</paper-button></div><div class="txt-comm" ><paper-input-decorator label="Add new comment..."><paper-autogrow-textarea id="a1"><textarea id="t1"></textarea></paper-autogrow-textarea></paper-input-decorator></div>';
-//            post_form +=             '<div class="snd-comm hidden-xs"><paper-icon-button id="snd-comment" icon="send"></paper-icon-button></div></div></div>';
-//            post_form +=     '<div class="row con-comm"><div class="col-xs-12 frm-comm"></div></div></paper-shadow><br/></div>';
-        
+     
         var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
             post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
             post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
@@ -307,6 +292,18 @@ function postAgreeComment(url, data, msg) {
         }
     });
 }
+
+$('#chat').on('click', (function (e) {
+    console.log('click');
+    document.getElementById('chat-board').style.display = 'block';
+    document.getElementById('notification-board').style.display = 'none';
+}));
+
+$('#notification').on('click', (function (e) {
+    console.log('click');
+    document.getElementById('chat-board').style.display = 'none';
+    document.getElementById('notification-board').style.display = 'block';
+}));
 
 // load more post vert pagination
 function loadMorePost() {

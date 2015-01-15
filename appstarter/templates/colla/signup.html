@@ -8,44 +8,30 @@
 
     <meta name="viewport" 
     content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <link rel="stylesheet"
-           type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
-    <link rel="stylesheet"
-           type="text/css" href="{% static 'colla/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'colla/css/style.css' %}">
     <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}">
     </script>
     <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
-    <link rel="import"
-      href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
-    <link rel="import"
-      href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
-    <link rel="import"
-      href="{% static 'plugin/polymer/components/paper-tabs/paper-tabs.html' %}">
-    <link rel="import"
-      href="{% static 'plugin/polymer/components/paper-button/paper-button.html' %}">
-    <link rel="import"
-      href="{% static 'plugin/polymer/components/paper-input/paper-input.html' %}">
-     <link rel="import"
-      href="{% static 'plugin/polymer/components/paper-checkbox/paper-checkbox.html' %}">
-     <link rel="import"
-      href="{% static 'plugin/polymer/components/core-input/core-input.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-tabs/paper-tabs.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-button/paper-button.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-input/paper-input.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-checkbox/paper-checkbox.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-input/core-input.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-action-dialog.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog-transition.html' %}">
     
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.htm' %}l">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-drawer-panel/core-drawer-panel.html' %}">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-icons/core-icons.html' %}">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/paper-icon-button/paper-icon-button.html' %}">
-    <link rel="import" 
-      href="{% static 'plugin/polymer/components/core-scaffold/core-scaffold.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.htm' %}l">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-drawer-panel/core-drawer-panel.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-icons/core-icons.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-icon-button/paper-icon-button.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-scaffold/core-scaffold.html' %}">
 
 </head>
 
@@ -58,7 +44,7 @@
     </core-toolbar>
     <span class="col-xs-12 col-md-4 col-md-offset-4">
         <paper-shadow z="1" id="form-register">
-            <form method="post" type="post" action="/colla/register">
+            <form id="registerForm" method="post">
             {% csrf_token %}
                 <h3>Collaboration starts here.</h3>
                 <paper-input-decorator label="USERNAME" floatinglabel="true">
@@ -99,10 +85,16 @@
                 </div>
             </form>
         </paper-shadow>
+        <paper-dialog id="success-dialog" transition="core-transition-center">
+            <p><b>Reqistration Successful</b></p>
+            <p>You may login to continue using the app</p>
+        </paper-dialog>
     </span>
 </core-header-panel>
 
-<script type="text/javascript" src="{% static 'colla/signup.js' %}"></script>
+    <button onclick="tog()" val="swswsw"></button>
+<script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/signup.js' %}"></script>
 </body>
 
 </html>

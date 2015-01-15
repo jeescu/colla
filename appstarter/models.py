@@ -40,6 +40,9 @@ class Post(models.Model):
     def comment(self):
         return Comment.objects.filter(post = self.id)
     
+    def agreed(self):
+        return Agree.objects.filter(post = self.id)
+    
 class Agree(models.Model):
     post = models.ForeignKey(Post)
     user_name = models.CharField(max_length=50) 
@@ -80,27 +83,3 @@ class PostImage(models.Model):
 
 class ProfileImage(models.Model):
     profile_image = models.ImageField(upload_to = gen_profile_file_name)
-
-
-# Poll App
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
-    
-    def __unicode__(self):
-        return self.question_text
-    
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-    was_published_recently.admin_order_field = 'pub_date'
-    was_published_recently.boolean = True
-    was_published_recently.short_description = 'Published recently?'
-    
-    
-class Choice(models.Model):
-    question = models.ForeignKey(Question)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-    
-    def __unicode__(self):
-        return self.choice_text

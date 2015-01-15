@@ -14,6 +14,7 @@
     <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-tooltip/core-tooltip.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-tabs/paper-tabs.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-button/paper-button.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-input/paper-input.html' %}">
@@ -59,8 +60,8 @@
                 <paper-tab id="tab-activity">Activity</paper-tab>
                 <paper-tab id="tab-project">Projects</paper-tab>
                 <paper-tab id="tab-monitor">Monitor</paper-tab>
-                <paper-tab id="tab-graph">Graphs</paper-tab>
-                <paper-tab id="tab-issue">Issues</paper-tab>
+                <paper-tab id="tab-graph">Issues</paper-tab>
+                <paper-tab id="tab-issue">Forum</paper-tab>
             </paper-tabs>
         </core-toolbar>
         
@@ -206,11 +207,19 @@
                                         <input type="hidden" value="{{ profile.dis_name }}" name="user_name">
                                         {% endfor %}
                                         <input id="submit-agree{{ user_post.id }}" type="submit" class="hidden">
-                                        <paper-button class="btn-frm-info agree-post">
-                                            <core-icon icon="thumb-up">
-                                            </core-icon>
-                                            <span>&emsp;{{ user_post.agrees }}</span>
-                                        </paper-button>
+                                        <core-tooltip>
+                                            <paper-button class="btn-frm-info agree-post">
+                                                <core-icon icon="thumb-up">
+                                                </core-icon>
+                                                <span>&emsp;{{ user_post.agrees }}</span>
+                                            </paper-button>
+                                            <div tip class="pep-agreed">
+                                                {% for agree in user_post.agreed %}
+                                                <span class="user-pep-agreed"><u>{{ agree.user_name }}</u></span> 
+                                                {% endfor %}
+                                                <span>agreed with this.</span>
+                                            </div>
+                                        </core-tooltip>
                                         <paper-button  class="btn-frm-info">
                                             <core-icon icon="question-answer">
                                             </core-icon>
@@ -301,13 +310,13 @@
                     
             <div id="fragment-graph" class="page-frm hidden">
                 <paper-shadow class="indx-fragment" z="0">
-                    <span>project graphs</span>
+                    <span>project issues.</span>
                 </paper-shadow>
             </div>
                     
             <div id="fragment-issue" class="page-frm hidden">
                 <paper-shadow class="indx-fragment" z="0">
-                    <span>Project Issues.</span>
+                    <span>Project forum.</span>
                 </paper-shadow>
             </div>
                     
@@ -319,8 +328,13 @@
                     <paper-icon-button id="notification" icon="markunread-mailbox"></paper-icon-button>
                     <paper-icon-button id="chat" icon="question-answer"></paper-icon-button>
                 </div>
-                <paper-shadow class="side-bar-content" z="0">
-                    <span>Notification - People - Chat</span>
+                <paper-shadow id="notification-board" class="side-bar-content" z="0">
+                    <paper-icon-button icon="stars" class="icon-board"></paper-icon-button>
+                    <span class="detail-board">New Comment from..</span>
+                </paper-shadow>
+                <paper-shadow id="chat-board" class="side-bar-content" z="0" style="display:none;">
+                    <paper-icon-button icon="stars" class="icon-board"></paper-icon-button>
+                    <span class="detail-board">Lacertignus Escu</span>
                 </paper-shadow>
             </paper-shadow>
         </div>

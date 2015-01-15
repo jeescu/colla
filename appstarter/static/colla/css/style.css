@@ -188,8 +188,7 @@ paper-fab {
     padding: 25px;
     background: white;
     border-radius: 2px;
-    box-shadow: 0px 2px 1px -1px #CFD8DC;
-
+    box-shadow: 0px 1px 1px -1px #CFD8DC;
 }
 
 .page-frm {
@@ -200,6 +199,7 @@ paper-fab {
 
 .indx-color {
     background: #ECEFF1;
+/*    background: #01579B;*/
 }
 
 .side-bar {
@@ -224,8 +224,18 @@ paper-fab {
     color: white;
 }
 
+/*Side bar menu*/
 .side-bar-content {
-    padding: 25px;
+    padding: 15px;
+}
+
+.detail-board {
+    position: relative;
+    top: -14px;
+}
+
+.icon-board {
+    color: #1B5E20;
 }
 
 /*Activity form*/
@@ -326,6 +336,16 @@ paper-fab {
     background: white;
     border-radius: 50%;
     color: #2E7D32;
+}
+
+.pep-agreed {
+    height: 30px;
+    font-size: 10px;
+    padding: 13px;
+}
+
+.user-pep-agreed {
+    color: #eeff41;
 }
 
 /*comment board*/
