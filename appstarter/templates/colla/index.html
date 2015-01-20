@@ -214,10 +214,14 @@
                                                 <span>&emsp;{{ user_post.agrees }}</span>
                                             </paper-button>
                                             <div tip class="pep-agreed">
+                                                {% if user_post.agreed %}
                                                 {% for agree in user_post.agreed %}
                                                 <span class="user-pep-agreed"><u>{{ agree.user_name }}</u></span> 
                                                 {% endfor %}
                                                 <span>agreed with this.</span>
+                                                {% else %}
+                                                <span>No agreed with this.</span>
+                                                {% endif %}
                                             </div>
                                         </core-tooltip>
                                         <paper-button  class="btn-frm-info">

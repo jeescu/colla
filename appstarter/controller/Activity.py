@@ -25,24 +25,10 @@ class activityController(generic.ListView):
 
         if request.GET.get('latest') == "None":
             try:
-                count = 0
-                # Get Post if Someone added
+                # Get fresh post
                 post = Post.objects.all().order_by('-date')[:10]
-                for posts in post:
-                    count=count + 1
-                    post_update['post'+str(count)] = {
-                        "post_id" : posts.id,
-                        "pic" : posts.user_pic,
-                        "display_name" : posts.user_dis_name,
-                        "share" : posts.share_type, 
-                        "date" : str(posts.date),
-                        "title" : posts.title,
-                        "text" : posts.content_text,
-                        "image" : posts.content_image,
-                        "link" : posts.content_link,
-                        "agrees" : posts.agrees,
-                        "comments" : posts.comments
-                    }
+                post_update = self.prepare_new_post(post)
+            
             except:
                 # No posts
                 post_update['status'] = 'Unavailable'
@@ -56,34 +42,61 @@ class activityController(generic.ListView):
                 post_update['status'] = 'updated'
                 pass
             else:
-                count = 0
-                get_update_post = Post.objects.all().order_by('-date')
+                get_update = Post.objects.all().order_by('-date')
+               
+                post_update = self.get_update_post(get_update, get_client_latest_post)
                 
-                for posts in get_update_post:
-                    count=count + 1
-                    if posts.id !=  get_client_latest_post:
-                        post_update['post'+str(count)] = {
-                            "post_id" : posts.id,
-                            "pic" : posts.user_pic,
-                            "display_name" : posts.user_dis_name,
-                            "share" : posts.share_type, 
-                            "date" : str(posts.date),
-                            "title" : posts.title,
-                            "text" : posts.content_text,
-                            "image" : posts.content_image,
-                            "link" : posts.content_link,
-                            "agrees" : posts.agrees,
-                            "comments" : posts.comments
-                        }
-                    else:
-                        break
         return HttpResponse(json.dumps(post_update), content_type = "application/json")
     
-    # menu action
+    def prepare_new_post(self, all_post):
+        post = dict()
+        count = 0
+        for posts in all_post:
+            count=count + 1
+            post['post'+str(count)] = {
+                "post_id" : posts.id,
+                "pic" : posts.user_pic,
+                "display_name" : posts.user_dis_name,
+                "share" : posts.share_type, 
+                "date" : str(posts.date),
+                "title" : posts.title,
+                "text" : posts.content_text,
+                "image" : posts.content_image,
+                "link" : posts.content_link,
+                "agrees" : posts.agrees,
+                "comments" : posts.comments
+            }
+            
+        return post
+    
+    def get_update_post(self, all_post, latest_post):
+        post = dict()
+        count = 0
+                
+        for posts in all_post:
+            count=count + 1
+            if posts.id !=  latest_post:
+                post['post'+str(count)] = {
+                    "post_id" : posts.id,
+                    "pic" : posts.user_pic,
+                    "display_name" : posts.user_dis_name,
+                    "share" : posts.share_type, 
+                    "date" : str(posts.date),
+                    "title" : posts.title,
+                    "text" : posts.content_text,
+                    "image" : posts.content_image,
+                    "link" : posts.content_link,
+                    "agrees" : posts.agrees,
+                    "comments" : posts.comments
+                }
+            else:
+                break
+        
+        return post
+    
     def search(self, request):
         pass
     
-    # comment post
     def add_comment(self, request):
         post_id = request.POST.get('post_id')
         post_comment = Post.objects.get(pk=post_id)
@@ -97,7 +110,6 @@ class activityController(generic.ListView):
         )
         return HttpResponse(json.dumps({'status':'comment saved'}), content_type = "application/json")
 
-    # agree post
     def agree_post(self, request):
         post_id = request.POST.get('post_id')
         post_name_agreed = request.POST.get('user_name')
@@ -127,8 +139,7 @@ class activityController(generic.ListView):
             data = {'status':'You owned the post'}
             return HttpResponse(json.dumps(data),
                                 content_type = "application/json")
-        
-    # DONE
+
     def add_post(self, request):
 
         if request.method == 'POST':

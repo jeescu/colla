@@ -6,11 +6,9 @@ function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
         contentType: contentType,
         dataType: dataType,
         success: function (data) {
-            console.info('Success');
             fn(data);
         },
         error: function (ts) {
-            console.error('Error');
             document.querySelector('#toastConnectionOut').show();
         }
     });
@@ -44,8 +42,19 @@ var postUpdate = function (post) {
             post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id">';
             post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name">';
             post_form +=                '<input id="submit-agree'+userPost['post_id']+'" type="submit" class="hidden">';
+        
+        
+            post_form +=                '<core-tooltip>'
             post_form +=                '<paper-button class="btn-frm-info agree-post"><core-icon icon="thumb-up"></core-icon>';
             post_form +=                    '<span>&emsp;'+userPost['agrees']+'</span></paper-button>';
+        
+            post_form +=                     '<div tip class="pep-agreed">'
+            post_form +=                         '<span>No agreed with this.</span>';
+            post_form +=                     '</div>';
+        
+            post_form +=                '</core-tooltip>'
+        
+        
             post_form +=                '<paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
             post_form +=                '<span>&emsp;'+userPost['comments']+'</span></paper-button></form></div>';
             post_form +=        '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'
@@ -110,8 +119,25 @@ var postUpdate = function (post) {
                 post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id">';
                 post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name">';
                 post_form +=                '<input id="submit-agree'+userPost['post_id']+'" type="submit" class="hidden">';
+            
+            
+                post_form +=                '<core-tooltip>';
                 post_form +=                '<paper-button class="btn-frm-info agree-post"><core-icon icon="thumb-up"></core-icon>';
                 post_form +=                    '<span>&emsp;'+userPost['agrees']+'</span></paper-button>';
+            
+                post_form +=                '<div tip class="pep-agreed">'
+                                                if (userPost['agreed']) {
+                                                    for (agree in user_post.agreed) {
+                                                        post_form += '<span class="user-pep-agreed"><u>'+agree.user_name+'</u></span>' 
+                                                    }
+                                                    post_form += '<span>agreed with this.</span>';
+                                                } else {
+                                                    post_form += '<span>No agreed with this.</span>';
+                                                }
+                post_form +=                '</div>'
+
+                post_form +=                '</core-tooltip>'
+            
                 post_form +=                '<paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
                 post_form +=                '<span>&emsp;'+userPost['comments']+'</span></paper-button></form></div>';
                 post_form +=        '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'
@@ -156,9 +182,6 @@ var postUpdate = function (post) {
 
 //refresh post with limit of 10
 function autoloadPost() {
-
-    console.log('autoloadpost');
-    
     setInterval(function() {
         AJAXRequest("update-post", "GET", getlatest(), postUpdate, "application/json;charset=utf-8", "json")
     }, 5000);
@@ -175,8 +198,7 @@ function getlatest() {
     }
     catch(err)
     {
-        latestPost.latest = "None"
-        console.log('latest post is: '+latestPost.latest);
+        latestPost.latest = "None";
     }
     return latestPost;
 }
