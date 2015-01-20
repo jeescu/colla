@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+
+{% load staticfiles %}
+<title>Profile</title>
+
+    <meta name="viewport" 
+    content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'colla/css/style.css' %}">
+    <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}">
+    </script>
+    <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-tabs/paper-tabs.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-button/paper-button.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-input/paper-input.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-checkbox/paper-checkbox.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-input/core-input.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-action-dialog.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog-transition.html' %}">
+    
+    <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.htm' %}l">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-drawer-panel/core-drawer-panel.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-icons/core-icons.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-icon-button/paper-icon-button.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-scaffold/core-scaffold.html' %}">
+
+</head>
+
+<body fullbleed vertical layout unresolved>
+<core-header-panel flex>
+    <core-toolbar id="sec-color" class="profile-bar">
+        <paper-icon-button id="navicon" onclick="history.back();" icon="arrow-back"></paper-icon-button>
+        <span flex>Profile</span>
+        <span>
+            <paper-icon-button icon="create"></paper-icon-button>
+            <paper-icon-button class="hidden-sm hidden-md hidden-lg hidden-xl" icon="more-vert"></paper-icon-button>
+        </span>
+    </core-toolbar>
+    <span class="col-xs-12 col-md-10 col-md-offset-1">
+        <paper-shadow z="0" id="form-register">
+            <form id="registerForm" method="post" action="update-profile/">
+            {% csrf_token %}
+                {% for user_profile in user.profile %}
+                <div class="text-center profile-info">
+                    <label id="label-img" icon="add" class="custom-btn add-image"> 
+                        <input id="id_image" type="file"  name="image" onchange="readImage(this);">
+                        <img id="thumb" src="{{ user_profile.profile_pic }}" class="profile-picture"/>
+                        <h4>{{ user_profile.company_name }}</h3>
+                    </label>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <paper-input-decorator class="profile-input" label="USERNAME" floatinglabel="true">
+                            <input id="username" is="core-input" name="username" value="{{ user.username }}"/>
+                        </paper-input-decorator>
+                        <paper-input-decorator class="profile-input" label="FIRST NAME" floatinglabel="true">
+                            <input id="firstname" is="core-input" name="first_name" value="{{ user_profile.first_name }}"/>
+                        </paper-input-decorator>
+                        <paper-input-decorator class="profile-input" label="LAST NAME" floatinglabel="true">
+                            <input id="lastname" is="core-input" name="last_name" value="{{ user_profile.last_name }}"/>
+                        </paper-input-decorator>
+                        <paper-input-decorator class="profile-input" label="M.I." floatinglabel="true">
+                            <input id="mi" is="core-input" name="middle_name" value="{{ user_profile.middle_name }}"/>
+                        </paper-input-decorator>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <paper-input-decorator class="profile-input" label="POSITION" floatinglabel="true">
+                            <input id="position" is="core-input" name="position" value="{{ user_profile.position }}"/>
+                        </paper-input-decorator>
+                        <paper-input-decorator class="profile-input" label="COMPANY NAME" floatinglabel="true">
+                            <input id="company" is="core-input" name="company" value="{{ user_profile.company_name }}"/>
+                        </paper-input-decorator>
+                        <paper-input-decorator class="profile-input" label="E-MAIL ADDRESS" floatinglabel="true">
+                            <input id="mail" is="core-input" name="mail" value="{{ user_profile.mail_address }}"/>
+                        </paper-input-decorator>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="btn-action">
+                    <paper-button class="btn-signup col-xs-12 col-sm-2 col-sm-offset-10">
+                        <button class="btn-submit" type="submit">SAVE</button>
+                    </paper-button>
+                </div>
+            </form>
+        </paper-shadow>
+    </span>
+</core-header-panel>
+
+<script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/profile.js' %}"></script>
+    
+</body>
+
+</html>

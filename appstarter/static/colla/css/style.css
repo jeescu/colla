@@ -82,6 +82,7 @@ input[type="file"] {
     text-align: right;
     padding:0;
     color: white;
+    margin-bottom: 18px;
 }
 .btn-post::shadow .button-content {
     padding:0;
@@ -94,12 +95,7 @@ input[type="file"] {
 }
 .btn-action {
     text-align: right;
-/*    max-height: 20px;*/
-}
-
-.btn-signup {
-    background: #3F51B5;
-    padding:0;
+    margin-top: 10px;
 }
 
 #logo {
@@ -239,7 +235,10 @@ paper-fab {
 }
 
 /*Activity form*/
-
+.a-white,
+.a-white:hover {
+    color: white;
+}
 .frm-av {
     width: 54px;
 }
@@ -532,4 +531,26 @@ core-drawer-panel:not([narrow]) #navicon {
 
 .sub-color {
     color: #90A4AE;
+}
+
+/*profile page*/
+
+.profile-bar {
+    background-image: url('/static/colla/images/cover_img/cover_default.jpg');
+}
+
+.profile-info {
+    margin-bottom: 50px;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    cursor: pointer;
+    width: 140px;
+    height: 140px;
+}
+
+.profile-input .underline .focused-underline
+.profile-input .underline .unfocused-underline, {
+    background-color: white;
 }
