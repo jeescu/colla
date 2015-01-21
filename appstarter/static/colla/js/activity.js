@@ -348,11 +348,13 @@ function postBtn() {
     var text = document.getElementById('post-text').value;
     if (text != '')
     {
+        document.getElementById('post-btn').style.display = 'block';
         btn.classList.remove('btn-hide');
         btn.classList.add('btn-show')
     }
     else
     {
+        document.getElementById('post-btn').style.display = 'none';
         btn.classList.remove('btn-show');
         btn.classList.add('btn-hide')
     }

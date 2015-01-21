@@ -75,9 +75,10 @@
                                     {% csrf_token %}
                             <div class="row">
                                
-                                    <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ profile.profile_pic }}"/></div>
+                                <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ profile.profile_pic }}"/></div>
                                     <input type="hidden" id="user-post-name" value="{{ profile.dis_name }}"/>
-                                    <div class="new-frm-msg col-xs-10 col-sm-10 col-md-10.5 col-lg-11">
+                                <div class="col-xs-1"></div>
+                                <div class="new-frm-msg col-xs-10 col-sm-10 col-md-10.5 col-lg-11">
                                     <div id="text-field" class="col-xs-12 frm-txtfield">
                                         <div class="eg">
                                             <div class="yw oo"></div>
@@ -239,13 +240,13 @@
                                         <input type="hidden" value="{{ profile.profile_pic }}" name="pic" />
                                         <input type="hidden" value="{{ profile.dis_name  }}" name="user_name" />
                                          {% endfor %}
-                                        <paper-input-decorator label="Add new comment...">
+                                        <paper-input-decorator class="input-comment" label="Add new comment...">
                                             <paper-autogrow-textarea id="a1">
                                                 <textarea id="t1" name="comment"></textarea>
                                             </paper-autogrow-textarea>
                                         </paper-input-decorator>
                                     </div>
-                                    <div class="snd-comm hidden-xs">
+                                    <div class="snd-comm">
                                         <input id="submit-comment{{ user_post.id }}" type="submit" class="hidden"/>
                                         <paper-icon-button class="send-comment" icon="send"></paper-icon-button>
                                     </div>
@@ -274,12 +275,12 @@
                 </div>
                 {% endfor %}
                 {% else %}
+                    <!-- No Post -->
+                {% endif %}
+<!--                end loop-->
                 <div class="more">
 <!--                    no post available-->
                 </div>
-                {% endif %}
-<!--                end loop-->
-     
                 <div class="more">
                     <paper-icon-button id="more" icon="autorenew" class="more-refresh"></paper-icon-button>
                 </div>

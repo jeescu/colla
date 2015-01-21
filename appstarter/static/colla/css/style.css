@@ -381,6 +381,7 @@ paper-fab {
     border-radius: 50%;
     height: 50px;
     width: 50px;
+    margin-left: -2px;
 }
 
 .new-frm-msg {
@@ -553,4 +554,56 @@ core-drawer-panel:not([narrow]) #navicon {
 .profile-input .underline .focused-underline
 .profile-input .underline .unfocused-underline, {
     background-color: white;
+}
+
+/*media query for smaller phones*/
+
+@media screen and (max-width: 435px) {
+    .new-frm-av {
+        width: 21.666667%;
+    }
+    .new-frm-msg {
+        width: 78.333333%;
+    }
+    
+}
+
+@media screen and (max-width: 320px) {
+    .new-frm-av {
+        width: 24.666667%;
+    }
+    .new-frm-msg {
+        width: 75.333333%;
+    }
+    
+}
+
+@media screen and (max-width: 414px) {
+    .input-comment,
+    .snd-comm {
+        visibility: hidden;
+    }
+    
+}
+
+/*post button*/
+@media screen and (max-width: 385px) {
+    #reset-text,
+    .btn-lnk {
+        width: 46%;
+    }
+    
+    #post-btn {
+        display: none;
+        margin-top: 16px;
+        width: 100%;
+    }
+    
+}
+/*320 screen width*/
+@media screen and (max-width: 320px) {
+    #reset-text {
+        width: 45%;
+    }
+    
 }
