@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^new-agree/$', Activity.activityController().agree_post, name='agree_post'),
     url(r'^update-post/$', Activity.activityController().get_new_post, name='update_post'),
     
-    url(r'^profile/$', User.ProfileView().get_profile, name='profile'),
+    url(r'^profile/$', User.ProfileView().profile, name='profile'),
     url(r'^profile/update-profile/$', User.ProfileView().update_profile, name='update_profile'),
     url(r'^register/', Base.BaseController().register, name='register'), 
     url(r'^logout', Base.BaseController().logout, name='logout'), 

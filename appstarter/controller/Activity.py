@@ -98,52 +98,56 @@ class activityController(generic.ListView):
         pass
     
     def add_comment(self, request):
-        post_id = request.POST.get('post_id')
-        post_comment = Post.objects.get(pk=post_id)
-        post_comment.comments = post_comment.comments + 1
-        post_comment.save()
-        post_comment.comment_set.create (
-            user_pic_url = request.POST.get('pic'),
-            user_name = request.POST.get('user_name'),
-            comment_date = timezone.now(),
-            comment = request.POST.get('comment')
-        )
-        return HttpResponse(json.dumps({'status':'comment saved'}), content_type = "application/json")
+        try:
+            post_id = request.POST.get('post_id')
+            post_comment = Post.objects.get(pk=post_id)
+            post_comment.comments = post_comment.comments + 1
+            post_comment.save()
+            post_comment.comment_set.create (
+                user_pic_url = request.POST.get('pic'),
+                user_name = request.POST.get('user_name'),
+                comment_date = timezone.now(),
+                comment = request.POST.get('comment')
+            )
+            return HttpResponse(json.dumps({'status':'comment saved'}), content_type = "application/json")
+        except:
+            return HttpResponseRedirect('/colla')
 
     def agree_post(self, request):
-        post_id = request.POST.get('post_id')
-        post_name_agreed = request.POST.get('user_name')
-        post_agree = Post.objects.get(pk=post_id)
-        
-        # Checks only anybody who agreed
-        if  post_agree.user_dis_name != post_name_agreed:
-            user_agreed = "Nobody"
-            post_agree_checked = post_agree.agree_set.filter(user_name = post_name_agreed)
-            for post in post_agree_checked:
-                user_agreed = post.user_name
-                
-            if user_agreed == post_name_agreed:
-                data = {'status': 'Already agreed'}
-                return HttpResponse(json.dumps(data),
-                                content_type = "application/json")
+        try:
+            post_id = request.POST.get('post_id')
+            post_name_agreed = request.POST.get('user_name')
+            post_agree = Post.objects.get(pk=post_id)
+
+            # Checks only anybody who agreed
+            if  post_agree.user_dis_name != post_name_agreed:
+                user_agreed = "Nobody"
+                post_agree_checked = post_agree.agree_set.filter(user_name = post_name_agreed)
+                for post in post_agree_checked:
+                    user_agreed = post.user_name
+
+                if user_agreed == post_name_agreed:
+                    data = {'status': 'Already agreed'}
+                    return HttpResponse(json.dumps(data),
+                                    content_type = "application/json")
+                else:
+                    post_agree.agrees = post_agree.agrees + 1
+                    post_agree.save()
+                    post_agree.agree_set.create(
+                        user_name = post_name_agreed
+                    )
+                    data = {'status': 'agreed'}
+                    return HttpResponse(json.dumps(data),
+                                        content_type = "application/json")
             else:
-                post_agree.agrees = post_agree.agrees + 1
-                post_agree.save()
-                post_agree.agree_set.create(
-                    user_name = post_name_agreed
-                )
-                data = {'status': 'agreed'}
+                data = {'status':'You owned the post'}
                 return HttpResponse(json.dumps(data),
                                     content_type = "application/json")
-        else:
-            data = {'status':'You owned the post'}
-            return HttpResponse(json.dumps(data),
-                                content_type = "application/json")
+        except:
+            return HttpResponseRedirect('/colla')
 
     def add_post(self, request):
-
-        if request.method == 'POST':
-
+        try:
             post_img = ""
             form = ImageUploadForm(request.POST, request.FILES)
 
@@ -170,6 +174,8 @@ class activityController(generic.ListView):
             view_posts = {'status' : 'saved'}
 
             return HttpResponse(json.dumps(view_posts), content_type = "application/json")
+        except:
+            return HttpResponseRedirect('/colla')
     
     def add_issue(self, request):
         pass

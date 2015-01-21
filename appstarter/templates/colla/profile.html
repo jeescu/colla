@@ -23,7 +23,7 @@
     <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-action-dialog.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog-transition.html' %}">
-    
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-toast/paper-toast.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
@@ -47,7 +47,7 @@
     </core-toolbar>
     <span class="col-xs-12 col-md-10 col-md-offset-1">
         <paper-shadow z="0" id="form-register">
-            <form id="registerForm" method="post" action="update-profile/">
+            <form id="update_profile_form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
                 {% for user_profile in user.profile %}
                 <div class="text-center profile-info">
@@ -60,8 +60,9 @@
                 
                 <div class="row">
                     <div class="col-sm-6 col-xs-12">
-                        <paper-input-decorator class="profile-input" label="USERNAME" floatinglabel="true">
-                            <input id="username" is="core-input" name="username" value="{{ user.username }}"/>
+                        <input type="hidden" name="user_id" value="{{ user.id }}" />
+                        <paper-input-decorator class="profile-input" label="DISPLAY NAME" floatinglabel="true">
+                            <input id="disname" is="core-input" name="display_name" value="{{ user_profile.dis_name }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="FIRST NAME" floatinglabel="true">
                             <input id="firstname" is="core-input" name="first_name" value="{{ user_profile.first_name }}"/>
@@ -74,6 +75,9 @@
                         </paper-input-decorator>
                     </div>
                     <div class="col-sm-6 col-xs-12">
+                        <paper-input-decorator class="profile-input" label="USERNAME" floatinglabel="true">
+                            <input id="username" is="core-input" name="username" value="{{ user.username }}"/>
+                        </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="POSITION" floatinglabel="true">
                             <input id="position" is="core-input" name="position" value="{{ user_profile.position }}"/>
                         </paper-input-decorator>
@@ -93,10 +97,14 @@
                     </paper-button>
                 </div>
             </form>
+            
+            <input type="button" value="Get JSON File" onclick="loadJSONJquery()" />
+            
         </paper-shadow>
-    </span>
+        <paper-toast id="success_update" text="Your profile has been updated."></paper-toast>
+        <paper-toast id="error_update" text="An error occured for some reason."></paper-toast>
 </core-header-panel>
-
+<div id="json_text"></div>
 <script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/profile.js' %}"></script>
     
