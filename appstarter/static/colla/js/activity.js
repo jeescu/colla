@@ -343,6 +343,20 @@ function clearText() {
     document.getElementById('post-text').value = "";
 }
 
+function showMenu() {
+    var mn = document.getElementById('menu');
+    if (mn.classList.contains('menu-hide'))
+    {
+        mn.classList.remove('menu-hide');
+        mn.classList.add('menu-show')
+    }
+    else
+    {
+        mn.classList.remove('menu-show');
+        mn.classList.add('menu-hide')
+    }
+}
+
 function postBtn() {
     var btn = document.getElementById('post-btn');
     var text = document.getElementById('post-text').value;

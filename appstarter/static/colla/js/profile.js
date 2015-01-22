@@ -35,29 +35,32 @@ $('#update_profile_form').on('submit', (function(e) {
 
 
 // EXERCISE
-// native ajax javascript
 function writeReturn(obj) {
-    for (i=0; i<10; i++) {
-        var newDiv = document.createElement('div');
-        document.getElementById('json_text').appendChild(newDiv);
-        newDiv.setAttribute('class', 'col-md-6 text-center');
-        newDiv.setAttribute('style', 'border: 2px solid #546E7A;');
-            for (n=0; n<3; n++ ) {
-                var field = document.createElement('h2')
-                newDiv.appendChild(field);
-                field.innerHTML = obj[Object.keys(obj)[n]];
-            }
+    for ( i=0; i<10; i++ ) {
+        var newDiv = '<div></div>'
+        var ls = '<h2></h2>';
+        var parent = $('#json_text');
+        
+        $(newDiv).attr({
+            style : 'border: 2px solid #546E7A',
+            class : 'col-md-6 text-center'
+        }).appendTo(parent);
+        
+        for ( n in obj ) {
+            $(ls).html(n +' : '+obj[n]).appendTo(parent.find('div').last().prepend())
+        }
     }
 }
 
+// js ajax
 function loadJSON() {
 	var xmlhttp;
-	if (window.XMLHttpRequest) {
+	if ( window.XMLHttpRequest ) {
 	  xmlhttp=new XMLHttpRequest();
 	}
 
 	xmlhttp.onreadystatechange=function() {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
             writeReturn(xmlhttp.response);
         }
     }
@@ -72,11 +75,15 @@ function loadJSONJquery() {
     $.ajax({
         type:'GET',
         url: '/static/colla/data.json',
-        success:function(data) {
+        success: function(data) {
             writeReturn(data);
         },
         error: function(data){
             console.log('Error');
         }
     });
+    
+//    $.getJSON('/static/colla/data.json', function(data) {
+//         writeReturn(data);
+//    });
 }

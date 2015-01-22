@@ -1,27 +1,26 @@
 Deploying to production:
 
-1) Install Virtualenv and apt-get install libapache2-mod-wsgi first
+1) Install python-virtualenv and apt-get install libapache2-mod-wsgi first
 2) cd /var/www/ and put your project
 3) cd your-project and run:
-    virtualenv env
+   $ sudo virtualenv env
     
 4) Install django:
-    (this you project folder)
-    env/bin/pip install django
+   $ sudo env/bin/pip install django
 
 5) Add this to default apache conf:
 
     <VirtualHost *:80>
-	    WSGIDaemonProcess YourProject python-path=/var/www/YourProject:/var/www/ProStarter/env/lib/python2.7/site-packages
-	    WSGIProcessGroup YourProject
-	    WSGIScriptAlias / /var/www/YourProject/YourProject/wsgi.py
+	    WSGIDaemonProcess ProStarter python-path=/var/www/ProStarter:/var/www/ProStarter/env/lib/python2.7/site-packages
+	    WSGIProcessGroup ProStarter
+	    WSGIScriptAlias / /var/www/ProStarter/ProStarter/wsgi.py
 
 	    ServerAdmin webmaster@localhost
-	    DocumentRoot /var/www/proStarter
+	    DocumentRoot /var/www/ProStarter
 	
-	    Alias /static/admin "/var/www/YourProject/env/lib/python2.7/site-packages/django/contrib/admin/static/admin"
-	    Alias /static "/var/www/YourProject/appstarter/static"
-	    <Directory "/var/www/YourProject/env/lib/python2.7/site-packages/django/contrib/admin/static/admin">
+	    Alias /static/admin "/var/www/ProStarter/env/lib/python2.7/site-packages/django/contrib/admin/static/admin"
+	    Alias /static "/var/www/ProStarter/appstarter/static"
+	    <Directory "/var/www/ProStarter/env/lib/python2.7/site-packages/django/contrib/admin/static/admin">
 		    Order allow,deny
 		    Options Indexes
 		    Allow from all
@@ -32,6 +31,8 @@ Deploying to production:
 	    CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
 
+
+6) Check permission
     
  All Done ! Cheers !
  service apache2 restart

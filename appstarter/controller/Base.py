@@ -48,8 +48,11 @@ class LoginView(generic.ListView):
                 return render(request,
                               'colla/index.html',
                               {'auth_user': auth_user, 'post':post})
-        except:
+            else:
                 return HttpResponse('Wrong Username Password')
+            
+        except:
+            return HttpResponse('Wrong Username Password')
 
         
 class SignupView(generic.ListView):

@@ -6,10 +6,6 @@ html,body {
     color: #546E7A;
 }
 
-body[unresolved] {
-  opacity: 1;
-}
-
 core-header-panel {
     background: white;
 }
@@ -39,6 +35,42 @@ h3,h4,h2 {
 
 input[type="file"] {
     display: None;
+}
+
+paper-item[active] {
+    visibility: hidden;
+}
+
+.dropdown {
+    position: absolute;
+    right: 0px;
+    width:  150px;
+}
+
+.menu {
+    position: absolute;
+    background: white;
+    padding: 4px;
+    z-index: 10;
+    width: 175px;
+    right: 0;
+    top: 45px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 2px;
+}
+
+.menu-hide {
+    visibility: hidden;
+    opacity:0;
+}
+
+.menu-show {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -o-transition: opacity 0.5s linear;
+    transition: opacity 0.5s linear;
 }
 
 .custom-btn {
@@ -139,7 +171,7 @@ input[type="file"] {
 
 .frm-imgfield .add-image {
     margin-left: 45%;
-    margin-top: 9%;
+    margin-top: 8.5%;
 }
 
 .img-thumb {

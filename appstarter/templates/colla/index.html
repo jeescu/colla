@@ -27,6 +27,9 @@
     <link rel="import" href="{% static 'plugin/polymer/components/paper-dialog/paper-dialog-transition.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-fab/paper-fab.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-toast/paper-toast.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-menu-button/paper-menu-button.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-dropdown/paper-dropdown.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/paper-item/paper-item.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-toolbar/core-toolbar.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-menu/core-menu.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-item/core-item.html' %}">
@@ -38,12 +41,12 @@
 
 </head>
 
-<body fullbleed vertical layout>
+<body fullbleed vertical layout unresolved>
     <core-header-panel flex class="indx-color">
         <core-toolbar id="mainheader" class="medium-tall">
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
             {%  for profile in auth_user.profile %}
-            <span flex>Dashboard {{ profile.dis_name }}</span>
+            <span flex>Colla</span>
             <input type="hidden" id="user-prof-pic" value="{{ profile.profile_pic }}">
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
@@ -54,7 +57,12 @@
                 <a href="/colla/profile" class="a-white"><paper-icon-button class="hidden-xs" id="userbutton" icon="supervisor-account"></paper-icon-button></a>
             </span>
             <span class="hidden-md hidden-lg hidden-sm">
-                <paper-icon-button id="morebutton" icon="more-vert"></paper-icon-button>
+                <paper-icon-button icon="more-vert" onclick="showMenu()"></paper-icon-button>
+                <core-menu id="menu" class="menu menu-hide">
+                    <paper-item>New Project</paper-item>
+                    <paper-item onClick="window.location.href='profile'">Profile</paper-item>
+                    <paper-item onClick="window.location.href='/colla/logout'">Log out</paper-item>
+                </core-menu>
             </span>
             <paper-tabs class="bottom fit" selected="0" noink>
                 <paper-tab id="tab-activity">Activity</paper-tab>
