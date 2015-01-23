@@ -1,5 +1,8 @@
 Deploying to production:
 
+* Python27 and Django==1.7.2(preffered) Must Installed
+* python-mysqldb
+
 1) Install python-virtualenv and apt-get install libapache2-mod-wsgi first
 2) cd /var/www/ and put your project
 3) cd your-project and run:
@@ -7,6 +10,12 @@ Deploying to production:
     
 4) Install django:
    $ sudo env/bin/pip install django
+   $ sudo pip install Pillow (for images - if not present)
+        When error comes like 'python.h' is missing:
+        Install these first:
+        $ sudo apt-get install libffi-dev
+        $ sudo apt-get install libssl-dev
+        $ sudo apt-get install python-dev
 
 5) Add this to default apache conf:
 
@@ -31,11 +40,14 @@ Deploying to production:
 	    CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
 
+6) Add Your IP host to allowed host
 
-6) Check permission for your directory must chmod 777
+7) Create DB and Sync (If not present)
+
+8) Check permission for your directory must chmod 777
 NOTE: Pasting File/Folder will changed perms, so check wisely
 
-7) Change Switch commented line of codes from 'User' and 'Models'
+9) Change Switch commented line of codes from 'User' and 'Models'
 NOTE: In production differs the directory path, so it's a must
 
 8) restart apache
