@@ -206,7 +206,9 @@ function getlatest() {
 var formPostId = 0;
 $('#imageUploadForm').on('submit',(function(e) {
     e.preventDefault();
+    
     var formData = new FormData(this);
+    var local = "http://localhost:8080/colla/";
 
     console.log('Pressed upload ajax POST')
     formPostId = 1;
@@ -232,7 +234,7 @@ $('#imageUploadForm').on('submit',(function(e) {
         var img = document.getElementById('new-post-pic');
         
         console.log(thumb);
-        if ((thumb == "http://localhost:8080/colla/") || (thumb == "http://localhost:8000/colla/"))
+        if (thumb == local)
         {
             img.style.display = "none";
         }
@@ -255,6 +257,8 @@ $('#imageUploadForm').on('submit',(function(e) {
             clearText();
             formPostId = 0;
             document.querySelector('#toastPost').show();
+            console.log(data.status);
+            console.log(data.image);
         },
         error: function(data){
             console.error("error");

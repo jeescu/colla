@@ -156,10 +156,12 @@ class activityController(generic.ListView):
                 img = PostImage(post_image=form.cleaned_data['image'])
                 img.save()
                 post_img = img.post_image.url[10:]
+                # prod
+                # post_img = img.post_image.url[21:]
 
             user_post = User.objects.get(pk=request.POST.get('userid'))
             user_post_profile = user_post.profile_set.get(user=user_post.id)
-                
+
             user_post.post_set.create(
                 user_pic = user_post_profile.profile_pic,
                 user_dis_name = user_post_profile.dis_name,
@@ -171,10 +173,10 @@ class activityController(generic.ListView):
                 date = timezone.now()
             )
 
-            view_posts = {'status' : 'saved'}
-
+            view_posts = {'status' : 'saved', 'image' : post_img }
             return HttpResponse(json.dumps(view_posts), content_type = "application/json")
         except:
+            return HttpResponse(json.dumps({'status' : 'error'}), content_type = "application/json")
             return HttpResponseRedirect('/colla')
     
     def add_issue(self, request):

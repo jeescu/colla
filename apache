@@ -32,7 +32,13 @@ Deploying to production:
     </VirtualHost>
 
 
-6) Check permission
-    
- All Done ! Cheers !
- service apache2 restart
+6) Check permission for your directory must chmod 777
+NOTE: Pasting File/Folder will changed perms, so check wisely
+
+7) Change Switch commented line of codes from 'User' and 'Models'
+NOTE: In production differs the directory path, so it's a must
+
+8) restart apache
+
+All Done ! Cheers !
+

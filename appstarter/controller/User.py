@@ -67,6 +67,8 @@ class ProfileView(object):
                     pass
 
                 profile_img_update = img.profile_image.url[10:]
+                # prod
+                # profile_img_update = img.profile_image.url[21:]
                 profile_update.profile_pic = profile_img_update
 
             profile_update.dis_name = request.POST['display_name']
@@ -90,7 +92,7 @@ class ProfileView(object):
 
             return HttpResponse(json.dumps(user), content_type = "application/json")
         except:    
-            return HttpResponse('Error')
+            return HttpResponseRedirect('/colla')
         
     def get_response_profile(self, user, profile):
         profile_user = {
@@ -109,5 +111,6 @@ class ProfileView(object):
         return profile_user
     
     def delete_profile_img(self, img):
-        profile_dir = os.getcwd()+'/appstarter'
-        os.remove(profile_dir+img)
+        if img != '/static/colla/images/prof_img/av-default.png':
+            profile_dir = os.getcwd()+'/appstarter'
+            os.remove(profile_dir+img)

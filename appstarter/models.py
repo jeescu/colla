@@ -69,11 +69,15 @@ class GroupUser(models.Model):
 
 
 def gen_post_file_name(instance, filename):
+    # prod
+    # path = 'ProStarter/appstarter/static/colla/images/post_img/'
     path = 'appstarter/static/colla/images/post_img/'
     f, ext = os.path.splitext(filename)
     return path+'%s%s' % (uuid.uuid4().hex, ext)
 
 def gen_profile_file_name(instance, filename):
+    # prod
+    # path = 'ProStarter/appstarter/static/colla/images/profile_img/'
     path = 'appstarter/static/colla/images/profile_img/'
     f, ext = os.path.splitext(filename)
     return path+'%s%s' % (uuid.uuid4().hex, ext)
