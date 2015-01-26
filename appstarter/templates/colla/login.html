@@ -45,6 +45,7 @@
     <link rel="import" 
       href="{% static 'plugin/polymer/components/core-scaffold/core-scaffold.html' %}">
 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 
 <body unresolved>
@@ -80,18 +81,18 @@
                 <p>Manage and monitor project development that keep your code secure and clean.
                 Perform code reviews and enhance collaboration with chats.
                     Each project can also have an issue tracker and a wiki.</p>
-            </paper-shadow><br/><br/>
+            </paper-shadow><br/>
             
-            <span class="col-xs-12 col-sm-6">
-                <paper-shadow z="0" class="span-shadow">
-                    
+            <div class="col-xs-12 col-sm-6">
+                <paper-shadow z="0" class="span-shadow wall">
+                    <img class="img-responsive" src="/static/colla/images/feature.png" style="margin: auto">
                 </paper-shadow>
-            </span>
-            <span class="col-xs-12 col-md-6">
-                <paper-shadow z="1" class="span-shadow">
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <paper-shadow z="0" class="span-shadow">
                     <form method="post" href="dashboard">
                     {% csrf_token %}
-                        <h4>Sign in:</h4>
+                        <h4 style="margin-top: -15px;">Sign in:</h4>
                         <paper-input-decorator label="USERNAME" floatinglabel="true">
                            <input id="username" is="core-input" name="username"/>
                         </paper-input-decorator>
@@ -101,19 +102,30 @@
                         <paper-checkbox label="Remember me"></paper-checkbox>    
                         <br/><br/>
                         <div class="btn-action">
-                            <paper-button class="btn-post">
-                                <button class="btn-submit" type="submit">LOGIN</button>
+                            <paper-button class="btn-post" style="width: 100%; margin-left: -1px;">
+                                <button class="btn-submit" type="submit" style="height: 50px;">SIGN IN</button>
                             </paper-button>
-                            <a href="signup">
-                                <paper-button class="btn-lnk">
-                              SIGNUP
-                                </paper-button>
-                            </a>
                         </div>
                     </form>
+                    <div class="row social-login"> 
+                        <div class="line col-xs-4 col-sm-5 col-md-5"></div>
+                        <span class="col-xs-4 col-sm-2 col-md-2 text-center">OR</span>
+                        <div class="line col-xs-4 col-sm-5 col-md-5"></div>
+                        <div class=" col-xs-6">
+                            <paper-button class="col-xs-12 login-facebook">
+                                <button class="btn-submit"><i class="fa fa-facebook fa-lg btn-icon"></i>Facebook</button>
+                            </paper-button>
+                        </div>
+                        <div class=" col-xs-6">
+                            <paper-button class="col-xs-12 login-google">
+                                <button class="btn-submit"><i class="fa fa-google fa-lg btn-icon"></i>Google</button>
+                            </paper-button>
+                        </div>
+                    </div>
                 </paper-shadow>
-            </span>
-            <div class="footer"></div>
+            </div>
+            <div class="footer">
+            </div>
             
     </core-header-panel>
 </core-drawer-panel>
