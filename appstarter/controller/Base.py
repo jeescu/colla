@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from appstarter.models import User, Profile, Post, Comment, Group, GroupUser
+from appstarter.models import User, Profile, Post, Comment, Group, GroupUser, Authentications
 from appstarter.models import PostImage
 from appstarter.forms import ImageUploadForm
 from django.http import Http404
@@ -28,7 +28,7 @@ class LoginView(generic.ListView):
 
                 return render(request, 
                               'colla/index.html',
-                              {'auth_user': auth_user, 'post':post})
+                              {'auth_user': auth_user, 'post':post })
         except:
             # log in
 			return render(request, 'colla/login.html', {})

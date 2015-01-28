@@ -40,23 +40,29 @@
     <core-toolbar id="sec-color" class="profile-bar">
         <paper-icon-button id="navicon" onclick="history.back();" icon="arrow-back"></paper-icon-button>
         <span flex>Profile</span>
+        
+        {% for user_profile in user.profile %}
+        
+        
+        
         <span>
             <paper-icon-button icon="create"></paper-icon-button>
             <paper-icon-button class="hidden-sm hidden-md hidden-lg hidden-xl" icon="more-vert"></paper-icon-button>
         </span>
     </core-toolbar>
-    <span class="col-xs-12 col-md-10 col-md-offset-1">
+    <div class="col-xs-12 col-md-10 col-md-offset-1">
         <paper-shadow z="0" id="form-register">
             <form id="update_profile_form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-                {% for user_profile in user.profile %}
-                <div class="text-center profile-info">
-                    <label id="label-img" icon="add" class="custom-btn add-image"> 
-                        <input id="id_image" type="file"  name="image" onchange="readImage(this);">
-                        <img id="thumb" src="{{ user_profile.profile_pic }}" class="profile-picture"/>
-                        <h4>{{ user_profile.company_name }}</h3>
-                    </label>
-                </div>
+                
+                <label id="label-img" icon="add" class="custom-btn add-image profile-holder"> 
+                    <input id="id_image" type="file"  name="image" onchange="readImage(this);">
+                    <img id="thumb" src="{{ user_profile.profile_pic }}" class="profile-picture"/>
+                    <div class="profile-pic-lbl">
+                        <span style="font-size: 19.5px">{{ user_profile.first_name }} {{ user_profile.last_name }}</span>
+                        <h4 style="color: #78909C">{{ user_profile.company_name }}</h4>
+                    </div>
+                </label>
                 
                 <div class="row">
                     <div class="col-sm-6 col-xs-12">
@@ -98,11 +104,12 @@
                 </div>
             </form>
             
-            <input type="button" value="Get JSON File" onclick="loadJSONJquery()" />
+            <input type="button" value="Get JSON File" onclick="loadJSONJquery()" class="hidden" />
             
         </paper-shadow>
-        <paper-toast id="success_update" text="Your profile has been updated."></paper-toast>
-        <paper-toast id="error_update" text="An error occured for some reason."></paper-toast>
+    </div>
+    <paper-toast id="success_update" text="Your profile has been updated."></paper-toast>
+    <paper-toast id="error_update" text="An error occured for some reason."></paper-toast>
 </core-header-panel>
 <div id="json_text"></div>
 <script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>

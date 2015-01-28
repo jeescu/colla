@@ -82,6 +82,12 @@ paper-item[active] {
     top: 15px;
 }
 
+.btn-left-arrow {
+    position: absolute;
+    right: 0;
+    top: 13px;
+}
+
 .dropdown {
     position: absolute;
     right: 0px;
@@ -132,8 +138,7 @@ paper-item[active] {
 .btn-submit {
     color: inherit;
     font-family: 'RobotoDraft', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 15px;
     background-color: transparent;
     border-color: transparent;
     outline: 0;
@@ -270,9 +275,7 @@ paper-fab {
 }
 
 .indx-color {
-/*    background: #ECEFF1;*/
-    background: url('/static/colla/images/maze_white.png') repeat;
-/*    background: #01579B;*/
+    background: #ECEFF1;
 }
 
 .side-bar {
@@ -614,18 +617,32 @@ core-drawer-panel:not([narrow]) #navicon {
 /*profile page*/
 
 .profile-bar {
-    background-image: url('/static/colla/images/cover_img/cover_default.jpg');
+/*    background-image: url('/static/colla/images/cover_img/cover_default.jpg');*/
+    height: 200px;
 }
 
 .profile-info {
     margin-bottom: 50px;
 }
 
+.profile-holder {
+    position: fixed;
+    left: 28px;
+    top: 79px;
+}
+
 .profile-picture {
     border-radius: 50%;
     cursor: pointer;
-    width: 140px;
-    height: 140px;
+    width: 95px;
+    height: 95px;
+}
+
+.profile-pic-lbl {
+    position: relative;
+    top: -74px;
+    left: 125px;
+    color: white;
 }
 
 .profile-input .underline .focused-underline

@@ -1,3 +1,10 @@
+var sendPost = get('send-post');
+var postTEXT = get('post-text');
+var postIMAGE = "";
+var postLINK = "";
+var postLimit = 10;
+var sndComm = get('send-comment');
+
 function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
     $.ajax({
         url: url,
@@ -9,86 +16,23 @@ function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
             fn(data);
         },
         error: function (ts) {
-            document.querySelector('#toastConnectionOut').show();
+            getQuery('#toastConnectionOut').show();
         }
     });
 }
 
 var postUpdate = function (post) {
-    var newPost = document.getElementById('new-post'), post_number = Object.keys(post).length;
-    var userDisName = document.getElementById('user-post-name').value;
-    var userProfPic = document.getElementById('user-prof-pic').value;
-    var csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var newPost = get('new-post'), post_number = Object.keys(post).length;
+    var uName = get('user-post-name').value, uPic = get('user-prof-pic').value;
+    var tkn = getName("csrfmiddlewaretoken")[0].value;
 
-    if (post_number === 1 && newPost.className === 'new-post-show') {
-        console.log('1 updated post , and you did it');
-        document.getElementById('new-post').classList.remove('new-post-show');
-        document.getElementById('new-post').classList.add('new-post-hide');
-
-        console.log('append my post secretly');
+    if (post_number === 1 && newPost.className === 'new-post-show')
+    {
+        get('new-post').classList.remove('new-post-show');
+        get('new-post').classList.add('new-post-hide');
 
         var userPost = post[Object.keys(post)[0]];
-     
-        var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
-            post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
-            post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
-            post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
-            post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
-            post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
-            post_form +=         '<div class="col-xs-12 frm-pic"><img id="user-new-image-post" class="img-responsive" src="'+userPost['image']+'"/></div>';
-            post_form +=         '<div class="col-xs-12 frm-dtl">';
-            post_form +=            '<div class="frm-dtl-info">';
-            post_form +=               '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">';
-            post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id">';
-            post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name">';
-            post_form +=                '<input id="submit-agree'+userPost['post_id']+'" type="submit" class="hidden">';
-        
-        
-            post_form +=                '<core-tooltip>'
-            post_form +=                '<paper-button class="btn-frm-info agree-post"><core-icon icon="thumb-up"></core-icon>';
-            post_form +=                    '<span>&emsp;'+userPost['agrees']+'</span></paper-button>';
-        
-            post_form +=                     '<div tip class="pep-agreed">'
-            post_form +=                         '<span>No agreed with this.</span>';
-            post_form +=                     '</div>';
-        
-            post_form +=                '</core-tooltip>'
-        
-        
-            post_form +=                '<paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
-            post_form +=                '<span>&emsp;'+userPost['comments']+'</span></paper-button></form></div>';
-            post_form +=        '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'
-            post_form +=            '<div class="txt-comm" >'
-            post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id" />'
-            post_form +=                '<input type="hidden" value="'+userProfPic+'" name="pic" />'
-            post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name" />'
-            post_form +=                '<paper-input-decorator label="Add new comment...">'
-            post_form +=                    '<paper-autogrow-textarea id="a1"><textarea id="t1" name="comment"></textarea></paper-autogrow-textarea></paper-input-decorator></div>'
-            post_form +=            '<div class="snd-comm hidden-xs"><input id="submit-comment'+userPost['post_id']+'" type="submit" class="hidden"/><paper-icon-button class="send-comment" icon="send"></paper-icon-button>'
-            post_form +=            '</div></form></div></div>';
-
-            post_form +=         '<div class="row con-comm"><div class="col-xs-12 frm-comm">';
-
-
-//                                            Loop if ever there were already comments
-//                                            <paper-shadow z="0" class="comment-board">
-//                                                <div class="col-xs-2 comm-av"><img src="{{ comment.user_pic_url }}"/></div>
-//                                                <div class="col-xs-10">
-//                                                    <div class="col-xs-12 comm-name">{{ comment.user_name }}</div>
-//                                                    <div class="col-xs-12 comm-time sub-color">{{ comment.comment_date }}</div>
-//                                                </div>
-//                                                <div class="col-xs-12 comm-text">
-//                                                    <p>{{ comment.comment }}</p>
-//                                                </div>
-//                                            </paper-shadow>
-
-
-            post_form +=      '</div></div></paper-shadow><br/></div>';
-        
-            console.log('Writing posts');
-            $("#dynamic").prepend(post_form);
-            userPost['image'] == "" ? document.getElementById('user-new-image-post').style.display="none":true;
-
+        appendPost(userPost, tkn, uName, uPic);
     }
     else if (post.status)
     {
@@ -102,57 +46,68 @@ var postUpdate = function (post) {
     {
         console.info('1 or more updated post'); 
         for (i=0;i < post_number; i++) {
-
             var userPost = post[Object.keys(post)[i]];
-            console.debug(post[Object.keys(post)[i]]);
+            appendPost(userPost, tkn, uName, uPic);   
+        }
+    }
+}
 
-            var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
-                post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
-                post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
-                post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
-                post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
-                post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
-                post_form +=         '<div class="col-xs-12 frm-pic"><img id="user-new-image-post" class="img-responsive" src="'+userPost['image']+'"/></div>';
-                post_form +=         '<div class="col-xs-12 frm-dtl">';
-                post_form +=            '<div class="frm-dtl-info">';
-                post_form +=               '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">';
-                post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id">';
-                post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name">';
-                post_form +=                '<input id="submit-agree'+userPost['post_id']+'" type="submit" class="hidden">';
-            
-            
-                post_form +=                '<core-tooltip>';
-                post_form +=                '<paper-button class="btn-frm-info agree-post"><core-icon icon="thumb-up"></core-icon>';
-                post_form +=                    '<span>&emsp;'+userPost['agrees']+'</span></paper-button>';
-            
-                post_form +=                '<div tip class="pep-agreed">'
-                                                if (userPost['agreed']) {
-                                                    for (agree in user_post.agreed) {
-                                                        post_form += '<span class="user-pep-agreed"><u>'+agree.user_name+'</u></span>' 
-                                                    }
-                                                    post_form += '<span>agreed with this.</span>';
-                                                } else {
-                                                    post_form += '<span>No agreed with this.</span>';
-                                                }
-                post_form +=                '</div>'
+// write post: temp
+function appendPost(userPost, csrftoken, userDisName, userProfPic) {
+    var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
+    post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
+    post_form +=     '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
+    post_form +=     '<div class="col-xs-12 frm-share sub-color">'+userPost['share']+'</div>';
+    post_form +=         '</div><div class="frm-date">'+userPost['date']+'</div>';
+    post_form +=         '<div class="col-xs-12 frm-txt"><p>'+userPost['text'].replace(/\n/g, "<br />")+'</p></div>';
+    post_form +=         '<div class="col-xs-12 frm-pic"><img id="user-new-image-post" class="img-responsive" src="'+userPost['image']+'"/></div>';
+    post_form +=         '<div class="col-xs-12 frm-dtl">';
+    post_form +=            '<div class="frm-dtl-info">';
+    post_form +=               '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">';
+    post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id">';
+    post_form +=                '<input type="hidden" value="'+userPost['display_name']+'" name="user_name">';
+    post_form +=                '<input id="submit-agree'+userPost['post_id']+'" type="submit" class="hidden">';
 
-                post_form +=                '</core-tooltip>'
-            
-                post_form +=                '<paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
-                post_form +=                '<span>&emsp;'+userPost['comments']+'</span></paper-button></form></div>';
-                post_form +=        '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'
-                post_form +=            '<div class="txt-comm" >'
-                post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id" />'
-                post_form +=                '<input type="hidden" value="'+userProfPic+'" name="pic" />'
-                post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name" />'
-                post_form +=                '<paper-input-decorator label="Add new comment...">'
-                post_form +=                    '<paper-autogrow-textarea id="a1"><textarea id="t1" name="comment"></textarea></paper-autogrow-textarea></paper-input-decorator></div>'
-                post_form +=            '<div class="snd-comm hidden-xs"><input id="submit-comment'+userPost['post_id']+'" type="submit" class="hidden"/><paper-icon-button class="send-comment" icon="send"></paper-icon-button>'
-                post_form +=            '</div></form></div></div>'
-                                    
-                post_form +=         '<div class="row con-comm"><div class="col-xs-12 frm-comm">'
-                                        
-                                    
+
+    post_form +=                '<core-tooltip>'
+    post_form +=                '<paper-button class="btn-frm-info agree-post"><core-icon icon="thumb-up"></core-icon>';
+    post_form +=                    '<span>&emsp;'+userPost['agrees']+'</span></paper-button>';
+
+    post_form +=                     '<div tip class="pep-agreed">'
+
+    // temp
+    if (userPost['agreed'])
+    {
+        for (agree in user_post.agreed) {
+            post_form += '<span class="user-pep-agreed"><u>'+agree.user_name+'</u></span>' 
+        }
+        post_form += '<span>agreed with this.</span>';
+    }
+    else
+    {
+        post_form += '<span>No agreed with this.</span>';
+    }
+
+    post_form +=                     '</div>';
+
+    post_form +=                '</core-tooltip>'
+
+
+    post_form +=                '<paper-button  class="btn-frm-info"><core-icon icon="question-answer"></core-icon>';
+    post_form +=                '<span>&emsp;'+userPost['comments']+'</span></paper-button></form></div>';
+    post_form +=        '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'
+    post_form +=            '<div class="txt-comm" >'
+    post_form +=                '<input type="hidden" value="'+userPost['post_id']+'" name="post_id" />'
+    post_form +=                '<input type="hidden" value="'+userProfPic+'" name="pic" />'
+    post_form +=                '<input type="hidden" value="'+userDisName+'" name="user_name" />'
+    post_form +=                '<paper-input-decorator label="Add new comment...">'
+    post_form +=                    '<paper-autogrow-textarea id="a1"><textarea id="t1" name="comment"></textarea></paper-autogrow-textarea></paper-input-decorator></div>'
+    post_form +=            '<div class="snd-comm hidden-xs"><input id="submit-comment'+userPost['post_id']+'" type="submit" class="hidden"/><paper-icon-button class="send-comment" icon="send"></paper-icon-button>'
+    post_form +=            '</div></form></div></div>';
+
+    post_form +=         '<div class="row con-comm"><div class="col-xs-12 frm-comm">';
+
+
 //                                            Loop if ever there were already comments
 //                                            <paper-shadow z="0" class="comment-board">
 //                                                <div class="col-xs-2 comm-av"><img src="{{ comment.user_pic_url }}"/></div>
@@ -164,20 +119,14 @@ var postUpdate = function (post) {
 //                                                    <p>{{ comment.comment }}</p>
 //                                                </div>
 //                                            </paper-shadow>
-                                        
-                                      
-                post_form +=      '</div></div></paper-shadow><br/></div>';
-                                    
-                console.log('Writing posts');
-                document.getElementById('new-post-pic').src="";
-                $("#dynamic").prepend(post_form);
-                userPost['image'] == "" ? document.getElementById('user-new-image-post').style.display="none":true;
-            
-                document.querySelector('#toastNewPost').show();
-                
-        }
-        console.info('Finish writing posts');
-    }
+
+
+    post_form +=      '</div></div></paper-shadow><br/></div>';
+    get('new-post-pic').src="";
+    $("#dynamic").prepend(post_form);
+    userPost['image'] == "" ? get('user-new-image-post').style.display="none":true;
+    
+    getQuery('#toastNewPost').show();
 }
 
 //refresh post with limit of 10
@@ -191,14 +140,14 @@ function getlatest() {
     var latestPost = {}
     try
     {
-        var postId = document.getElementById('post_activity');
+        var postId = get('post_activity');
         latestPost.latest = postId.getElementsByTagName('input')[0].value;
-
         console.log('latest post is: '+latestPost.latest);
     }
     catch(err)
     {
         latestPost.latest = "None";
+        console.log('NO latest post');
     }
     return latestPost;
 }
@@ -221,19 +170,17 @@ $('#imageUploadForm').on('submit',(function(e) {
     formData.sharetype = "Shared Publicly";
 
     var newUserPost = function() {
-        document.getElementById('new-post').classList.remove('new-post-hide');
-        document.getElementById('new-post').classList.add('new-post-show');
-        document.getElementById('new-post-img').src = document.getElementById('user-post-img').src;
-        document.getElementById('new-post-name').innerHTML = document.getElementById('user-post-name').value;
-        document.getElementById('new-post-share-type').innerHTML = "Shared Publicly";
-        document.getElementById('new-post-date').innerHTML = "Now";
-        document.getElementById('new-post-text').innerHTML = postTEXT.value.replace(/\n/g, "<br />");
-        // Need To fix for production
+        get('new-post').classList.remove('new-post-hide');
+        get('new-post').classList.add('new-post-show');
+        get('new-post-img').src = get('user-post-img').src;
+        get('new-post-name').innerHTML = get('user-post-name').value;
+        get('new-post-share-type').innerHTML = "Shared Publicly";
+        get('new-post-date').innerHTML = "Now";
+        get('new-post-text').innerHTML = postTEXT.value.replace(/\n/g, "<br />");
         
-        var thumb = document.getElementById('thumb').src;
-        var img = document.getElementById('new-post-pic');
+        var thumb = get('thumb').src;
+        var img = get('new-post-pic');
         
-        console.log(thumb);
         if (thumb == local)
         {
             img.style.display = "none";
@@ -256,9 +203,7 @@ $('#imageUploadForm').on('submit',(function(e) {
             newUserPost();
             clearText();
             formPostId = 0;
-            document.querySelector('#toastPost').show();
-            console.log(data.status);
-            console.log(data.image);
+            getQuery('#toastPost').show();
         },
         error: function(data){
             console.error("error");
@@ -271,13 +216,13 @@ $('#imageUploadForm').on('submit',(function(e) {
 var commentFormId;
 var agreeFormId;
 var agreeOrCommentUrl;
-
 var toast;
+
 // agrees
 $('body').on('click', '.agree-post', function (){
     agreeFormId = $(this).closest('form').attr("id");
     agreeOrCommentUrl = 'new-agree/';
-    toast = document.querySelector('#toastAgree');
+    toast = getQuery('#toastAgree');
     $('#submit-agree'+agreeFormId).trigger('click');
 });
 
@@ -285,7 +230,7 @@ $('body').on('click', '.agree-post', function (){
 $('body').on('click', '.send-comment', function() {
     commentFormId = $(this).closest('form').attr("id");
     agreeOrCommentUrl = 'new-comment/';
-    toast = document.querySelector('#toastComment');
+    toast = getQuery('#toastComment');
     $('#submit-comment'+commentFormId).trigger('click');
 });
 
@@ -293,11 +238,11 @@ $('body').on('submit', 'form', (function(e) {
     e.preventDefault();
     var formData = new FormData(this);
 
-    if (formPostId == 0) {
+    if (formPostId == 0)
+    {
         console.debug(agreeOrCommentUrl);
         postAgreeComment(agreeOrCommentUrl, formData, toast);
     }
-
 }));
 
 function postAgreeComment(url, data, msg) {
@@ -321,14 +266,14 @@ function postAgreeComment(url, data, msg) {
 
 $('#chat').on('click', (function (e) {
     console.log('click');
-    document.getElementById('chat-board').style.display = 'block';
-    document.getElementById('notification-board').style.display = 'none';
+    get('chat-board').style.display = 'block';
+    get('notification-board').style.display = 'none';
 }));
 
 $('#notification').on('click', (function (e) {
     console.log('click');
-    document.getElementById('chat-board').style.display = 'none';
-    document.getElementById('notification-board').style.display = 'block';
+    get('chat-board').style.display = 'none';
+    get('notification-board').style.display = 'block';
 }));
 
 // load more post vert pagination
@@ -338,17 +283,17 @@ function loadMorePost() {
 
 function clearText() {
     $("#id_image").closest('form').trigger('reset');
-    document.getElementById('thumb').src="";
-    document.getElementById('thumb').classList.remove('img-thumb');
-    document.getElementById("thumb").removeAttribute("style"); 
-    document.getElementById('label-img').classList.remove('full-width');
-    document.getElementById('label-img').classList.add('add-image');
-    document.getElementById('image-input').classList.remove('hidden');
-    document.getElementById('post-text').value = "";
+    get('thumb').src="";
+    get('thumb').classList.remove('img-thumb');
+    get("thumb").removeAttribute("style"); 
+    get('label-img').classList.remove('full-width');
+    get('label-img').classList.add('add-image');
+    get('image-input').classList.remove('hidden');
+    get('post-text').value = "";
 }
 
 function showMenu() {
-    var mn = document.getElementById('menu');
+    var mn = get('menu');
     if (mn.classList.contains('menu-hide'))
     {
         mn.classList.remove('menu-hide');
@@ -361,19 +306,35 @@ function showMenu() {
     }
 }
 
+function readURL(input) {
+    if (input.files && input.files[0])
+    {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#thumb').attr('src', e.target.result).height(166);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+    showThumb();
+}
+
 function postBtn() {
-    var btn = document.getElementById('post-btn');
-    var text = document.getElementById('post-text').value;
+    var btn = get('post-btn');
+    var text = get('post-text').value;
     if (text != '')
     {
-        document.getElementById('post-btn').style.display = 'block';
+        get('post-btn').style.display = 'block';
         btn.classList.remove('btn-hide');
         btn.classList.add('btn-show')
     }
     else
     {
-        document.getElementById('post-btn').style.display = 'none';
+        get('post-btn').style.display = 'none';
         btn.classList.remove('btn-show');
         btn.classList.add('btn-hide')
     }
+}
+
+function logout() {
+    window.location.href='/colla/logout';
 }

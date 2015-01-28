@@ -3,15 +3,25 @@ from django.utils import timezone
 import datetime
 import os
 import uuid
-
+    
 class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=200)
     req_token = models.CharField(max_length=200)
-    log = models.CharField(max_length=5) 
+    log = models.CharField(max_length=5)
+    sId = models.CharField(max_length=200)
 
     def profile(self):
         return Profile.objects.filter(user = self.id)
+    
+class Authentications(models.Model):
+    user_id = models.IntegerField(default=0)
+    provider = models.CharField(max_length=50)
+    uid = models.CharField(max_length=200)
+    access_token = models.CharField(max_length=1000)
+    secret = models.CharField(max_length=200)
+    refresh_token = models.CharField(max_length=200)
+    expires = models.CharField(max_length=200)
     
 class Profile(models.Model):
     user = models.ForeignKey(User)

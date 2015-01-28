@@ -113,12 +113,12 @@
                         <div class="line col-xs-4 col-sm-5 col-md-5"></div>
                         <div class=" col-xs-6">
                             <paper-button class="col-xs-12 login-facebook">
-                                <button class="btn-submit"><i class="fa fa-facebook fa-lg btn-icon"></i>Facebook</button>
+                                <button class="btn-submit" onClick="fbLogin()"><i class="fa fa-facebook fa-lg btn-icon"></i><span class="visible-xs"><i class="fa fa-angle-right fa-lg btn-left-arrow"></i></span><span class="hidden-xs">Facebook</span></button>
                             </paper-button>
                         </div>
                         <div class=" col-xs-6">
                             <paper-button class="col-xs-12 login-google">
-                                <button class="btn-submit"><i class="fa fa-google fa-lg btn-icon"></i>Google</button>
+                                <button class="btn-submit"><i class="fa fa-google fa-lg btn-icon"></i><span class="visible-xs"><i class="fa fa-angle-right fa-lg btn-left-arrow"></i></span><span class="hidden-xs">Google</span></button>
                             </paper-button>
                         </div>
                     </div>
@@ -126,19 +126,12 @@
             </div>
             <div class="footer">
             </div>
-            
     </core-header-panel>
 </core-drawer-panel>
 
-<script>
-document.addEventListener('polymer-ready', function() {
-  var navicon = document.getElementById('navicon');
-  var drawerPanel = document.getElementById('drawerPanel');
-  navicon.addEventListener('click', function() {
-    drawerPanel.togglePanel();
-  });
-});
-</script>
+<script src="{% static 'plugin/jquery-1.11.2.js' %}"></script>
+<script src="{% static 'colla/js/fbSdk.js' %}"></script>
+<script src="{% static 'colla/js/login.js' %}"></script>
     
 </body>
 </html>

@@ -26,6 +26,7 @@ $('#update_profile_form').on('submit', (function(e) {
             processData: false,
             success:function(data) {
                 document.querySelector('#success_update').show();
+                console.log(data);
             },
             error: function(data){
                 document.querySelector('#error_update').show();

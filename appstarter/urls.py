@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, url
-from appstarter.controller import Base, Activity, Issue, Monitor, Project, Monitor, User
+from appstarter.controller import Base, Activity, Issue, Monitor, Project, Monitor, User, Auth
 
 urlpatterns = patterns('',
     url(r'^$', Base.LoginView.as_view(), name='login'),                
     url(r'^signup/$', Base.SignupView.as_view(), name='signup'),
-                    
+    
+    url(r'^login/facebook/$', Auth.socialLogin().facebook_login, name='facebook_login'),
+    url(r'^login/google/$', Auth.socialLogin().google_login, name='google_login'),
+                       
     url(r'^dashboard/$', Activity.activityController.as_view(), name='home'),           
     url(r'^new-post/$', Activity.activityController().add_post, name='new_post'),
     url(r'^new-comment/$', Activity.activityController().add_comment, name='new_comment'),

@@ -46,15 +46,15 @@
         <core-toolbar id="mainheader" class="medium-tall">
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
             {%  for profile in auth_user.profile %}
-            <span flex>Colla</span>
+            <span flex>Dashboard</span>
             <input type="hidden" id="user-prof-pic" value="{{ profile.profile_pic }}">
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="helpbutton" icon="help"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="explorebutton" icon="explore"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="addbutton" icon="add"></paper-icon-button>
-                <paper-icon-button class="hidden-xs" id="exitbutton" icon="exit-to-app" onClick="window.location.href='/colla/logout'"></paper-icon-button>
-                <a href="/colla/profile" class="a-white"><paper-icon-button class="hidden-xs" id="userbutton" icon="supervisor-account"></paper-icon-button></a>
+                <paper-icon-button class="hidden-xs" id="exitbutton" icon="exit-to-app" onClick="logout()"></paper-icon-button>
+                <a href="/colla/profile" class="a-white"><paper-icon-button class="hidden-xs" id="userbutton" icon="account-circle"></paper-icon-button></a>
             </span>
             <span class="hidden-md hidden-lg hidden-sm">
                 <paper-icon-button icon="more-vert" onclick="showMenu()"></paper-icon-button>
@@ -65,11 +65,11 @@
                 </core-menu>
             </span>
             <paper-tabs class="bottom fit" selected="0" noink>
-                <paper-tab id="tab-activity">Activity</paper-tab>
-                <paper-tab id="tab-project">Projects</paper-tab>
-                <paper-tab id="tab-monitor">Monitor</paper-tab>
-                <paper-tab id="tab-graph">Issues</paper-tab>
-                <paper-tab id="tab-issue">Forum</paper-tab>
+                <paper-tab id="tab-activity"><core-icon icon="dashboard" class="visible-xs"></core-icon><span class="hidden-xs">Activity</span></paper-tab>
+                <paper-tab id="tab-project"><core-icon icon="view-carousel" class="visible-xs"></core-icon><span class="hidden-xs">Projects</span></paper-tab>
+                <paper-tab id="tab-monitor"><core-icon icon="trending-up" class="visible-xs"></core-icon><span class="hidden-xs">Monitor</span></paper-tab>
+                <paper-tab id="tab-graph"><core-icon icon="error" class="visible-xs"></core-icon><span class="hidden-xs">Issues</span></paper-tab>
+                <paper-tab id="tab-issue"><core-icon icon="question-answer" class="visible-xs"></core-icon><span class="hidden-xs">Forum</span></paper-tab>
             </paper-tabs>
         </core-toolbar>
         
@@ -103,7 +103,7 @@
                                             <paper-icon-button id="image-input" icon="add"></paper-icon-button>
                                             <img class="img-responsive resp-img" id="thumb" src=""/>
                                         </label>
-
+                                            <input type="hidden" id="_fb_at" value="{{ fb_at.access_token }}"/>
                                             <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userid"/>
                                             <input type="hidden" id="title" value="None" name="title">
                                             <input type="hidden" value="Shared Publicly" name="share" >
@@ -355,18 +355,15 @@
 <!--New Action Buttons-->
         <div id="action-new">
             <paper-fab id="new-message" class="new-msg" icon="create"></paper-fab>
-            <paper-fab id="new-issue" class="new-issue" icon="announcement"></paper-fab>
         </div>
 <!--Action Button Dialogs-->
-        <paper-dialog id="issue-dialog" transition="core-transition-center">
-            <p>New Issue</p>
-        </paper-dialog>
         <paper-dialog id="message-dialog" transition="core-transition-center">
             <p>New message</p>
         </paper-dialog>
     </core-header-panel>
 
 <script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/fbSdk.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/dashboard.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/activity.js' %}"></script>
 <!--
