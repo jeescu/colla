@@ -355,7 +355,7 @@
                     <div class="chat-user">
                         <span class="comm-av"><img src="/static/colla/images/cover_img/cover_default.jpg"/></span>
                         <span class="detail-board">Aphrodite</span>
-                        <div class="status-board">Likes a post</div>
+                        <div class="status-board">Agreed a post</div>
                         
                         <div class="notify-date">5:00 AM</div>
                     </div>
@@ -369,7 +369,7 @@
                     <div class="chat-user">
                         <span class="comm-av"><img src="/static/colla/images/cover_img/cover_default.jpg"/></span>
                         <span class="detail-board">Cerberus</span>
-                        <div class="status-board">Announced an issue</div>
+                        <div class="status-board">Messaged you</div>
                         
                         <div class="notify-date">5:00 AM</div>
                     </div>
@@ -399,48 +399,97 @@
         <paper-dialog id="message-dialog" transition="core-transition-center">
             <p>New message</p>
         </paper-dialog>
+        
         <div id="chat-rooms" class="chat-rooms">
             
-            <paper-shadow id="" z="1" class="chat-area">
-                <div class="chat-head-bar">
-                    <core-icon icon="question-answer" class="chat-icon"></core-icon>
-                    <span class="chat-reciever">Mark Zuckerberg</span>
-                    <paper-icon-button icon="remove"></paper-icon-button>
-                    <paper-icon-button icon="close"></paper-icon-button>
-                    <div class="chat-shadow"></div>
-                </div>
-                <div class="chat-content">
-                    <div class="col-xs-12">
-                        
-                        <!-- reciever -->
-                        <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
-                            <div class="eg chat-box-arrow-top-reciever">
-                                <div class="yw oo chat-box-arrow-reciever"></div>
-                                <div class="yw VK chat-box-arrow-reciever"></div>
-                            </div>
-                            <div class="chat-msg">
-                                Hello There
-                            </div>
-                        </div>
-                        
-                        <!-- sender -->
-                        <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
-                            <div class="chat-box-arrow-top-sender">
-                                <div class="yw oo chat-box-arrow-reciever"></div>
-                                <div class="yw VK"></div>
-                            </div>
-                            <div class="chat-msg">
-                                Hi There Too    
-                            </div>
-                        </div>
-                        
+            <paper-shadow id="1" z="1" class="chat-area">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="chat-head-bar">
+                        <core-icon icon="question-answer" class="chat-icon"></core-icon>
+                        <span class="chat-reciever">Mark Zuckerberg</span>
+                        <paper-icon-button icon="remove" onclick="minMaxChatRoom(this)"></paper-icon-button>
+                        <paper-icon-button icon="close" onclick="exitChatRoom(this)"></paper-icon-button>
+                        <div class="chat-shadow"></div>
                     </div>
-                </div>
-                <div class="chat-write">
-                    <input class="chat-text" type="text" placeholder="Send a Message">
-                    <paper-icon-button class="chat-send" icon="send"></paper-icon-button>
-                    <div class="g-emoticon"></div>
-                </div>
+                    <div class="chat-content">
+                        <div class="col-xs-12">
+
+                            <!-- reciever -->
+                            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
+                                <div class="eg chat-box-arrow-top-reciever">
+                                    <div class="yw oo chat-box-arrow-reciever"></div>
+                                    <div class="yw VK chat-box-arrow-reciever"></div>
+                                </div>
+                                <div class="chat-msg text-justify">
+                                    Hello There
+                                </div>
+                            </div>
+
+                            <!-- sender -->
+                            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
+                                <div class="chat-box-arrow-top-sender">
+                                    <div class="yw oo chat-box-arrow-reciever"></div>
+                                    <div class="yw VK"></div>
+                                </div>
+                                <div class="chat-msg text-justify">
+                                    Hi There Too    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="chat-write">
+                        <input class="chat-text" type="text" placeholder="Send a Message">
+                        <paper-icon-button class="chat-send" icon="send"></paper-icon-button>
+                        <div class="g-emoticon"></div>
+                    </div>
+                </form>
+            </paper-shadow>
+            
+            <paper-shadow id="2" z="1" class="chat-area">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="chat-head-bar">
+                        <core-icon icon="question-answer" class="chat-icon"></core-icon>
+                        <span class="chat-reciever">Scarlet Johanson</span>
+                        <paper-icon-button icon="remove" onclick="minMaxChatRoom(this)"></paper-icon-button>
+                        <paper-icon-button icon="close" onclick="exitChatRoom(this)"></paper-icon-button>
+                        <div class="chat-shadow"></div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="col-xs-12">
+
+                            <!-- reciever -->
+                            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
+                                <div class="eg chat-box-arrow-top-reciever">
+                                    <div class="yw oo chat-box-arrow-reciever"></div>
+                                    <div class="yw VK chat-box-arrow-reciever"></div>
+                                </div>
+                                <div class="chat-msg text-justify">
+                                    Hello There
+                                </div>
+                            </div>
+
+                            <!-- sender -->
+                            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
+                                <div class="chat-box-arrow-top-sender">
+                                    <div class="yw oo chat-box-arrow-reciever"></div>
+                                    <div class="yw VK"></div>
+                                </div>
+                                <div class="chat-msg text-justify">
+                                    Hi There Too    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="chat-write">
+                        <input class="chat-text" type="text" placeholder="Send a Message">
+                        <paper-icon-button class="chat-send" icon="send"></paper-icon-button>
+                        <div class="g-emoticon"></div>
+                    </div>
+                </form>
             </paper-shadow>
             
         </div>

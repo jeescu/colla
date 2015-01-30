@@ -786,7 +786,7 @@ div[chatType='reciever'] .eg {
     height: 42px;
     width: 100%;
     padding-left: 40px;
-    padding-right: 40px;
+    padding-right: 42px;
     border: 1px solid #CFD8DC;
 }
 
@@ -806,7 +806,7 @@ div[chatType='reciever'] .eg {
 
 .chat-send {
     position: relative;
-    left: 261px;
+    left: 259px;
     top: -41px;
 }
 

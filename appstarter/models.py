@@ -64,6 +64,26 @@ class Comment(models.Model):
     comment_date = models.DateTimeField('date published')
     comment = models.CharField(max_length=500)
 
+# Messenger
+class Chat(models.Model):
+    date_activated = models.DateTimeField('date published')
+    
+# chat.chatuser_set.create(user_id = 1)
+class ChatUser(models.Model):
+    chat = models.ForeignKey(Chat)
+    user_id = models.IntegerField(default=0)
+
+# ChatMessage.objects.filter(chat = chat.id).order_by('date_sent')
+# chat.chatmessage_set.create(user_id=1, message="Hello")    
+class ChatMessage(models.Model):
+    chat = models.ForeignKey(Chat)
+    user_id = models.IntegerField(default=0)
+    message = models.CharField(max_length=500)
+    date_sent = models.DateTimeField('date sent')
+        
+    def profile(self):
+        return Profile.Objects.filter(user = user_id)
+    
 # Groups - A private Collaboration for teams (Page Spec)
 class Group(models.Model):
     group_name = models.CharField(max_length=50)

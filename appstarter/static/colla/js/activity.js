@@ -335,6 +335,24 @@ function postBtn() {
     }
 }
 
+function minMaxChatRoom(e) {
+    var chatArea = e.parentNode.parentElement.parentElement;
+    if (chatArea.style.position=='relative')
+    {
+        chatArea.removeAttribute("style");
+    }
+    else
+    {
+        chatArea.style.position='relative';
+        chatArea.style.top='307px';
+    }
+}
+
+function exitChatRoom(e) {
+    var chatArea = e.parentNode.parentElement.parentElement;
+    chatArea.remove();
+}
+
 function logout() {
     window.location.href='/colla/logout';
 }
