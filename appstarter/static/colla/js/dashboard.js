@@ -32,18 +32,6 @@ function toggle(tbs, act, cls) {
     }
 }
 
-function readURL(input) {
-    if (input.files && input.files[0])
-    {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#thumb').attr('src', e.target.result).height(166);
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-    showThumb();
-}
-
 function actShow() {
     toggle(['fragment-activity'], 'show', 'hidden');
     toggle(['fragment-project', 'fragment-monitor', 'fragment-graph', 'fragment-issue'], 'hide', 'hidden');
@@ -118,5 +106,10 @@ function init() {
     
     autoloadPost();
 }
+
+$(document).ready(function(){
+    $('[state=in]').html('Online');
+    $('[state=out]').html('Offline');
+});
 
 window.addEventListener("load", init);

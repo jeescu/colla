@@ -263,6 +263,8 @@
                         </div>
                         <div class="row con-comm">
                             <div class="col-xs-12 frm-comm">
+                                <div class="tag-panel">#collaborations</div>
+                                <div class="tag-pin"></div>
                             <!-- Comment start loop-->
                             {% for comment in user_post.comment %}
                                 <paper-shadow z="0" class="comment-board">
@@ -342,12 +344,49 @@
                     <paper-icon-button id="chat" icon="question-answer"></paper-icon-button>
                 </div>
                 <paper-shadow id="notification-board" class="side-bar-content" z="0">
-                    <paper-icon-button icon="stars" class="icon-board"></paper-icon-button>
-                    <span class="detail-board">New Comment from..</span>
+<!--                    dummy-->
+                    <div class="chat-user">
+                        <span class="comm-av"><img src="/static/colla/images/cover_img/cover_default.jpg"/></span>
+                        <span class="detail-board">John Edward</span>
+                        <div class="status-board">Commented on a post</div>
+                        <div class="notify-date">5:00 AM</div>
+                        
+                    </div>
+                    <div class="chat-user">
+                        <span class="comm-av"><img src="/static/colla/images/cover_img/cover_default.jpg"/></span>
+                        <span class="detail-board">Aphrodite</span>
+                        <div class="status-board">Likes a post</div>
+                        
+                        <div class="notify-date">5:00 AM</div>
+                    </div>
+                    <div class="chat-user">
+                        <span class="comm-av"><img src="/static/colla/images/cover_img/cover_default.jpg"/></span>
+                        <span class="detail-board">Olympus</span>
+                        <div class="status-board">Shared an info</div>
+                        
+                        <div class="notify-date">5:00 AM</div>
+                    </div>
+                    <div class="chat-user">
+                        <span class="comm-av"><img src="/static/colla/images/cover_img/cover_default.jpg"/></span>
+                        <span class="detail-board">Cerberus</span>
+                        <div class="status-board">Announced an issue</div>
+                        
+                        <div class="notify-date">5:00 AM</div>
+                    </div>
                 </paper-shadow>
                 <paper-shadow id="chat-board" class="side-bar-content" z="0" style="display:none;">
-                    <paper-icon-button icon="stars" class="icon-board"></paper-icon-button>
-                    <span class="detail-board">Lacertignus Escu</span>
+                    {% for user in users %}
+                        {% for info in user.profile %}
+                            {% if auth_user.id != user.id %}
+                                <div class="chat-user">
+                                    <input id="user_id" type="hidden" value="{{ user.id }}">
+                                    <span class="comm-av"><img src="{{ info.profile_pic }}"/></span>
+                                    <span class="detail-board">{{ info.dis_name }}</span>
+                                    <div class="status-board" state="{{ user.log }}"></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
                 </paper-shadow>
             </paper-shadow>
         </div>
@@ -360,6 +399,52 @@
         <paper-dialog id="message-dialog" transition="core-transition-center">
             <p>New message</p>
         </paper-dialog>
+        <div id="chat-rooms" class="chat-rooms">
+            
+            <paper-shadow id="" z="1" class="chat-area">
+                <div class="chat-head-bar">
+                    <core-icon icon="question-answer" class="chat-icon"></core-icon>
+                    <span class="chat-reciever">Mark Zuckerberg</span>
+                    <paper-icon-button icon="remove"></paper-icon-button>
+                    <paper-icon-button icon="close"></paper-icon-button>
+                    <div class="chat-shadow"></div>
+                </div>
+                <div class="chat-content">
+                    <div class="col-xs-12">
+                        
+                        <!-- reciever -->
+                        <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
+                            <div class="eg chat-box-arrow-top-reciever">
+                                <div class="yw oo chat-box-arrow-reciever"></div>
+                                <div class="yw VK chat-box-arrow-reciever"></div>
+                            </div>
+                            <div class="chat-msg">
+                                Hello There
+                            </div>
+                        </div>
+                        
+                        <!-- sender -->
+                        <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
+                            <div class="chat-box-arrow-top-sender">
+                                <div class="yw oo chat-box-arrow-reciever"></div>
+                                <div class="yw VK"></div>
+                            </div>
+                            <div class="chat-msg">
+                                Hi There Too    
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="chat-write">
+                    <input class="chat-text" type="text" placeholder="Send a Message">
+                    <paper-icon-button class="chat-send" icon="send"></paper-icon-button>
+                    <div class="g-emoticon"></div>
+                </div>
+            </paper-shadow>
+            
+        </div>
+        
     </core-header-panel>
 
 <script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>

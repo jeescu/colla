@@ -7,7 +7,7 @@ from appstarter.forms import ImageUploadForm
 from django.http import Http404
 from django.views import generic
 from django.utils import timezone
-
+    
 import json
 
 class LoginView(generic.ListView):
@@ -16,7 +16,7 @@ class LoginView(generic.ListView):
     
     def get(self, request):
         verify_request = request.COOKIES
-        try:
+        try:    
             # directing uri
             session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
             user_state = User.objects.get(req_token = session_id)
@@ -25,10 +25,11 @@ class LoginView(generic.ListView):
             if user_state.log != 'out':
                 
                 post = Post.objects.all().order_by('-date')[:10]
+                all_users = User.objects.all()
 
                 return render(request, 
                               'colla/index.html',
-                              {'auth_user': auth_user, 'post':post })
+                              {'auth_user': auth_user, 'post':post, 'users':all_users })
         except:
             # log in
 			return render(request, 'colla/login.html', {})

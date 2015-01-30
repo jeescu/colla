@@ -110,6 +110,12 @@ class ProfileView(object):
         
         return profile_user
     
+    def connect_facebook(self, request):
+        pass
+    
+    def connect_google(self, request):
+        pass
+    
     def delete_profile_img(self, img):
         if img != '/static/colla/images/prof_img/av-default.png':
             profile_dir = os.getcwd()+'/appstarter'

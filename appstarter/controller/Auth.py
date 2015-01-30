@@ -58,7 +58,7 @@ class socialLogin(object):
                 dis_name = request.GET.get('name'),
                 first_name = request.GET.get('first_name'),
                 last_name = request.GET.get('last_name'),
-                profile_pic = 'http://graph.facebook.com/'+request.GET.get('id')+'/picture'
+                profile_pic = 'http://graph.facebook.com/'+request.GET.get('id')+'/picture?type=large'
             )
 
             return HttpResponse('')
