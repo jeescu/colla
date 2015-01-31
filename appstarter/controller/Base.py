@@ -25,7 +25,7 @@ class LoginView(generic.ListView):
             if user_state.log != 'out':
                 
                 post = Post.objects.all().order_by('-date')[:10]
-                all_users = User.objects.all()
+                all_users = User.objects.order_by('username')
 
                 return render(request, 
                               'colla/index.html',

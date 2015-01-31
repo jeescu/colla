@@ -265,13 +265,11 @@ function postAgreeComment(url, data, msg) {
 }
 
 $('#chat').on('click', (function (e) {
-    console.log('click');
     get('chat-board').style.display = 'block';
     get('notification-board').style.display = 'none';
 }));
 
 $('#notification').on('click', (function (e) {
-    console.log('click');
     get('chat-board').style.display = 'none';
     get('notification-board').style.display = 'block';
 }));
@@ -333,24 +331,6 @@ function postBtn() {
         btn.classList.remove('btn-show');
         btn.classList.add('btn-hide')
     }
-}
-
-function minMaxChatRoom(e) {
-    var chatArea = e.parentNode.parentElement.parentElement;
-    if (chatArea.style.position=='relative')
-    {
-        chatArea.removeAttribute("style");
-    }
-    else
-    {
-        chatArea.style.position='relative';
-        chatArea.style.top='307px';
-    }
-}
-
-function exitChatRoom(e) {
-    var chatArea = e.parentNode.parentElement.parentElement;
-    chatArea.remove();
 }
 
 function logout() {

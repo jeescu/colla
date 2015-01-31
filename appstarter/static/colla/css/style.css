@@ -692,9 +692,12 @@ core-drawer-panel:not([narrow]) #navicon {
     bottom: 0;
     right: 100px;
     z-index: 1;
+    height: 0px;
 }
 
 .chat-area {
+    position: relative;
+    bottom: 354px;
     max-width: 300px;
     background: white;
     padding: 15px;
@@ -707,13 +710,14 @@ core-drawer-panel:not([narrow]) #navicon {
 .chat-icon {
     position: relative;
     top: -15px;
-    left: -64px;
+    right: 180px;
 }
 
 .chat-reciever {
+    float: left;
     position: relative;
-    top: -14px;
-    left: -56px;
+    top: 10px;
+    left: 43px;
 }
 
 .chat-head-bar {

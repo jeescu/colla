@@ -378,7 +378,7 @@
                     {% for user in users %}
                         {% for info in user.profile %}
                             {% if auth_user.id != user.id %}
-                                <div class="chat-user">
+                                <div class="chat-user open-chat-head">
                                     <input id="user_id" type="hidden" value="{{ user.id }}">
                                     <span class="comm-av"><img src="{{ info.profile_pic }}"/></span>
                                     <span class="detail-board">{{ info.dis_name }}</span>
@@ -402,6 +402,7 @@
         
         <div id="chat-rooms" class="chat-rooms">
             
+<!--
             <paper-shadow id="1" z="1" class="chat-area">
                 <form method="post">
                     {% csrf_token %}
@@ -415,7 +416,7 @@
                     <div class="chat-content">
                         <div class="col-xs-12">
 
-                            <!-- reciever -->
+                            
                             <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
                                 <div class="eg chat-box-arrow-top-reciever">
                                     <div class="yw oo chat-box-arrow-reciever"></div>
@@ -426,7 +427,7 @@
                                 </div>
                             </div>
 
-                            <!-- sender -->
+                            
                             <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
                                 <div class="chat-box-arrow-top-sender">
                                     <div class="yw oo chat-box-arrow-reciever"></div>
@@ -446,51 +447,7 @@
                     </div>
                 </form>
             </paper-shadow>
-            
-            <paper-shadow id="2" z="1" class="chat-area">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="chat-head-bar">
-                        <core-icon icon="question-answer" class="chat-icon"></core-icon>
-                        <span class="chat-reciever">Scarlet Johanson</span>
-                        <paper-icon-button icon="remove" onclick="minMaxChatRoom(this)"></paper-icon-button>
-                        <paper-icon-button icon="close" onclick="exitChatRoom(this)"></paper-icon-button>
-                        <div class="chat-shadow"></div>
-                    </div>
-                    <div class="chat-content">
-                        <div class="col-xs-12">
-
-                            <!-- reciever -->
-                            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
-                                <div class="eg chat-box-arrow-top-reciever">
-                                    <div class="yw oo chat-box-arrow-reciever"></div>
-                                    <div class="yw VK chat-box-arrow-reciever"></div>
-                                </div>
-                                <div class="chat-msg text-justify">
-                                    Hello There
-                                </div>
-                            </div>
-
-                            <!-- sender -->
-                            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
-                                <div class="chat-box-arrow-top-sender">
-                                    <div class="yw oo chat-box-arrow-reciever"></div>
-                                    <div class="yw VK"></div>
-                                </div>
-                                <div class="chat-msg text-justify">
-                                    Hi There Too    
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="chat-write">
-                        <input class="chat-text" type="text" placeholder="Send a Message">
-                        <paper-icon-button class="chat-send" icon="send"></paper-icon-button>
-                        <div class="g-emoticon"></div>
-                    </div>
-                </form>
-            </paper-shadow>
+-->
             
         </div>
         
@@ -500,6 +457,7 @@
 <script type="text/javascript" src="{% static 'colla/js/fbSdk.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/dashboard.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/activity.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/chat.js' %}"></script>
 <!--
 <script type="text/javascript" src="{% static 'colla/js/project.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/monitor.js' %}"></script>
