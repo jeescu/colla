@@ -51,6 +51,7 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
     var chatMain = getElemByAtrrVal('paper-shadow', 'id', chatUserId);
     $(form).attr({
         id : formId,
+        name : 'chatMessage',
         method : 'post'
     }).appendTo(chatMain);
 
@@ -63,6 +64,18 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
         type : 'hidden',
         name : tknName,
         value : tkn
+    }).appendTo(chatForm);
+    
+    $(inputTkn).attr({
+        type : 'hidden',
+        name : 'sender',
+        value : token
+    }).appendTo(chatForm);
+    
+    $(inputTkn).attr({
+        type : 'hidden',
+        name : 'reciever',
+        value : chatUserId
     }).appendTo(chatForm);
 
     // head bar
@@ -132,6 +145,7 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
     var chatWriteForm = getElemByAtrrVal('div', 'id', chatTextId);
     var chatInput = '<input></input>';
     $(chatInput).attr({
+        name : 'message',
         class : 'chat-text',
         type : 'text',
         placeholder : 'Send a Message'
@@ -146,6 +160,13 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
     var chatEmoIcon = '<div></div>'
     $(chatEmoIcon).attr({
         class : 'g-emoticon'
+    }).appendTo(chatWriteForm);
+    
+    var chatSubmit = '<input></input>'
+    $(chatSubmit).attr({
+        id : 'submit'+formId,
+        type : 'submit',
+        style : 'height: 0px'
     }).appendTo(chatWriteForm);
 }
 
@@ -179,32 +200,19 @@ function getMessages(chatHead) {
 
 // Send A Message
 var chatUrl = 'new-message/'
+var chatFormId;
 
-$('body').on('click', '.send-chat-message', function() {
+$('body').on('click', '.chat-send', function() {
     chatFormId = $(this).closest('form').attr("id");
-    $('#chat'+chatFormId).trigger('click');
+    $('#submit'+chatFormId).trigger('click');
 });
 
-$('body').on('submit', 'form', (function(e) {
+$('#chat-rooms').on('submit', 'form', (function(e) {
     e.preventDefault();
     var formData = new FormData(this);
-    sendMessage(chatUrl, formData);
+    post(chatUrl, formData);
+    e.target.getElementsByClassName('chat-text')[0].value = '';
 }));
-
-function sendMessage(url, data) {
-//    $.ajax({
-//        type:'POST',
-//        url: url,
-//        data: data,
-//        success:function(data){
-//            console.info("message sent");
-//        },
-//        error: function(data){
-//            console.error("send failed");
-//        }
-//    });
-    console.log('hello youre sending')
-}
 
 function minMaxChatRoom(e) {
     var chatArea = e.parentNode.parentElement.parentElement;

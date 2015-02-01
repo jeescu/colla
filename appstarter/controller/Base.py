@@ -45,10 +45,11 @@ class LoginView(generic.ListView):
                 ver_user.save()
 
                 post = Post.objects.all().order_by('-date')[:10]
+                all_users = User.objects.order_by('username')
 
                 return render(request,
                               'colla/index.html',
-                              {'auth_user': auth_user, 'post':post})
+                              {'auth_user': auth_user, 'post':post, 'users':all_users})
             else:
                 return HttpResponse('Wrong Username Password')
             

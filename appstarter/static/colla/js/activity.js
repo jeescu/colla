@@ -215,13 +215,13 @@ $('#imageUploadForm').on('submit',(function(e) {
 // comment and agree post
 var commentFormId;
 var agreeFormId;
-var agreeOrCommentUrl;
+var url;
 var toast;
 
 // agrees
 $('body').on('click', '.agree-post', function (){
     agreeFormId = $(this).closest('form').attr("id");
-    agreeOrCommentUrl = 'new-agree/';
+    url = 'new-agree/';
     toast = getQuery('#toastAgree');
     $('#submit-agree'+agreeFormId).trigger('click');
 });
@@ -229,7 +229,7 @@ $('body').on('click', '.agree-post', function (){
 // comments
 $('body').on('click', '.send-comment', function() {
     commentFormId = $(this).closest('form').attr("id");
-    agreeOrCommentUrl = 'new-comment/';
+    url = 'new-comment/';
     toast = getQuery('#toastComment');
     $('#submit-comment'+commentFormId).trigger('click');
 });
@@ -237,15 +237,17 @@ $('body').on('click', '.send-comment', function() {
 $('body').on('submit', 'form', (function(e) {
     e.preventDefault();
     var formData = new FormData(this);
-
-    if (formPostId == 0)
+    var prevChat = e.target.name;
+    
+    // prevent chat and set agree and comment only
+    if ((formPostId == 0) && (prevChat != 'chatMessage'))
     {
-        console.debug(agreeOrCommentUrl);
-        postAgreeComment(agreeOrCommentUrl, formData, toast);
+        console.debug(url);
+        post(url, formData, toast);
     }
 }));
 
-function postAgreeComment(url, data, msg) {
+function post(url, data, msg) {
     $.ajax({
         type:'POST',
         url: url,
@@ -253,12 +255,13 @@ function postAgreeComment(url, data, msg) {
         cache:false,
         contentType: false,
         processData: false,
-        success:function(data){
-            console.info("success");
-            msg.show();
-            console.debug(data);
+        success:function(data) {
+            try {
+                msg.show();
+            } catch(e) {}
+            console.log(data)
         },
-        error: function(data){
+        error: function(data) {
             console.error("error");
         }
     });
