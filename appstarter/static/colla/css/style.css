@@ -860,6 +860,9 @@ div[chatType='reciever'] .eg {
     .new-frm-msg {
         width: 78.333333%;
     }
+    #reset-text {
+        width: 45%;
+    }
     
 }
 
@@ -892,13 +895,6 @@ div[chatType='reciever'] .eg {
         display: none;
         margin-top: 16px;
         width: 100%;
-    }
-    
-}
-/*320 screen width*/
-@media screen and (max-width: 320px) {
-    #reset-text {
-        width: 45%;
     }
     
 }

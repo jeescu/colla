@@ -16,6 +16,47 @@ class chatController(object):
         pass
     
     def get_message(self, request):
+        sender = request.GET.get('sender')
+        reciever = request.GET.get('reciever')
+        
+        sender_chat = ChatUser.objects.filter(user_id = sender)
+        reciever_chat = ChatUser.objects.filter(user_id = reciever)
+        
+        messages = dict()
+        
+        # check if they had conversations
+        if sender_chat.count() != 0 and reciever_chat.count() != 0:
+            cnt_sender = 1
+
+            for chat_from in sender_chat:
+                
+                cnt_reciever = 1
+                for chat_to in reciever_chat:
+                    
+                    if chat_from.chat_id == chat_to.chat_id:
+                        
+                        # They had conversation
+                        chat_id = chat_from.chat_id
+                        msg = ChatMessage.objects.filter(chat = chat_id).order_by('date_sent')
+                        messages = self.prepare_message(msg)
+                        break
+                    
+                    else:
+                        
+                        if sender_chat.count() == cnt_sender:
+
+                            if reciever_chat.count() == cnt_reciever:
+
+                                # They had no conversations
+                                break
+                            
+                    cnt_reciever += 1
+                    
+                cnt_sender += 1
+                
+        return HttpResponse(json.dumps(messages), content_type = "application/json")
+    
+    def get_update_message(self, request):
         pass
     
     def new_message(self, request):
@@ -93,3 +134,17 @@ class chatController(object):
             message = msg,
             date_sent = timezone.now()
         )
+        
+    def prepare_message(self, msg):
+        messages = dict()
+        count = 0
+        
+        for message in msg:
+            count=count + 1
+            messages[str(count)] = {
+                "user_id" : message.user_id,
+                "message" : message.message
+            }
+            messages['chat_id'] = message.chat_id
+            
+        return messages

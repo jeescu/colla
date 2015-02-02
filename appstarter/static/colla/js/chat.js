@@ -1,3 +1,5 @@
+var openedChatRooms = ['rooms']
+var chatIdListener = []
 
 // Open new chat
 $('.open-chat-head').click(function(e) {
@@ -5,16 +7,9 @@ $('.open-chat-head').click(function(e) {
     
     prepareChatArea(chatHead)
     
-    //send ajax 
-    //check whether conversation exist
-    
-    //if not - nothing displays
-    
-    //if yes - display their conversations
-    
+    // Start updating messages
+    // updateChatmessages()
 });
-
-var openedChatRooms = ['rooms']
 
 function prepareChatArea(chatArea) {
     var chatUserName = chatArea.getElementsByClassName('detail-board')[0].innerHTML
@@ -23,18 +18,22 @@ function prepareChatArea(chatArea) {
     
     var chats = 1;
     
+    // Write chat area
     if (openedChatRooms.indexOf(chatUserId) < 0)
     {
         openedChatRooms.push(chatUserId);
         writeChatArea(chatUserId, chatUserName, chatRoom);
+        // Get messages
+        getMessages(chatUserId, token)
     }
                  
 }
 
-function writeChatArea(chatUserId, chatUserName, chatRoom) {
-    var getElemByAtrrVal = function (e, attr, val) {
-        return $(e+'['+attr+'='+val+']')
-    }    
+var getElemByAtrrVal = function (e, attr, val) {
+    return $(e+'['+attr+'='+val+']')
+}
+
+function writeChatArea(chatUserId, chatUserName, chatRoom) {    
 
     var formId = 'chat'+chatUserId;
 
@@ -170,32 +169,81 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
     }).appendTo(chatWriteForm);
 }
 
-function writeChatConversation(chatArea, chatMessage) {
-//            <!-- reciever -->
-//            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">
-//                <div class="eg chat-box-arrow-top-reciever">
-//                    <div class="yw oo chat-box-arrow-reciever"></div>
-//                    <div class="yw VK chat-box-arrow-reciever"></div>
-//                </div>
-//                <div class="chat-msg text-justify">
-//                    Hello There
-//                </div>
-//            </div>
-//
-//            <!-- sender -->
-//            <div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">
-//                <div class="chat-box-arrow-top-sender">
-//                    <div class="yw oo chat-box-arrow-reciever"></div>
-//                    <div class="yw VK"></div>
-//                </div>
-//                <div class="chat-msg text-justify">
-//                    Hi There Too    
-//                </div>
-//            </div> 
+function writeChatConversation(messageData, rcvr) {
+    var chatId = 'contentMsgchat'+rcvr;
+    var div = '<div></div>'
+    
+    for (message in messageData) {
+        
+        if (typeof(messageData[message]) == 'object')
+        {
+            if (messageData[message].user_id != token)
+            {
+                var reciever_msg='';
+                // Reciever
+                reciever_msg += '<div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever"><div class="eg chat-box-arrow-top-reciever"><div class="yw oo chat-box-arrow-reciever"></div><div class="yw VK chat-box-arrow-reciever"></div></div>';
+                reciever_msg += '<div class="chat-msg text-justify">'+messageData[message].message+'</div></div>'                         
+                $('#'+chatId).append(reciever_msg);
+            }
+            else
+            {
+                var sender_msg='';
+                sender_msg += '<div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg"><div class="chat-box-arrow-top-sender"><div class="yw oo chat-box-arrow-reciever"></div><div class="yw VK"></div></div>';
+                sender_msg += '<div class="chat-msg text-justify">'+messageData[message].message+'</div></div>';
+                $('#'+chatId).append(sender_msg);
+            }
+        }
+    }
+
+    // Add chat id to Listener
+    chatIdListener.push(messageData.chat_id);
+        
+    // Add id to chat contentMsgchat elem
+    $('#'+chatId).attr('chat_id', messageData.chat_id);
+     
+    console.log('the listener: '+chatIdListener)
+    
 }
 
-function getMessages(chatHead) {
-    // send id : from and to 
+function getMessages(reciever, sender) {
+    var users = {
+        'sender' : sender,
+        'reciever' : reciever
+    }
+    
+    $.get( "get-messages", users )
+    .done(function( data ) {
+        writeChatConversation(data, reciever)
+    });
+}
+
+// Update messages
+function updateChatMessages() {
+    
+    setInterval( function() {
+        
+        if (chatIdListener.length != 0)
+        {  
+            // Send Multiple Opened Chat Id's
+            var chatIds = {}
+            chatIds.chats = chatIdListener
+            
+            $.get( "get-update-messages", chatIds )
+            .done(function( data ) {
+                
+                for (chatConv in data) {
+                    var reciever = $('div[chat_id='+chatConv.chat_id+']').attr('id');
+                    $('div[chat_id='+chatConv.chat_id+']').empty();
+                    writeChatConversation(data, reciever.split('t')[3])
+                }
+            });
+        }
+        else
+        {
+            // Do nothing
+        }
+        
+    }, 1000 );
 }
 
 // Send A Message
@@ -229,6 +277,14 @@ function minMaxChatRoom(e) {
 
 function exitChatRoom(e) {
     var chatArea = e.parentNode.parentElement.parentElement;
-    openedChatRooms.splice( openedChatRooms.indexOf(chatArea.getAttribute('id')), 1 );
+    var chatAreaId = chatArea.getAttribute('id')
+    
+    openedChatRooms.splice( openedChatRooms.indexOf(chatAreaId), 1 );
+    
+    var chatMessageId = document.getElementById('contentMsgchat'+chatAreaId).getAttribute('id');
+    chatIdListener.splice( openedChatRooms.indexOf(chatMessageId), 1 );
+    
+    console.log('the listener: '+chatIdListener)
+    
     chatArea.remove();
 }

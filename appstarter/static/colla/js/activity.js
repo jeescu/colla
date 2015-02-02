@@ -16,7 +16,8 @@ function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
             fn(data);
         },
         error: function (ts) {
-            getQuery('#toastConnectionOut').show();
+//            getQuery('#toastConnectionOut').show();
+            console.error(ts)
         }
     });
 }
