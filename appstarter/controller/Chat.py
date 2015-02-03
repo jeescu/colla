@@ -70,7 +70,8 @@ class chatController(object):
         # check if they had conversations
         if sender_chat.count() != 0 and reciever_chat.count() != 0:
             cnt_sender = 1
-
+            check_add = 0
+            
             for chat_from in sender_chat:
                 
                 cnt_reciever = 1
@@ -81,16 +82,18 @@ class chatController(object):
                         # They had conversation
                         chat_id = chat_from.chat_id
                         self.add_message(sender, message, chat_id)
+                        check_add = 1
                         break
                     
                     else:
                         
                         if sender_chat.count() == cnt_sender:
 
-                            if reciever_chat.count() == cnt_reciever:
+                            if reciever_chat.count() == cnt_reciever and check_add == 0:
 
                                 # They had no conversations
                                 self.create_chat_conversation(sender, reciever, message)
+                                check_add = 0
                                 break
                             
                     cnt_reciever += 1
