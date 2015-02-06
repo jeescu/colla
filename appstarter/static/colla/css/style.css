@@ -613,6 +613,7 @@ core-drawer-panel:not([narrow]) #navicon {
 
 .more {
     margin-bottom: 10px;
+    margin-top: 16px;
     text-align: center;
 }
 

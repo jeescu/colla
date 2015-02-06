@@ -8,14 +8,15 @@ urlpatterns = patterns('',
     url(r'^signup/$', Base.SignupView.as_view(), name='signup'),
     url(r'^register/', Base.BaseController().register, name='register'),
     
-    # login via social apps
-    url(r'^login/facebook/$', Auth.socialLogin().facebook_login, name='facebook_login'),
-    url(r'^login/google/$', Auth.socialLogin().google_login, name='google_login'),
+    # Authentications
+    url(r'^login/facebook/$', Auth.Authentication().facebook_login, name='facebook_login'),
+    url(r'^login/google/$', Auth.Authentication().google_login, name='google_login'),
                        
     # Home and Post                   
     url(r'^dashboard/$', Activity.activityController.as_view(), name='home'),           
     url(r'^new-post/$', Activity.activityController().add_post, name='new_post'),
     url(r'^update-post/$', Activity.activityController().get_new_post, name='update_post'),
+    url(r'^more-post/$', Activity.activityController().get_more_post, name='more_post'),
                      
     # Agree and Comment                   
     url(r'^new-comment/$', Activity.activityController().add_comment, name='new_comment'),

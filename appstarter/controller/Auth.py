@@ -11,7 +11,7 @@ import os
 import json
 
     
-class socialLogin(object):
+class Authentication(object):
     
     def __init__(self):
         pass

@@ -53,6 +53,30 @@ class activityController(generic.ListView):
         count = 0
         for posts in all_post:
             count=count + 1
+            
+            commented = dict()
+            agreed = dict()
+            
+            com_count = 1
+            for comment in posts.comment():
+                commented[com_count] = {
+                    "user_pic_url" : comment.user_pic_url,
+                    "user_name" : comment.user_name,
+                    "comment_date" : comment.comment_date.strftime('%b. %d, %G, %I:%M %p'),
+                    "comment" : comment.comment
+                }
+                
+                com_count = com_count+1
+            
+            agree_count = 1
+            for agree in posts.agreed():
+                agreed[agree_count] = {
+                    'user_name' :    agree.user_name
+                }
+                
+                agree_count = agree_count+1
+                
+                
             post['post'+str(count)] = {
                 "post_id" : posts.id,
                 "pic" : posts.user_pic,
@@ -64,7 +88,9 @@ class activityController(generic.ListView):
                 "image" : posts.content_image,
                 "link" : posts.content_link,
                 "agrees" : posts.agrees,
-                "comments" : posts.comments
+                "comments" : posts.comments,
+                "commented" : commented,
+                "agreed" : agreed
             }
             
         return post
@@ -94,6 +120,17 @@ class activityController(generic.ListView):
         
         return post
     
+    def get_more_post(self, request):
+        post_offset = request.GET.get('offset')
+        offset = int(post_offset)
+#        try:
+        more_post = Post.objects.all().order_by('-date')[offset:offset+10]
+        posts = self.prepare_new_post(more_post)
+#        except:
+#            posts = {'status':'no more post'}
+            
+        return HttpResponse(json.dumps(posts), content_type = "application/json")
+        
     def search(self, request):
         pass
     
