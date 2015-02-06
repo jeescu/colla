@@ -173,25 +173,36 @@ function writeChatConversation(messageData, rcvr) {
     var chatId = 'contentMsgchat'+rcvr;
     var div = '<div></div>'
     
+    var msgCnt = 1;
     for (message in messageData) {
         
         if (typeof(messageData[message]) == 'object')
         {
+            
             if (messageData[message].user_id != token)
             {
                 var reciever_msg='';
+                var msgIdRcvr = 'chat-msg-'+messageData.chat_id+'-'+msgCnt;
                 // Reciever
-                reciever_msg += '<div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever"><div class="eg chat-box-arrow-top-reciever"><div class="yw oo chat-box-arrow-reciever"></div><div class="yw VK chat-box-arrow-reciever"></div></div>';
-                reciever_msg += '<div class="chat-msg text-justify">'+messageData[message].message+'</div></div>'                         
+                reciever_msg += '<div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg" chatType="reciever">';
+                reciever_msg += '<div class="eg chat-box-arrow-top-reciever"><div class="yw oo chat-box-arrow-reciever">';
+                reciever_msg += '</div><div class="yw VK chat-box-arrow-reciever"></div></div>';
+                reciever_msg += '<div class="chat-msg text-justify"><p id="'+msgIdRcvr+'"></p></div></div>'                         
                 $('#'+chatId).append(reciever_msg);
+                $('#'+msgIdRcvr).text(messageData[message].message)
             }
             else
             {
+                var msgIdSndr = 'chat-msg-'+messageData.chat_id+'-'+msgCnt;
                 var sender_msg='';
-                sender_msg += '<div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg"><div class="chat-box-arrow-top-sender"><div class="yw oo chat-box-arrow-reciever"></div><div class="yw VK"></div></div>';
-                sender_msg += '<div class="chat-msg text-justify">'+messageData[message].message+'</div></div>';
+                sender_msg += '<div id="text-field" class="col-xs-12 frm-txtfield chat-box-msg">';
+                sender_msg += '<div class="chat-box-arrow-top-sender"><div class="yw oo chat-box-arrow-reciever">';
+                sender_msg += '</div><div class="yw VK"></div></div>';
+                sender_msg += '<div class="chat-msg text-justify"><p id="'+msgIdSndr+'"></p></div></div>';
                 $('#'+chatId).append(sender_msg);
+                $('#'+msgIdSndr).text(messageData[message].message)
             }
+            msgCnt++;
         }
     }
 
