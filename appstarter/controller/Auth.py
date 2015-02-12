@@ -11,7 +11,7 @@ import os
 import json
 
     
-class Authentication(object):
+class AuthController(object):
     
     def __init__(self):
         pass

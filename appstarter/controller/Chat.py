@@ -10,7 +10,7 @@ import os
 
 import json
 
-class chatController(object):
+class ChatController(object):
     
     def __init__(self):
         pass

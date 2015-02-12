@@ -9,10 +9,7 @@ from django.utils import timezone
 
 import json
 
-class activityController(generic.ListView):
-    model = User
-    template_name = 'colla/index.html'
-    context_object_name = 'auth_user'
+class PostController(object):
     
     def __init__(self):
         pass

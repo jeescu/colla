@@ -1,122 +1,90 @@
-from appstarter.models import User, Profile, Post, Comment, Agree, ProfileImage
-from appstarter.forms import ImageUploadForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from appstarter.models import User, Profile, Post, Comment, Group, GroupUser, Authentications
+from appstarter.models import PostImage
+from appstarter.forms import ImageUploadForm
 from django.http import Http404
-from django.views import generic
 from django.utils import timezone
-import os
-
+    
 import json
 
-class UserView(object):
-    
-    def __init__(self):
-        pass
-    
-    def get_user(self, request):
-        pass
+class UserController(object):
     
     def login(self, request):
-        pass
-    
-    def logout(self, request):
-        pass
-    
+        
+        if request.method == 'GET':
+            verify_request = request.COOKIES
+            try:    
+                # directing uri
+                session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
+                user_state = User.objects.get(req_token = session_id)
+                auth_user = User.objects.get(pk=user_state.id)
+                # active session
+                if user_state.log != 'out':
+
+                    post = Post.objects.all().order_by('-date')[:10]
+                    all_users = User.objects.order_by('username')
+
+                    return render(request, 
+                                  'colla/index.html',
+                                  {'auth_user': auth_user, 'post':post, 'users':all_users })
+            except:
+                # log in
+                return render(request, 'colla/login.html', {})
+        
+        if request.method == 'POST':
+            
+            authen_request = request.COOKIES
+            try:
+                ver_user = User.objects.get(username = request.POST['username'])
+                auth_user = User.objects.get(pk=ver_user.id)
+                if ver_user.password == request.POST['password']:
+                    ver_user.log = 'in'
+                    ver_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
+                    ver_user.save()
+
+                    post = Post.objects.all().order_by('-date')[:10]
+                    all_users = User.objects.order_by('username')
+
+                    return render(request,
+                                  'colla/index.html',
+                                  {'auth_user': auth_user, 'post':post, 'users':all_users})
+                else:
+                    return HttpResponse('Wrong Username Password')
+
+            except:
+                return HttpResponse('Wrong Username Password')
+
     def register(self, request):
-        pass
-    
-    
-class ProfileView(object):
-    
-    def __init__(self):
-        pass
-    
-    def profile(self, request):
-        try:
-            user = self.get_user_profile(request)
-            user_profile = User.objects.get(pk=user.id)
-            return render(request, 'colla/profile.html', {'user': user_profile})
-        except:
-            return HttpResponseRedirect('/colla')
+        return render(request, 'colla/signup.html', {})
         
-    def get_user_profile(self, req):
-        verify_request = req.COOKIES
-        session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
-        user = User.objects.get(req_token = session_id)
-        return user
-    
-    def update_profile(self, request):
+    def do_register(self, request):
         try:
-            user_update = User.objects.get(pk=request.POST['user_id'])
-            user_update.username = request.POST['username']
-            user_update.save()
-
-            form_image= ImageUploadForm(request.POST, request.FILES)
-
-            profile_update = Profile.objects.get(user = user_update.id)
-
-            if form_image.is_valid():
-                img = ProfileImage(profile_image=form_image.cleaned_data['image'])
-                img.save()
-
-                try:
-                    self.delete_profile_img(profile_update.profile_pic)
-                except:
-                    pass
-
-                profile_img_update = img.profile_image.url[10:]
-                # prod
-                # profile_img_update = img.profile_image.url[21:]
-                profile_update.profile_pic = profile_img_update
-
-            profile_update.dis_name = request.POST['display_name']
-            profile_update.first_name = request.POST['first_name']
-            profile_update.last_name = request.POST['last_name']
-            profile_update.middle_name = request.POST['middle_name']
-            profile_update.position = request.POST['position']
-            profile_update.company_name = request.POST['company']
-            profile_update.mail_address = request.POST['mail']
-            profile_update.save()
-
-            # update posts, comments, agrees
-            post_update = Post.objects.filter(user = user_update.id)
-            post_update.update(user_dis_name = profile_update.dis_name, user_pic = profile_update.profile_pic)
-
-            for post in post_update:
-                Comment.objects.filter(post = post.id).update(user_name = profile_update.dis_name, user_pic_url = profile_update.profile_pic)
-                Agree.objects.filter(post = post.id).update(user_name = profile_update.dis_name)
-
-            user = self.get_response_profile(user_update, profile_update)
-
-            return HttpResponse(json.dumps(user), content_type = "application/json")
+            new_user = User(
+                username = request.POST['username'],
+                password = request.POST['password']
+            )
+            new_user.save()
+            new_user.profile_set.create(
+                dis_name = request.POST['first_name'],
+                profile_pic = "/static/colla/images/profile_img/av-default.png",
+                first_name = request.POST['first_name'],
+                last_name = request.POST['last_name'],
+                middle_name = request.POST['middle_name'],
+                position = request.POST['position'],
+                company_name = request.POST['company'],
+                mail_address = request.POST['mail']
+            )
+            return HttpResponse('Registered')
         except:    
-            return HttpResponseRedirect('/colla')
-        
-    def get_response_profile(self, user, profile):
-        profile_user = {
-                'id' : user.id,
-                'username' : user.username,
-                'display_name' : profile.dis_name,
-                'first_name' : profile.first_name,
-                'last_name' : profile.last_name,
-                'middle_name' : profile.middle_name,
-                'position' : profile.position,
-                'company' : profile.company_name,
-                'mail' : profile.mail_address,
-                'pic' : profile.profile_pic
-            }
-        
-        return profile_user
-    
-    def connect_facebook(self, request):
-        pass
-    
-    def connect_google(self, request):
-        pass
-    
-    def delete_profile_img(self, img):
-        if img != '/static/colla/images/prof_img/av-default.png':
-            profile_dir = os.getcwd()+'/appstarter'
-            os.remove(profile_dir+img)
+            return HttpResponse('An error')   
+
+    def logout(self, request):
+        author_request = request.COOKIES   
+        session_id = author_request.get('sessionid') or author_request.get('csrftoken')
+        user_state = User.objects.get(req_token = session_id)
+        user_state.log = 'out'
+        user_state.req_token = ''
+        user_state.save()
+        return HttpResponseRedirect('/colla/', {})

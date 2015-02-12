@@ -169,6 +169,7 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
     }).appendTo(chatWriteForm);
 }
 
+//temp
 function writeChatConversation(messageData, rcvr) {
     var chatId = 'contentMsgchat'+rcvr;
     var div = '<div></div>'
@@ -242,6 +243,7 @@ function updateChatMessages() {
             $.get( "get-update-messages", chatIds )
             .done(function( data ) {
                 
+                // write updates
                 for (chatConv in data) {
                     var reciever = $('div[chat_id='+chatConv.chat_id+']').attr('id');
                     $('div[chat_id='+chatConv.chat_id+']').empty();
