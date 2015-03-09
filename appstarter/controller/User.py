@@ -57,9 +57,11 @@ class UserController(object):
                 return HttpResponse('Wrong Username Password')
 
     def register(self, request):
+        
         return render(request, 'colla/signup.html', {})
         
     def do_register(self, request):
+        
         try:
             new_user = User(
                 username = request.POST['username'],
@@ -77,14 +79,17 @@ class UserController(object):
                 mail_address = request.POST['mail']
             )
             return HttpResponse('Registered')
+        
         except:    
             return HttpResponse('An error')   
 
     def logout(self, request):
+        
         author_request = request.COOKIES   
         session_id = author_request.get('sessionid') or author_request.get('csrftoken')
         user_state = User.objects.get(req_token = session_id)
         user_state.log = 'out'
         user_state.req_token = ''
         user_state.save()
+        
         return HttpResponseRedirect('/colla/', {})

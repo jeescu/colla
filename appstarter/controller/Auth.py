@@ -1,42 +1,36 @@
-from appstarter.models import User, Profile, Authentications
-from appstarter.forms import ImageUploadForm
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.http import Http404
-from django.views import generic
-from django.utils import timezone
-import os
-
-import json
+from appstarter.models import User, Authentications
+from appstarter.service.AuthService import AuthService
+from django.http import HttpResponse
 
     
 class AuthController(object):
     
     def __init__(self):
         pass
-    
+
+    @staticmethod
     def facebook_login(self, request):
         session_id = request.GET.get('session')
         
         try:
-            auth_user = Authentications.objects.get(uid = request.GET.get('id'))
+            auth_user = Authentications.objects.get(uid=request.GET.get('id'))
             
             try:
                 # app user
-                user = User.objects.get(pk = auth_user.user_id)
-                self.onLogin(user, session_id)
+                user = User.objects.get(pk=auth_user.user_id)
+                app_auth = AuthService(auth_user, session_id)
+                app_auth.save_auth_token(user)
                 # once user of the app is already connected to fb
                 return
             
             except:
                 # soc user
-                soc_user = User.objects.get(sId = auth_user.uid)
-                self.onLogin(soc_user, session_id)
-                
-                return HttpResponse('')
+                soc_user = User.objects.get(sId=auth_user.uid)
+                facebook_auth = AuthService(auth_user, session_id)
+                facebook_auth.save_auth_token(soc_user)
+                return
             
-        except:
+        except():
             # new soc user
             new_auth_user = Authentications(
                 uid = request.GET.get('id'),
@@ -62,11 +56,7 @@ class AuthController(object):
             )
 
             return HttpResponse('')
-    
+
+    @staticmethod
     def google_login(self, request):
         pass
-    
-    def onLogin(self, user, session):
-        user.log = 'in'
-        user.req_token = session
-        user.save()

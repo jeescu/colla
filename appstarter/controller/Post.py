@@ -21,6 +21,7 @@ class PostController(object):
         post_update = dict()
 
         if request.GET.get('latest') == "None":
+            
             try:
                 # Get fresh post
                 post = Post.objects.all().order_by('-date')[:10]
@@ -29,6 +30,7 @@ class PostController(object):
             except:
                 # No posts
                 post_update['status'] = 'Unavailable'
+                
         else:
             get_client_latest_post = int(request.GET.get('latest'))
             check_post = Post.objects.all().order_by('-date').first()
@@ -48,6 +50,7 @@ class PostController(object):
     def prepare_new_post(self, all_post):
         post = dict()
         count = 0
+        
         for posts in all_post:
             count=count + 1
             
@@ -55,6 +58,7 @@ class PostController(object):
             agreed = dict()
             
             com_count = 1
+            
             for comment in posts.comment():
                 commented[com_count] = {
                     "user_pic_url" : comment.user_pic_url,
@@ -66,13 +70,13 @@ class PostController(object):
                 com_count = com_count+1
             
             agree_count = 1
+            
             for agree in posts.agreed():
                 agreed[agree_count] = {
                     'user_name' :    agree.user_name
                 }
                 
                 agree_count = agree_count+1
-                
                 
             post['post'+str(count)] = {
                 "post_id" : posts.id,
@@ -98,6 +102,7 @@ class PostController(object):
                 
         for posts in all_post:
             count=count + 1
+            
             if posts.id !=  latest_post:
                 post['post'+str(count)] = {
                     "post_id" : posts.id,
@@ -112,6 +117,7 @@ class PostController(object):
                     "agrees" : posts.agrees,
                     "comments" : posts.comments
                 }
+                
             else:
                 break
         
@@ -120,11 +126,13 @@ class PostController(object):
     def get_more_post(self, request):
         post_offset = request.GET.get('offset')
         offset = int(post_offset)
-#        try:
-        more_post = Post.objects.all().order_by('-date')[offset:offset+10]
-        posts = self.prepare_new_post(more_post)
-#        except:
-#            posts = {'status':'no more post'}
+        
+        try:
+            more_post = Post.objects.all().order_by('-date')[offset:offset+10]
+            posts = self.prepare_new_post(more_post)
+            
+        except:
+            posts = {'status':'no more post'}
             
         return HttpResponse(json.dumps(posts), content_type = "application/json")
         
@@ -132,6 +140,7 @@ class PostController(object):
         pass
     
     def add_comment(self, request):
+        
         try:
             post_id = request.POST.get('post_id')
             post_comment = Post.objects.get(pk=post_id)
@@ -144,10 +153,12 @@ class PostController(object):
                 comment = request.POST.get('comment')
             )
             return HttpResponse(json.dumps({'status':'comment saved'}), content_type = "application/json")
+        
         except:
             return HttpResponseRedirect('/colla')
 
     def agree_post(self, request):
+        
         try:
             post_id = request.POST.get('post_id')
             post_name_agreed = request.POST.get('user_name')
@@ -157,6 +168,7 @@ class PostController(object):
             if  post_agree.user_dis_name != post_name_agreed:
                 user_agreed = "Nobody"
                 post_agree_checked = post_agree.agree_set.filter(user_name = post_name_agreed)
+                
                 for post in post_agree_checked:
                     user_agreed = post.user_name
 
@@ -181,6 +193,7 @@ class PostController(object):
             return HttpResponseRedirect('/colla')
 
     def add_post(self, request):
+        
         try:
             post_img = ""
             form = ImageUploadForm(request.POST, request.FILES)
@@ -209,6 +222,7 @@ class PostController(object):
 
             view_posts = {'status' : 'saved', 'image' : post_img }
             return HttpResponse(json.dumps(view_posts), content_type = "application/json")
+        
         except:
             return HttpResponse(json.dumps({'status' : 'error'}), content_type = "application/json")
             return HttpResponseRedirect('/colla')

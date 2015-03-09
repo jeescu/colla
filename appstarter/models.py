@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils import timezone
-import datetime
 import os
 import uuid
     
@@ -82,7 +80,7 @@ class ChatMessage(models.Model):
     date_sent = models.DateTimeField('date sent')
         
     def profile(self):
-        return Profile.Objects.filter(user = user_id)
+        return Profile.Objects.filter(user=self.user_id)
     
 # Groups - A private Collaboration for teams (Page Spec)
 class Group(models.Model):
@@ -113,7 +111,7 @@ def gen_profile_file_name(instance, filename):
     return path+'%s%s' % (uuid.uuid4().hex, ext)
 
 class PostImage(models.Model):
-    post_image = models.ImageField(upload_to = gen_post_file_name)
+    post_image = models.ImageField(upload_to=gen_post_file_name)
 
 class ProfileImage(models.Model):
-    profile_image = models.ImageField(upload_to = gen_profile_file_name)
+    profile_image = models.ImageField(upload_to=gen_profile_file_name)

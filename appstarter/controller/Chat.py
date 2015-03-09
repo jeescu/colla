@@ -28,9 +28,9 @@ class ChatController(object):
         if sender_chat.count() != 0 and reciever_chat.count() != 0:
             cnt_sender = 1
 
-            for chat_from in sender_chat:
-                
+            for chat_from in sender_chat: 
                 cnt_reciever = 1
+                
                 for chat_to in reciever_chat:
                     
                     if chat_from.chat_id == chat_to.chat_id:
@@ -100,7 +100,7 @@ class ChatController(object):
                     
                 cnt_sender += 1
                 
-            return HttpResponse('get their message')
+            return HttpResponse('Get Messages')
         
         # Create new conversation to them
         else:
