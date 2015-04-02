@@ -8,7 +8,6 @@ class AuthController(object):
     def __init__(self):
         pass
 
-    @staticmethod
     def facebook_login(self, request):
         session_id = request.GET.get('session')
         
@@ -30,7 +29,7 @@ class AuthController(object):
                 facebook_auth.save_auth_token(soc_user)
                 return
             
-        except():
+        except:
             # new soc user
             new_auth_user = Authentications(
                 uid = request.GET.get('id'),
@@ -57,6 +56,5 @@ class AuthController(object):
 
             return HttpResponse('')
 
-    @staticmethod
     def google_login(self, request):
         pass
