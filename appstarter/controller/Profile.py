@@ -1,11 +1,7 @@
 from appstarter.models import User, Profile, Post, Comment, Agree, ProfileImage
 from appstarter.forms import ImageUploadForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.http import Http404
-from django.views import generic
-from django.utils import timezone
 import os
 
 import json

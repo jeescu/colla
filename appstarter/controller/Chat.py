@@ -1,12 +1,6 @@
-from appstarter.models import User, Profile, Post, Chat, ChatUser, ChatMessage
-from appstarter.forms import ImageUploadForm
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.http import Http404
-from django.views import generic
+from appstarter.models import Chat, ChatUser, ChatMessage
+from django.http import HttpResponse
 from django.utils import timezone
-import os
 
 import json
 

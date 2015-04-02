@@ -1,13 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from appstarter.models import User, Profile, Post, Comment, Group, GroupUser, Authentications
-from appstarter.models import PostImage
-from appstarter.forms import ImageUploadForm
-from django.http import Http404
-from django.utils import timezone
-    
-import json
+from appstarter.models import User, Post
 
 class UserController(object):
     
