@@ -1,13 +1,59 @@
 from appstarter.models import User, Authentications
 from appstarter.service.AuthService import AuthService
 from django.http import HttpResponse
-
+from django.shortcuts import render
+from appstarter.models import User, Post
     
 class AuthController(object):
     
     def __init__(self):
         pass
 
+    def app_login(self, request):
+
+        if request.method == 'GET':
+            verify_request = request.COOKIES
+            try:
+                # directing uri
+                session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
+                user_state = User.objects.get(req_token = session_id)
+                auth_user = User.objects.get(pk=user_state.id)
+                # active session
+                if user_state.log != 'out':
+
+                    post = Post.objects.all().order_by('-date')[:10]
+                    all_users = User.objects.order_by('username')
+
+                    return render(request,
+                                  'colla/index.html',
+                                  {'auth_user': auth_user, 'post':post, 'users':all_users })
+            except:
+                # log in
+                return render(request, 'colla/login.html', {})
+
+        if request.method == 'POST':
+
+            authen_request = request.COOKIES
+            try:
+                ver_user = User.objects.get(username = request.POST['username'])
+                auth_user = User.objects.get(pk=ver_user.id)
+                if ver_user.password == request.POST['password']:
+                    ver_user.log = 'in'
+                    ver_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
+                    ver_user.save()
+
+                    post = Post.objects.all().order_by('-date')[:10]
+                    all_users = User.objects.order_by('username')
+
+                    return render(request,
+                                  'colla/index.html',
+                                  {'auth_user': auth_user, 'post':post, 'users':all_users})
+                else:
+                    return HttpResponse('Wrong Username Password')
+
+            except:
+                return HttpResponse('Wrong Username Password')
+        
     def facebook_login(self, request):
         session_id = request.GET.get('session')
         

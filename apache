@@ -47,7 +47,7 @@ Deploying to production:
 8) Check permission for your directory must chmod 777
 NOTE: Pasting File/Folder will changed perms, so check wisely
 
-9) Change Switch commented line of codes from 'User' and 'Models'
+9) Change Switch commented line of codes from 'Post' and 'Models'
 NOTE: In production differs the directory path, so it's a must
 
 8) restart apache
