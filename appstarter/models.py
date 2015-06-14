@@ -39,7 +39,7 @@ class Post(models.Model):
     share_type = models.CharField(max_length=50)
     date = models.DateTimeField('date published')
     title = models.CharField(max_length=50)
-    content_text = models.CharField(max_length=500)
+    content_text = models.CharField(max_length=5000)
     content_image = models.CharField(max_length=200)
     content_link = models.CharField(max_length=500)
     agrees = models.IntegerField(default=0)

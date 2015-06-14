@@ -211,6 +211,8 @@ $('#imageUploadForm').on('submit',(function(e) {
             img.src = thumb;
         }
     }
+    
+            console.log(formData);
 
     $.ajax({
         type:'POST',
@@ -223,6 +225,7 @@ $('#imageUploadForm').on('submit',(function(e) {
             newUserPost();
             clearText();
             formPostId = 0;
+            console.log(formData);
             getQuery('#toastPost').show();
         },
         error: function(data){
