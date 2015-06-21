@@ -10,6 +10,7 @@
     content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <link rel="stylesheet" type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'colla/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'colla/css/article.css' %}">
     <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}"></script>
     <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
@@ -52,7 +53,6 @@
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="helpbutton" icon="help"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="explorebutton" icon="explore"></paper-icon-button>
-                <paper-icon-button class="hidden-xs" id="addbutton" icon="add"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="exitbutton" icon="exit-to-app" onClick="logout()"></paper-icon-button>
                 <a href="/colla/profile" class="a-white"><paper-icon-button class="hidden-xs" id="userbutton" icon="account-circle"></paper-icon-button></a>
             </span>
@@ -315,9 +315,29 @@
             </div>
                     
             <div id="fragment-project" class="page-frm hidden">
-                <paper-shadow class="indx-fragment" z="0">
-                    <span>Developers' Articles.</span>
-                </paper-shadow>
+                <!-- cards default layout -->
+                <div class="row">
+                    <!-- do loop here -->
+                    <div class="col-md-6">
+                        <paper-shadow class="article-indx-fragment" z="1">
+                            <a href="">
+                                <div class="article-thumb" style="background-image: url(../static/colla/images/office.jpg);"></div>
+                            </a>
+                            <div class="article-title"><span>A Developers' Article</span></div>
+                            <div class="article-content-preview">
+                                <span>This is a preview of a content</span>
+                                <div class="article-more">
+                                    <paper-icon-button icon="more-vert" onclick="" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>
+                                </div>
+                            </div>
+                            <div class="article-separator"></div>
+                            <div class="article-author">
+                                <span>By: John Edward Escuyos</span>
+                            </div>
+                        </paper-shadow>
+                    </div>
+                    <!-- loop -->
+                </div>
             </div>
                     
             <div id="fragment-monitor" class="page-frm hidden">
@@ -396,7 +416,7 @@
                 
 <!--New Action Buttons-->
         <div id="action-new">
-            <paper-fab id="new-message" class="new-msg" icon="create"></paper-fab>
+            <paper-fab id="new-message" class="new-msg" icon="add"></paper-fab>
         </div>
 <!--Action Button Dialogs-->
         <paper-dialog id="message-dialog" transition="core-transition-center">
