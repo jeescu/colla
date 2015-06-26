@@ -7,7 +7,7 @@
 .article-indx-fragment {
     top: 20px;
     padding: 25px;
-    height: 422px;
+    height: 452px;
     margin-bottom: 20px;
     background: white;
     border-radius: 3px;
@@ -16,7 +16,7 @@
 }
 
 .article-thumb {
-    height: 300px;
+    height: 330px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     margin: -25px;

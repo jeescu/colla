@@ -98,6 +98,6 @@ class ProfileController(object):
     
     def delete_profile_img(self, img):
         
-        if img != '/static/colla/images/prof_img/av-default.png':
+        if img != '/static/colla/images/profile_img/av-default.png':
             profile_dir = os.getcwd()+'/appstarter'
             os.remove(profile_dir+img)
