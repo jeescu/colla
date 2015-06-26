@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'colla/css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'colla/css/article.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'colla/css/forum.css' %}">
     <script src="{% static 'plugin/polymer/components/webcomponentsjs/webcomponents.js' %}"></script>
     <link rel="import" href="{% static 'plugin/polymer/components/font-roboto/roboto.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.html' %}">
@@ -133,7 +134,7 @@
                     </paper-shadow><br/>
                 </div>
 <!--                create-->
-                
+<!-- NEW POST FRAGMENT-->                   
 <!--                user's new post as is-->
                 <div id="new-post" class="new-post-hide">
                     <paper-shadow class="indx-fragment" z="0">
@@ -189,7 +190,7 @@
 <!--                Dynamics here-->
 
 
-
+<!-- POSTS FRAGMENT-->   
 <!--                GET from open window-->
                 {% if post %}
                 {% for user_post in post %}
@@ -313,7 +314,7 @@
                     <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div>
                 </paper-toast>
             </div>
-                    
+<!-- ARTICLE FRAGMENT-->                    
             <div id="fragment-project" class="page-frm hidden">
                 <!-- cards default layout -->
                 <div class="row">
@@ -339,11 +340,25 @@
                     <!-- loop -->
                 </div>
             </div>
-                    
+<!-- FORUMS FRAGMENT-->                       
             <div id="fragment-monitor" class="page-frm hidden">
-                <paper-shadow class="indx-fragment" z="0">
-                    <span>Developers' Forum</span>
+                <!-- loop here -->
+                <paper-shadow class="forum-indx-fragment" z="0">
+                    <div class="row">
+                        <div class="new-frm-av col-xs-2 col-md-1">
+                            <img id="user-post-img" src="/static/colla/images/profile_img/av-default.png">
+                        </div>
+                        <a href="">
+                            <div class="col-xs-8 col-md-9 forum-text-question">
+                                <span>Why we need to do these things repeatedly?</span>
+                            </div>
+                        </a>
+                        <div class="col-xs-1 col-md-2">
+                            <paper-icon-button class="forum-question-state-check" icon="check" onclick="" role="button" tabindex="0" aria-label="check"></paper-icon-button>
+                        </div>
+                    </div>
                 </paper-shadow>
+                <!-- loop -->
             </div>
                     
             <div id="fragment-graph" class="page-frm hidden">
