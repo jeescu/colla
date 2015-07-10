@@ -93,6 +93,10 @@ function writeChatArea(chatUserId, chatUserName, chatRoom) {
         class : 'chat-icon'
     }).appendTo(chatHeadBarForm);
 
+    if (chatUserName.length > 22) {
+        chatUserName = chatUserName.substring(0, 22) + " . .";
+    }
+    
     var chatHeadName = '<span></span>';
     $(chatHeadName).attr({
         class : 'chat-reciever'

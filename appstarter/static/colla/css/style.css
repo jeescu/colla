@@ -202,7 +202,7 @@ paper-item[active] {
 
 .content {
     padding: 20px;
-    color: #546E7A;
+    color: #404040;
 }
 
 .span-shadow {
@@ -377,7 +377,7 @@ paper-fab {
 .frm-name {
     padding-top: 4px;
     font-weight: bold;
-    color:  #455A64;
+    color:  #262626;
     font-size: 15px;
 }
 
@@ -657,7 +657,7 @@ core-drawer-panel:not([narrow]) #navicon {
 }
 
 .sub-color {
-    color: #90A4AE;
+    color: #999;
 }
 
 .tag-panel {
@@ -716,8 +716,8 @@ core-drawer-panel:not([narrow]) #navicon {
 
 .chat-reciever {
     float: left;
-    position: relative;
-    top: 10px;
+    position: absolute;
+    top: 13px;
     left: 43px;
 }
 
