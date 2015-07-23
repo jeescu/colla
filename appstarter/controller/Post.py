@@ -135,7 +135,7 @@ class PostController(object):
     def search(self, request):
         pass
     
-    def add_comment(self, request):
+    def comment_post(self, request):
         
         try:
             post_id = request.POST.get('post_id')
@@ -173,7 +173,7 @@ class PostController(object):
                     return HttpResponse(json.dumps(data),
                                     content_type = "application/json")
                 else:
-                    post_agree.agrees = post_agree.agrees + 1
+                    post_agree.agrees += 1
                     post_agree.save()
                     post_agree.agree_set.create(
                         user_name = post_name_agreed

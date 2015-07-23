@@ -90,12 +90,6 @@ class ProfileController(object):
         profile_user = {}
         return profile_user
     
-    def connect_facebook(self, request):
-        pass
-    
-    def connect_google(self, request):
-        pass
-    
     def delete_profile_img(self, img):
         
         if img != '/static/colla/images/profile_img/av-default.png':

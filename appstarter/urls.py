@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^more-post/$', Post.PostController().get_more_post, name='more_post'),
                      
     # Agree and Comment                   
-    url(r'^new-comment/$', Post.PostController().add_comment, name='new_comment'),
+    url(r'^new-comment/$', Post.PostController().comment_post, name='new_comment'),
     url(r'^new-agree/$', Post.PostController().agree_post, name='agree_post'),
     
     # Chat                   

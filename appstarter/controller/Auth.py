@@ -37,8 +37,13 @@ class AuthController(object):
             try:
                 ver_user = User.objects.get(username = request.POST['username'])
                 auth_user = User.objects.get(pk=ver_user.id)
+
+                print ver_user.password
+                print request.POST['password']
+
                 if ver_user.password == request.POST['password']:
                     ver_user.log = 'in'
+                    print "tokening..."
                     ver_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
                     ver_user.save()
 
@@ -51,7 +56,8 @@ class AuthController(object):
                 else:
                     return HttpResponse('Wrong Username Password')
 
-            except:
+            except Exception as e:
+                print e
                 return HttpResponse('Wrong Username Password')
         
     def facebook_login(self, request):

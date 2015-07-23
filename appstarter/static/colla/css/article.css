@@ -10,15 +10,15 @@
     height: 452px;
     margin-bottom: 20px;
     background: white;
-    border-radius: 3px;
+    border-radius: 1px;
     box-shadow: 0px 1px 1px -1px #CFD8DC;
     border: 1px solid #F8F8F8;
 }
 
 .article-thumb {
     height: 330px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
     margin: -25px;
     background-size: cover;
 }

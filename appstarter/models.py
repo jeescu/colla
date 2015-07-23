@@ -46,10 +46,10 @@ class Post(models.Model):
     comments = models.IntegerField(default=0)
 
     def comment(self):
-        return Comment.objects.filter(post = self.id)
+        return Comment.objects.filter(post=self.id)
     
     def agreed(self):
-        return Agree.objects.filter(post = self.id)
+        return Agree.objects.filter(post=self.id)
     
 class Agree(models.Model):
     post = models.ForeignKey(Post)
@@ -61,6 +61,39 @@ class Comment(models.Model):
     user_name = models.CharField(max_length=50)
     comment_date = models.DateTimeField('date published')
     comment = models.CharField(max_length=500)
+
+# Developers article
+class Article(models.Model):
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=50)
+    content = models.CharField(max_length=800)
+# QA
+class Forum(models.Model):
+    user = models.ForeignKey(User)
+    question = models.CharField(max_length=500)
+    detail = models.CharField(max_length=1000)
+    mark_answered = models.IntegerField(default=0)
+
+class ForumComments(models.Model):
+    user = models.ForeignKey(User)
+    comment = models.CharField(max_length=2000)
+    mark_resolved = models.IntegerField(default=0)
+
+class Issue(models.Model):
+    user = models.ForeignKey(User)
+    detail = models.CharField(max_length=1000)
+    issue_type = models.CharField(max_length=50)
+    error_message = models.CharField(max_length=1500)
+    code_preview = models.CharField(max_length=1000)
+
+class IssueComments(models.Model):
+    user = models.ForeignKey(User)
+    comment = models.CharField(max_length=2000)
+
+class Resources(models.Model):
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=100)
+    link = models.CharField(max_length=200)
 
 # Messenger
 class Chat(models.Model):

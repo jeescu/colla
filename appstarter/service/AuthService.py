@@ -13,13 +13,12 @@ class AuthService(object):
     def get_auth_token(self):
         return self.__token
 
-    def save_auth_token(self, new_auth):
-        new_auth.log = "in"
-        new_auth.req_token = self.__token
-        new_auth.save()
+    def save_auth_token(self, user):
+        user.log = "in"
+        user.req_token = self.__token
+        user.save()
 
-
-    def authenticated(self):
+    def is_authenticated(self):
         try:
             check_token = Authentications.objects.get(uid=self.token)
             return (check_token.user_id == self.__user_id)

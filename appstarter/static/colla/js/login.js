@@ -43,10 +43,11 @@ function verifyAuth(data, url) {
         data: data,
         success:function(data) {
             console.debug(data);
+            console.log("redirecting...")
             window.location.href = '';
         },
         error: function(data) {
-            console.error("error");
+            window.location.href = '';
         }
     });
 }
