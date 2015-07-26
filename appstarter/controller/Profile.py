@@ -22,10 +22,11 @@ class ProfileController(object):
         except:
             return HttpResponseRedirect('/colla')
         
-    def get_profile(self, req): 
+    def get_profile(self, req):
+
         verify_request = req.COOKIES
         session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
-        user = User.objects.get(req_token = session_id) 
+        user = User.objects.get(req_token=session_id)
         return user
     
     def update_profile(self, request):
@@ -37,7 +38,7 @@ class ProfileController(object):
 
             form_image= ImageUploadForm(request.POST, request.FILES)
 
-            profile_update = Profile.objects.get(user = user_update.id)
+            profile_update = Profile.objects.get(user=user_update.id)
 
             if form_image.is_valid():
                 
@@ -56,39 +57,34 @@ class ProfileController(object):
                 profile_update.profile_pic = profile_img_update
 
             profile_update.dis_name = request.POST['display_name']
-            
             profile_update.first_name = request.POST['first_name']
-            
             profile_update.last_name = request.POST['last_name']
-            
             profile_update.middle_name = request.POST['middle_name']
-            
             profile_update.position = request.POST['position']
-            
             profile_update.company_name = request.POST['company']
-            
             profile_update.mail_address = request.POST['mail']
             
             profile_update.save()
 
             # update posts, comments, agrees
-            post_update = Post.objects.filter(user = user_update.id)
-            post_update.update(user_dis_name = profile_update.dis_name, user_pic = profile_update.profile_pic)
+            post_update = Post.objects.filter(user=user_update.id)
+            post_update.update(user_dis_name=profile_update.dis_name, user_pic=profile_update.profile_pic)
 
             for post in post_update:
-                Comment.objects.filter(post = post.id).update(user_name = profile_update.dis_name, user_pic_url = profile_update.profile_pic)
-                Agree.objects.filter(post = post.id).update(user_name = profile_update.dis_name)
+                Comment.objects.filter(post=post.id).update(
+                    user_name=profile_update.dis_name,
+                    user_pic_url=profile_update.profile_pic
+                )
 
-            user = self.get_response_profile(user_update, profile_update)
+                Agree.objects.filter(post=post.id).update(
+                    user_name=profile_update.dis_name
+                )
 
-            return HttpResponse(json.dumps(user), content_type = "application/json")
+            return None
         
-        except:    
+        except Exception as e:
+            print e
             return HttpResponseRedirect('/colla')
-        
-    def get_response_profile(self, user, profile):
-        profile_user = {}
-        return profile_user
     
     def delete_profile_img(self, img):
         

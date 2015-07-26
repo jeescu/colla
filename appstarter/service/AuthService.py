@@ -1,6 +1,5 @@
-__author__ = 'john'
+from appstarter.models import Authentication
 
-from appstarter.models import Authentications
 
 class AuthService(object):
     __user_id = 0
@@ -13,14 +12,18 @@ class AuthService(object):
     def get_auth_token(self):
         return self.__token
 
-    def save_auth_token(self, user):
-        user.log = "in"
-        user.req_token = self.__token
-        user.save()
+    def set_auth_token(self, auth):
+        self.__token = auth.access_token
+        self.__user_id = auth.user_id
+
+    # @TODO: put username, password auth here
+    def authenticate(self, request):
+        pass
 
     def is_authenticated(self):
-        try:
-            check_token = Authentications.objects.get(uid=self.token)
-            return (check_token.user_id == self.__user_id)
-        except:
+        check_token = Authentication.objects.get(access_token=self.__token)
+
+        if check_token is not None:
+            return check_token.user_id == self.__user_id
+        else:
             return False

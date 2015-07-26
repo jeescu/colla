@@ -1,9 +1,10 @@
-from appstarter.models import User, Authentications
-from appstarter.service.AuthService import AuthService
+from appstarter.models import Authentication
 from django.http import HttpResponse
 from django.shortcuts import render
 from appstarter.models import User, Post
-    
+import datetime
+
+# @TODO: Please move auth logic to authService
 class AuthController(object):
     
     def __init__(self):
@@ -16,43 +17,46 @@ class AuthController(object):
             try:
                 # directing uri
                 session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
-                user_state = User.objects.get(req_token = session_id)
-                auth_user = User.objects.get(pk=user_state.id)
+                authentication = Authentication.objects.get(access_token=session_id)
+                auth_user = User.objects.get(pk=authentication.user_id)
                 # active session
-                if user_state.log != 'out':
-
+                if authentication.expires < datetime.datetime.now():
                     post = Post.objects.all().order_by('-date')[:10]
                     all_users = User.objects.order_by('username')
 
-                    return render(request,
-                                  'colla/index.html',
-                                  {'auth_user': auth_user, 'post':post, 'users':all_users })
-            except:
+                    return render(request, 'colla/index.html',
+                                  {'auth_user': auth_user, 'post': post, 'users': all_users})
+
+                else:
+                    raise Exception("Expired token")
+
+            except Exception as e:
                 # log in
+                print e
                 return render(request, 'colla/login.html', {})
 
         if request.method == 'POST':
 
-            authen_request = request.COOKIES
+            request_cookie = request.COOKIES
             try:
-                ver_user = User.objects.get(username = request.POST['username'])
-                auth_user = User.objects.get(pk=ver_user.id)
+                verified_user = User.objects.get(username=request.POST['username'])
+                auth_user = User.objects.get(pk=verified_user.id)
 
-                print ver_user.password
-                print request.POST['password']
+                if verified_user.password == request.POST['password']:
+                    session_token = request_cookie.get('sessionid') or request_cookie.get('csrftoken')
 
-                if ver_user.password == request.POST['password']:
-                    ver_user.log = 'in'
-                    print "tokening..."
-                    ver_user.req_token = authen_request.get('sessionid') or authen_request.get('csrftoken')
-                    ver_user.save()
+                    authenticated_user = Authentication(
+                        user_id=verified_user.id,
+                        access_token=session_token,
+                        expired_at=datetime.datetime.now()
+                    )
+                    authenticated_user.save()
 
                     post = Post.objects.all().order_by('-date')[:10]
                     all_users = User.objects.order_by('username')
 
-                    return render(request,
-                                  'colla/index.html',
-                                  {'auth_user': auth_user, 'post':post, 'users':all_users})
+                    return render(request, 'colla/index.html',
+                                  {'auth_user': auth_user, 'post': post, 'users': all_users})
                 else:
                     return HttpResponse('Wrong Username Password')
 
@@ -61,52 +65,40 @@ class AuthController(object):
                 return HttpResponse('Wrong Username Password')
         
     def facebook_login(self, request):
-        session_id = request.GET.get('session')
+
+        request_cookie = request.COOKIES
+        session_token = request_cookie.get('sessionid') or request_cookie.get('csrftoken')
         
         try:
-            auth_user = Authentications.objects.get(uid=request.GET.get('id'))
-            
-            try:
-                # app user
-                user = User.objects.get(pk=auth_user.user_id)
-                app_auth = AuthService(auth_user, session_id)
-                app_auth.save_auth_token(user)
-                # once user of the app is already connected to fb
+            auth_user = Authentication.objects.get(provider_user_id=request.GET.get('id'))
+
+            if auth_user is not None:
                 return
-            
-            except:
-                # soc user
-                soc_user = User.objects.get(sId=auth_user.uid)
-                facebook_auth = AuthService(auth_user, session_id)
-                facebook_auth.save_auth_token(soc_user)
-                return
-            
-        except:
-            # new soc user
-            new_auth_user = Authentications(
-                uid = request.GET.get('id'),
-                provider = request.GET.get('provider'),
-                access_token = request.GET.get('accessToken')
-            )
 
-            new_auth_user.save()
+            else:
+                # new soc user
+                new_auth_user = Authentication(
+                    provider=request.GET.get('provider'),
+                    provider_user_id=request.GET.get('id'),
+                    access_token=session_token,
+                    expired_at=datetime.datetime.now()
+                )
 
-            new_social_user = User(
-                sId = request.GET.get('id'),
-                log = 'in',
-                req_token = session_id
-            )
+                new_auth_user.save()
 
-            new_social_user.save()
+                new_social_user = User()
+                new_social_user.profile_set.create(
+                    dis_name=request.GET.get('name'),
+                    first_name=request.GET.get('first_name'),
+                    last_name=request.GET.get('last_name'),
+                    profile_pic='http://graph.facebook.com/'+request.GET.get('id')+'/picture?type=large'
+                )
 
-            new_social_user.profile_set.create(
-                dis_name = request.GET.get('name'),
-                first_name = request.GET.get('first_name'),
-                last_name = request.GET.get('last_name'),
-                profile_pic = 'http://graph.facebook.com/'+request.GET.get('id')+'/picture?type=large'
-            )
+                return HttpResponse('')
 
-            return HttpResponse('')
+        except Exception as e:
+            print e
+            return
 
     def google_login(self, request):
         pass
