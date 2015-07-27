@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from appstarter.models import User, Authentication
-from appstarter.controller import Auth
+from appstarter.controller import AuthController
+from appstarter.service import AuthService
 
 
 class UserController(object):
+
+    def __init__(self):
+        pass
     
     def login(self, request):
 
-        login = Auth.AuthController()
+        login = AuthController.AuthController()
         return login.app_login(request)
 
     def register(self, request):
@@ -41,10 +45,6 @@ class UserController(object):
             return HttpResponse('An error')   
 
     def logout(self, request):
-        
-        author_request = request.COOKIES   
-        session_id = author_request.get('sessionid') or author_request.get('csrftoken')
-        auth_user = Authentication.objects.get(access_token=session_id)
-        auth_user.delete()
-        
+        auth_service = AuthService.AuthService()
+        auth_service.end_session(request)
         return HttpResponseRedirect('/colla/', {})

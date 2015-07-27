@@ -1,7 +1,8 @@
-from appstarter.models import User, Profile, Post, Comment, Agree, ProfileImage
+from appstarter.models import User, Profile, Post, Comment, Agree, ProfileImage, Authentication
 from appstarter.forms import ImageUploadForm
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from appstarter.service import AuthService
 import os
 
 import json
@@ -14,20 +15,21 @@ class ProfileController(object):
     def profile(self, request):
         
         try:
-            user = self.get_profile(request)
-            user_profile = User.objects.get(pk=user.id)
+            auth = self.get_profile(request)
+            user_profile = User.objects.get(pk=auth.user_id)
             
             return render(request, 'colla/profile.html', {'user': user_profile})
         
-        except:
+        except Exception as e:
+            print e
             return HttpResponseRedirect('/colla')
         
     def get_profile(self, req):
 
         verify_request = req.COOKIES
         session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
-        user = User.objects.get(req_token=session_id)
-        return user
+        auth = Authentication.objects.get(access_token=session_id)
+        return auth
     
     def update_profile(self, request):
         

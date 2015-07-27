@@ -1,13 +1,10 @@
 from appstarter.models import Authentication
-
+from django.utils import timezone
 
 class AuthService(object):
-    __user_id = 0
-    __token = ""
 
-    def __init__(self, id, token):
-        self.__user_id = id
-        self.__token = token
+    def __init__(self):
+        pass
 
     def get_auth_token(self):
         return self.__token
@@ -20,10 +17,17 @@ class AuthService(object):
     def authenticate(self, request):
         pass
 
-    def is_authenticated(self):
+    def is_authenticated(self, ):
         check_token = Authentication.objects.get(access_token=self.__token)
 
         if check_token is not None:
-            return check_token.user_id == self.__user_id
-        else:
-            return False
+            if check_token.expired_at > timezone.now():
+                return check_token.user_id == self.__user_id
+
+        return False
+
+    def end_session(self, request):
+        author_request = request.COOKIES
+        session_id = author_request.get('sessionid') or author_request.get('csrftoken')
+        auth_user = Authentication.objects.get(access_token=session_id)
+        auth_user.delete()

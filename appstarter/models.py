@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 import os
 import uuid
 
@@ -17,7 +18,7 @@ class Authentication(models.Model):
     provider = models.CharField(max_length=50)
     provider_user_id = models.CharField(max_length=200)
     access_token = models.CharField(max_length=1000)
-    expired_at = models.DateTimeField()
+    expired_at = models.DateTimeField('expired_date')
 
 
 class Profile(models.Model):
@@ -61,7 +62,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post)
     user_pic_url = models.CharField(max_length=200)
     user_name = models.CharField(max_length=50)
-    comment_date = models.DateTimeField('date published')
+    comment_date = models.DateTimeField(default=datetime.now())
     comment = models.CharField(max_length=500)
 
 
