@@ -7,7 +7,7 @@ import uuid
 class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=200)
-    user_fullname = models.CharField(max_length=100)
+    fullname = models.CharField(max_length=100)
 
     def profile(self):
         return Profile.objects.filter(user=self.id)
@@ -15,8 +15,8 @@ class User(models.Model):
 
 class Authentication(models.Model):
     user_id = models.IntegerField(default=0)
-    provider = models.CharField(max_length=50)
-    provider_user_id = models.CharField(max_length=200)
+    provider = models.CharField(max_length=50, null=True)
+    provider_user_id = models.CharField(max_length=200, null=True)
     access_token = models.CharField(max_length=1000)
     expired_at = models.DateTimeField('expired_date')
 
@@ -143,7 +143,7 @@ class GroupUser(models.Model):
     group_joined_user_id = models.IntegerField(default=0)
     group_joined_date = models.DateTimeField('date published')
 
-
+# @TODO: Please resolve this
 def gen_post_file_name(instance, filename):
     # prod
     # path = 'ProStarter/appstarter/static/colla/images/post_img/'

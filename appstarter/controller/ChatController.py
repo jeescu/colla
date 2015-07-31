@@ -1,6 +1,6 @@
 from appstarter.models import Chat, ChatUser, ChatMessage
-from django.http import HttpResponse
 from django.utils import timezone
+from appstarter.utils import ResponseParcel
 
 import json
 
@@ -10,22 +10,23 @@ class ChatController(object):
         pass
     
     def get_message(self, request):
+        response = ResponseParcel.ResponseParcel()
         sender = request.GET.get('sender')
-        reciever = request.GET.get('reciever')
+        receiver = request.GET.get('reciever')
         
         sender_chat = ChatUser.objects.filter(user_id = sender)
-        reciever_chat = ChatUser.objects.filter(user_id = reciever)
+        receiver_chat = ChatUser.objects.filter(user_id = receiver)
         
         messages = dict()
         
         # check if they had conversations
-        if sender_chat.count() != 0 and reciever_chat.count() != 0:
+        if sender_chat.count() != 0 and receiver_chat.count() != 0:
             cnt_sender = 1
 
             for chat_from in sender_chat: 
-                cnt_reciever = 1
+                cnt_receiver = 1
                 
-                for chat_to in reciever_chat:
+                for chat_to in receiver_chat:
                     
                     if chat_from.chat_id == chat_to.chat_id:
                         
@@ -39,37 +40,39 @@ class ChatController(object):
                         
                         if sender_chat.count() == cnt_sender:
 
-                            if reciever_chat.count() == cnt_reciever:
+                            if receiver_chat.count() == cnt_receiver:
 
                                 # They had no conversations
                                 break
                             
-                    cnt_reciever += 1
+                    cnt_receiver += 1
                     
                 cnt_sender += 1
-                
-        return HttpResponse(json.dumps(messages), content_type = "application/json")
+
+        response.set_data(messages)
+        return response.data_to_json()
     
     def get_update_message(self, request):
         pass
     
     def new_message(self, request):
+        response = ResponseParcel.ResponseParcel()
         sender = request.POST.get('sender')
-        reciever = request.POST.get('reciever')
+        receiver = request.POST.get('reciever')
         message = request.POST.get('message')
         
-        sender_chat = ChatUser.objects.filter(user_id = sender)
-        reciever_chat = ChatUser.objects.filter(user_id = reciever)
+        sender_chat = ChatUser.objects.filter(user_id=sender)
+        receiver_chat = ChatUser.objects.filter(user_id=receiver)
         
         # check if they had conversations
-        if sender_chat.count() != 0 and reciever_chat.count() != 0:
+        if sender_chat.count() != 0 and receiver_chat.count() != 0:
             cnt_sender = 1
             check_add = 0
             
             for chat_from in sender_chat:
                 
-                cnt_reciever = 1
-                for chat_to in reciever_chat:
+                cnt_receiver = 1
+                for chat_to in receiver_chat:
                     
                     if chat_from.chat_id == chat_to.chat_id:
                         
@@ -83,53 +86,53 @@ class ChatController(object):
                         
                         if sender_chat.count() == cnt_sender:
 
-                            if reciever_chat.count() == cnt_reciever and check_add == 0:
+                            if receiver_chat.count() == cnt_receiver and check_add == 0:
 
                                 # They had no conversations
-                                self.create_chat_conversation(sender, reciever, message)
+                                self.create_chat_conversation(sender, receiver, message)
                                 check_add = 0
                                 break
                             
-                    cnt_reciever += 1
+                    cnt_receiver += 1
                     
                 cnt_sender += 1
-                
-            return HttpResponse('Get Messages')
+
+            response.set_message('Get Messages')
+            return response.to_json()
         
         # Create new conversation to them
         else:
-            self.create_chat_conversation(sender, reciever, message)
-            return HttpResponse('get their new born chat')  
-#            return HttpResponse(json.dumps({'status': sender_chat.count()}), content_type = "application/json")
-    
-    
-    def create_chat_conversation(self, sender, reciever, msg):
-        users = [sender, reciever]
+            self.create_chat_conversation(sender, receiver, message)
+            response.set_message('get their new born chat')
+            return response.to_json()
+
+    def create_chat_conversation(self, sender, receiver, msg):
+        users = [sender, receiver]
         
-        chat = Chat(date_activated = timezone.now())
+        chat = Chat(date_activated=timezone.now())
         chat.save()
         
         # add users to a chat
         for chat_user in users:
             chat.chatuser_set.create(
-                user_id = chat_user
+                user_id=chat_user
             )
         
         # add message their chat
         chat.chatmessage_set.create(
-            user_id = sender,
-            message = msg,
-            date_sent = timezone.now()
+            user_id=sender,
+            message=msg,
+            date_sent=timezone.now()
         )
     
     def add_message(self, sender, msg, chat_id):
-        chat = Chat.objects.get(pk = chat_id)
+        chat = Chat.objects.get(pk=chat_id)
         
         # add message to their chat
         chat.chatmessage_set.create(
-            user_id = sender,
-            message = msg,
-            date_sent = timezone.now()
+            user_id=sender,
+            message=msg,
+            date_sent=timezone.now()
         )
         
     def prepare_message(self, msg):
@@ -137,10 +140,10 @@ class ChatController(object):
         count = 0
         
         for message in msg:
-            count=count + 1
+            count += 1
             messages[str(count)] = {
-                "user_id" : message.user_id,
-                "message" : message.message
+                "user_id": message.user_id,
+                "message": message.message
             }
             messages['chat_id'] = message.chat_id
             

@@ -41,7 +41,7 @@
         <paper-icon-button id="navicon" onclick="history.back();" icon="arrow-back"></paper-icon-button>
         <span flex>Registration</span>
     </core-toolbar>
-    <span class="col-xs-12 col-md-6 col-md-offset-3">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
         <paper-shadow z="1" id="form-register">
             <form id="registerForm" method="post">
             {% csrf_token %}
@@ -88,7 +88,11 @@
             <p><b>Reqistration Successful</b></p>
             <p>You may login to continue using the app</p>
         </paper-dialog>
-    </span>
+        <paper-dialog id="error-dialog" transition="core-transition-center">
+            <p><b>Reqistration Failed</b></p>
+            <p>Invalid Inputs</p>
+        </paper-dialog>
+    </div>
 </core-header-panel>
 
     <button onclick="tog()" val="swswsw"></button>

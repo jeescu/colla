@@ -1,35 +1,39 @@
 from django.conf.urls import patterns, url
 from appstarter.controller import UserController, PostController, ProfileController, AuthController, ChatController
 
+user = UserController.UserController()
+auth = AuthController.AuthController()
+post = PostController.PostController()
+chat = ChatController.ChatController()
+profile = ProfileController.ProfileController()
+
 urlpatterns = patterns('',
+    # user
+    url(r'^$', user.login, name='index'),
+    url(r'^signup/$', user.register, name='signup'),
+    url(r'^register/', user.do_register, name='register'),
+    url(r'^dashboard/$', user.index, name='home'),
+    url(r'^logout', user.logout, name='logout'),
     
-    # Login and Signup
-    url(r'^$', UserController.UserController().login, name='login'),
-    url(r'^signup/$', UserController.UserController().register, name='signup'),
-    url(r'^register/', UserController.UserController().do_register, name='register'),
-    
-    # Authentications
-    url(r'^login/facebook/$', AuthController.AuthController().facebook_login, name='facebook_login'),
-    url(r'^login/google/$', AuthController.AuthController().google_login, name='google_login'),
+    # social login
+    url(r'^login/facebook/$', auth.facebook_login, name='facebook_login'),
+    url(r'^login/google/$', auth.google_login, name='google_login'),
                        
-    # Home and Post                   
-    url(r'^dashboard/$', PostController.PostController().get, name='home'),
-    url(r'^new-post/$', PostController.PostController().add_post, name='new_post'),
-    url(r'^update-post/$', PostController.PostController().get_new_post, name='update_post'),
-    url(r'^more-post/$', PostController.PostController().get_more_post, name='more_post'),
+    # Post
+    url(r'^new-post/$', post.add_post, name='new_post'),
+    url(r'^update-post/$', post.get_new_post, name='update_post'),
+    url(r'^more-post/$', post.get_more_post, name='more_post'),
                      
     # Agree and Comment                   
-    url(r'^new-comment/$', PostController.PostController().comment_post, name='new_comment'),
-    url(r'^new-agree/$', PostController.PostController().agree_post, name='agree_post'),
+    url(r'^new-comment/$', post.comment_post, name='new_comment'),
+    url(r'^new-agree/$', post.agree_post, name='agree_post'),
     
     # Chat                   
-    url(r'^new-message/$', ChatController.ChatController().new_message, name='new_message'),
-    url(r'^get-messages/$', ChatController.ChatController().get_message, name='get_message'),
-    url(r'^get-update-messages/$', ChatController.ChatController().get_update_message, name='get_update_message'),
+    url(r'^new-message/$', chat.new_message, name='new_message'),
+    url(r'^get-messages/$', chat.get_message, name='get_message'),
+    url(r'^get-update-messages/$', chat.get_update_message, name='get_update_message'),
     
     # Profile
-    url(r'^profile/$', ProfileController.ProfileController().profile, name='profile'),
-    url(r'^profile/update-profile/$', ProfileController.ProfileController().update_profile, name='update_profile'),
-    
-    url(r'^logout', UserController.UserController().logout, name='logout'),
+    url(r'^profile/$', profile.profile, name='profile'),
+    url(r'^profile/update-profile/$', profile.update_profile, name='update_profile'),
 )

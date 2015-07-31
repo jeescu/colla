@@ -1,11 +1,7 @@
 from appstarter.models import User, Profile, Post, Comment, Agree, ProfileImage, Authentication
 from appstarter.forms import ImageUploadForm
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from appstarter.service import AuthService
+from appstarter.utils import ResponseParcel
 import os
-
-import json
     
 class ProfileController(object):
     
@@ -13,16 +9,20 @@ class ProfileController(object):
         pass
     
     def profile(self, request):
+        response = ResponseParcel.ResponseParcel()
         
         try:
             auth = self.get_profile(request)
             user_profile = User.objects.get(pk=auth.user_id)
-            
-            return render(request, 'colla/profile.html', {'user': user_profile})
+
+            response.set_uri('colla/profile.html')
+            response.set_data({'user': user_profile})
+            return response.render(request)
         
         except Exception as e:
             print e
-            return HttpResponseRedirect('/colla')
+            response.set_uri('/colla')
+            return response.redirect()
         
     def get_profile(self, req):
 
@@ -32,7 +32,8 @@ class ProfileController(object):
         return auth
     
     def update_profile(self, request):
-        
+        response = ResponseParcel.ResponseParcel()
+
         try:
             user_update = User.objects.get(pk=request.POST['user_id'])
             user_update.username = request.POST['username']
@@ -86,7 +87,8 @@ class ProfileController(object):
         
         except Exception as e:
             print e
-            return HttpResponseRedirect('/colla')
+            response.set_uri('/colla')
+            return response.redirect()
     
     def delete_profile_img(self, img):
         

@@ -1,4 +1,5 @@
 var successDialog = document.getElementById('success-dialog');
+var errorDialog = document.getElementById('error-dialog');
 
 $('#registerForm').on('submit', (function(e) {
     e.preventDefault();
@@ -12,8 +13,11 @@ $('#registerForm').on('submit', (function(e) {
         contentType: false,
         processData: false,
         success: function (data) {
-            console.info('Registered');
-            successDialog.toggle();
+            if (!data.error) {
+                successDialog.toggle();
+            } else {
+                errorDialog.toggle();
+            }
         },
         error: function (ts) {
             console.log(ts);

@@ -1,10 +1,9 @@
-from appstarter import config
-from django.http import HttpResponse
 from django.shortcuts import render
 from appstarter.models import User, Post, Authentication
-from appstarter.service import AuthService
-from datetime import timedelta
+from appstarter.services import AuthService
 from django.utils import timezone
+from appstarter.utils import ResponseParcel
+
 
 # @TODO: Please move auth logic to authService
 class AuthController(object):
@@ -13,7 +12,8 @@ class AuthController(object):
         pass
 
     def app_login(self, request):
-        app_config = config
+        response = ResponseParcel.ResponseParcel()
+        auth_service = AuthService.AuthService(request)
         now = timezone.localtime(timezone.now())
 
         if request.method == 'GET':
@@ -23,62 +23,55 @@ class AuthController(object):
                 session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
                 authentication = Authentication.objects.get(access_token=session_id)
                 auth_user = User.objects.get(pk=authentication.user_id)
-                # active session
-                print authentication.expired_at
-                print now
 
+                # active session
                 if authentication.expired_at > now:
                     post = Post.objects.all().order_by('-date')[:10]
                     all_users = User.objects.order_by('username')
 
-                    return render(request, 'colla/index.html',
-                                  {'auth_user': auth_user, 'post': post, 'users': all_users})
+                    response.set_data({'auth_user': auth_user, 'post': post, 'users': all_users})
+                    response.set_uri('colla/index.html')
+                    return response.render(request)
 
                 else:
-                    auth_service = AuthService.AuthService()
-                    auth_service.end_session(request)
+                    auth_service.end_session()
                     raise Exception("Expired token")
 
             except Exception as e:
-                # log in
                 print e
-                return render(request, 'colla/login.html', {})
+                response.set_uri('colla/login.html')
+                return response.render(request)
 
         if request.method == 'POST':
-
-            request_cookie = request.COOKIES
             try:
                 verified_user = User.objects.get(username=request.POST['username'])
                 auth_user = User.objects.get(pk=verified_user.id)
 
                 if verified_user.password == request.POST['password']:
-                    session_token = request_cookie.get('sessionid') or request_cookie.get('csrftoken')
-
-                    authenticated_user = Authentication(
-                        user_id=verified_user.id,
-                        access_token=session_token,
-                        expired_at=now+timedelta(hours=app_config.expires)
-                    )
-                    authenticated_user.save()
+                    auth_service.set_user(auth_user)
+                    auth_service.add_session()
 
                     post = Post.objects.all().order_by('-date')[:10]
                     all_users = User.objects.order_by('username')
 
-                    return render(request, 'colla/index.html',
-                                  {'auth_user': auth_user, 'post': post, 'users': all_users})
+                    response.set_uri('colla/index.html')
+                    response.set_data({'auth_user': auth_user, 'post': post, 'users': all_users})
+                    return response.render(request)
+
                 else:
-                    return HttpResponse('Wrong Username Password')
+                    response.error()
+                    response.set_message('Wrong Username Password')
+                    return response.to_json()
 
             except Exception as e:
                 print e
-                return HttpResponse('Wrong Username Password')
+                response.error()
+                response.set_message('Wrong Username Password')
+                return response.to_json()
         
     def facebook_login(self, request):
-        app_config = config
-        now = timezone.localtime(timezone.now())
-
-        request_cookie = request.COOKIES
-        session_token = request_cookie.get('sessionid') or request_cookie.get('csrftoken')
+        response = ResponseParcel.ResponseParcel()
+        auth_service = AuthService.AuthService(request)
         
         try:
 
@@ -101,21 +94,16 @@ class AuthController(object):
                     profile_pic='http://graph.facebook.com/'+request.GET.get('id')+'/picture?type=large'
                 )
 
-                new_auth_user = Authentication(
-                    user_id=new_social_user.id,
-                    provider=request.GET.get('provider'),
-                    provider_user_id=request.GET.get('id'),
-                    access_token=session_token,
-                    expired_at=now + timedelta(hours=app_config.expires)
-                )
+                auth_service.set_user(new_social_user)
+                auth_service.add_session()
 
-                new_auth_user.save()
-
-                return HttpResponse('')
+                response.set_message('Success')
+                return response.to_json()
 
         except Exception as e:
             print e
-            return
+            response.error()
+            return response.to_json()
 
     def google_login(self, request):
         pass

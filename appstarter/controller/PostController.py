@@ -2,8 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from appstarter.models import User, Post, PostImage
 from appstarter.forms import ImageUploadForm
 from django.utils import timezone
-
-import json
+from appstarter.utils import ResponseParcel
 
 
 class PostController(object):
@@ -11,10 +10,8 @@ class PostController(object):
     def __init__(self):
         pass
     
-    def get(self, request):
-        return HttpResponseRedirect('/colla/', {})
-    
     def get_new_post(self, request):
+        response = ResponseParcel.ResponseParcel()
         post_update = dict()
 
         if request.GET.get('latest') == "None":
@@ -41,8 +38,9 @@ class PostController(object):
                 get_update = Post.objects.all().order_by('-date')
                
                 post_update = self.get_update_post(get_update, get_client_latest_post)
-                
-        return HttpResponse(json.dumps(post_update), content_type="application/json")
+
+        response.set_data(post_update)
+        return response.data_to_json()
     
     def prepare_new_post(self, all_post):
         post = dict()
@@ -121,6 +119,7 @@ class PostController(object):
         return post
     
     def get_more_post(self, request):
+        response = ResponseParcel.ResponseParcel()
         post_offset = request.GET.get('offset')
         offset = int(post_offset)
         
@@ -131,14 +130,15 @@ class PostController(object):
         except Exception as e:
             print e
             posts = {'status': 'no more post'}
-            
-        return HttpResponse(json.dumps(posts), content_type="application/json")
+
+        response.set_data(posts)
+        return response.data_to_json()
         
     def search(self, request):
         pass
     
     def comment_post(self, request):
-        
+        response = ResponseParcel.ResponseParcel()
         try:
             post_id = request.POST.get('post_id')
             post_comment = Post.objects.get(pk=post_id)
@@ -150,14 +150,16 @@ class PostController(object):
                 comment_date=timezone.now(),
                 comment=request.POST.get('comment')
             )
-            return HttpResponse(json.dumps({'status': 'comment saved'}), content_type="application/json")
+            response.set_data({'status': 'comment saved'})
+            return response.data_to_json()
         
         except Exception as e:
             print e
-            return HttpResponseRedirect('/colla')
+            response.set_uri('/colla')
+            return response.redirect()
 
     def agree_post(self, request):
-        
+        response = ResponseParcel.ResponseParcel()
         try:
             post_id = request.POST.get('post_id')
             post_name_agreed = request.POST.get('user_name')
@@ -172,33 +174,37 @@ class PostController(object):
                     user_agreed = post.user_name
 
                 if user_agreed == post_name_agreed:
-                    data = {'status': 'Already agreed'}
-                    return HttpResponse(json.dumps(data), content_type="application/json")
+                    response.set_data({'status': 'Already agreed'})
+                    return response.data_to_json()
+
                 else:
                     post_agree.agrees += 1
                     post_agree.save()
                     post_agree.agree_set.create(
                         user_name=post_name_agreed
                     )
-                    data = {'status': 'agreed'}
-                    return HttpResponse(json.dumps(data),
-                                        content_type="application/json")
+                    response.set_data({'status': 'agreed'})
+                    return response.data_to_json()
+
             else:
-                data = {'status': 'You owned the post'}
-                return HttpResponse(json.dumps(data), content_type="application/json")
+                response.set_data({'status': 'You owned the post'})
+                return response.data_to_json()
+
         except Exception as e:
             print e
-            return HttpResponseRedirect('/colla')
+            response.set_uri('/colla')
+            return response.redirect()
 
+    # @TODO: Please resolve this
     def add_post(self, request):
-        
+        response = ResponseParcel.ResponseParcel()
         try:
             post_img = ""
-            form = ImageUploadForm(request.POST, request.FILES)
+            image_data = ImageUploadForm(request.POST, request.FILES)
 
-            if form.is_valid():
+            if image_data.is_valid():
 
-                img = PostImage(post_image=form.cleaned_data['image'])
+                img = PostImage(post_image=image_data.cleaned_data['image'])
                 img.save()
                 post_img = img.post_image.url[10:]
                 # prod
@@ -218,12 +224,13 @@ class PostController(object):
                 date=timezone.now()
             )
 
-            view_posts = {'status': 'saved', 'image': post_img}
-            return HttpResponse(json.dumps(view_posts), content_type="application/json")
+            response.set_data({'status': 'saved', 'image': post_img})
+            return response.data_to_json()
         
         except Exception as e:
             print e
-            return HttpResponse(json.dumps({'status': 'error'}), content_type="application/json")
+            response.set_data({'status': 'error'})
+            return response.data_to_json()
     
     def add_issue(self, request):
         pass
