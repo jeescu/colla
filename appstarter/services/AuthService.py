@@ -1,7 +1,9 @@
 from appstarter.models import Authentication
+from django.http import HttpResponseNotAllowed
 from django.utils import timezone
 from datetime import timedelta
 from appstarter import config
+from appstarter.utils import ResponseParcel
 
 
 class AuthService(object):
@@ -26,18 +28,23 @@ class AuthService(object):
     def get_token(self):
         return self.__session_token
 
-    def is_authenticated(self):
-        is_auth = False
-        check_token = Authentication.objects.get(access_token=self.__auth.access_token)
+    def authenticate(self, request):
+        auth = AuthService(request)
+        parcel = ResponseParcel.ResponseParcel()
 
-        if check_token is not None:
-            if check_token.expired_at > timezone.now():
-                is_auth = check_token.user_id == self.__user.id
+        access_token = Authentication.objects.get(access_token=auth.__session_token)
 
-        else:
-            is_auth = False
+        if access_token is not None:
+            if access_token.expired_at > timezone.now():
+                return
+            else:
+                access_token.delete()
 
-        return is_auth
+        parcel.set_uri('/colla')
+        return parcel.redirect()
+
+    def authorize(self, request):
+        pass
 
     def add_session(self):
         authenticated_user = Authentication(
