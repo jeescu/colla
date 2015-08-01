@@ -1,4 +1,3 @@
-from django.http import HttpResponse, HttpResponseRedirect
 from appstarter.models import User, Post, PostImage
 from appstarter.forms import ImageUploadForm
 from django.utils import timezone

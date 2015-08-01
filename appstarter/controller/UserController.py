@@ -70,7 +70,8 @@ class UserController(object):
     def logout(self, request):
         response = ResponseParcel.ResponseParcel()
 
-        auth_service = AuthService.AuthService(request)
+        auth_service = AuthService.AuthService()
+        auth_service.set_request_data(request)
         auth_service.end_session()
 
         response.set_uri('/colla/')

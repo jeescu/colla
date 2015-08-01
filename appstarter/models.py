@@ -8,6 +8,7 @@ class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=200)
     fullname = models.CharField(max_length=100)
+    provider_user_id = models.CharField(max_length=200, null=True)
 
     def profile(self):
         return Profile.objects.filter(user=self.id)

@@ -13,7 +13,10 @@ class AuthService(object):
     __request = None
     __session_token = None
 
-    def __init__(self, request):
+    def __init__(self):
+        pass
+
+    def set_request_data(self, request):
         self.__request = request
 
         request_session = self.__request.COOKIES
@@ -29,7 +32,8 @@ class AuthService(object):
         return self.__session_token
 
     def authenticate(self, request):
-        auth = AuthService(request)
+        auth = AuthService()
+        auth.set_request_data(request)
         parcel = ResponseParcel.ResponseParcel()
 
         access_token = Authentication.objects.get(access_token=auth.__session_token)
@@ -40,8 +44,8 @@ class AuthService(object):
             else:
                 access_token.delete()
 
-        parcel.set_uri('/colla')
-        return parcel.redirect()
+        parcel.set_uri('colla/login.html')
+        return parcel.render(request)
 
     def authorize(self, request):
         pass

@@ -13,15 +13,15 @@ class AuthController(object):
 
     def app_login(self, request):
         response = ResponseParcel.ResponseParcel()
-        auth_service = AuthService.AuthService(request)
+        auth_service = AuthService.AuthService()
+        auth_service.set_request_data(request)
         now = timezone.localtime(timezone.now())
 
         if request.method == 'GET':
             verify_request = request.COOKIES
             try:
                 # directing uri
-                session_id = verify_request.get('sessionid') or verify_request.get('csrftoken')
-                authentication = Authentication.objects.get(access_token=session_id)
+                authentication = Authentication.objects.get(access_token=auth_service.get_token())
                 auth_user = User.objects.get(pk=authentication.user_id)
 
                 # active session
@@ -71,34 +71,36 @@ class AuthController(object):
         
     def facebook_login(self, request):
         response = ResponseParcel.ResponseParcel()
-        auth_service = AuthService.AuthService(request)
+        auth_service = AuthService.AuthService()
         
         try:
 
             try:
-                Authentication.objects.get(provider_user_id=request.GET.get('id'))
+                social_user = User.objects.get(provider_user_id=request.GET.get('id'))
 
             except Exception as e:
                 print "new social user"
                 # new soc user
-                new_social_user = User(
-                    user_fullname=request.GET.get('first_name')
+                social_user = User(
+                    user_fullname=request.GET.get('first_name'),
+                    provider_user_id=request.GET.get('id')
                 )
 
-                new_social_user.save()
+                social_user.save()
 
-                new_social_user.profile_set.create(
+                social_user.profile_set.create(
                     dis_name=request.GET.get('name'),
                     first_name=request.GET.get('first_name'),
                     last_name=request.GET.get('last_name'),
                     profile_pic='http://graph.facebook.com/'+request.GET.get('id')+'/picture?type=large'
                 )
 
-                auth_service.set_user(new_social_user)
-                auth_service.add_session()
+            auth_service.set_request_data(request)
+            auth_service.set_user(social_user)
+            auth_service.add_session()
 
-                response.set_message('Success')
-                return response.to_json()
+            response.set_message('Success')
+            return response.to_json()
 
         except Exception as e:
             print e
