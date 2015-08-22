@@ -1,7 +1,7 @@
 from appstarter.models import User
 from appstarter.forms import UserForm, ProfileForm
 from appstarter.controller import AuthController
-from appstarter.services import AuthService
+from appstarter.services import AuthService, PasswordHelper
 from appstarter.utils import ResponseParcel
 
 
@@ -26,7 +26,7 @@ class UserController(object):
         return response.render(request)
         
     def do_register(self, request):
-
+        pass_helper = PasswordHelper.PasswordHelper()
         response = ResponseParcel.ResponseParcel()
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST)
@@ -36,7 +36,7 @@ class UserController(object):
             if user_form.is_valid():
                 new_user = User(
                     username=request.POST['username'],
-                    password=request.POST['password'],
+                    password=pass_helper.encode(request.POST['password']),
                     fullname=request.POST['first_name']
                 )
 

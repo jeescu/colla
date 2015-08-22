@@ -17,8 +17,8 @@
 
 .article-thumb {
     height: 330px;
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     margin: -25px;
     background-size: cover;
 }
@@ -57,4 +57,33 @@
     position: absolute;
     right: 10px;
     bottom: 9px;
+}
+
+.no-hover-effect,
+.no-hover-effect: hover {
+    text-decoration: none;
+    outline: none;
+}
+
+/*create new article dialog*/
+
+.submit-article {
+    margin-top: 10px;
+    float: right;
+    background:  #53a93f;
+    color: white;
+    align-self: right;
+}
+.article-img-cover {
+    padding: 2px;
+    border: 5px solid;
+    border-style: dotted;
+    border-color:#E6E9EC;
+    color: #E6E9EC;
+    height: 100px;
+}
+
+.article-add-image {
+    margin-left: 45%;
+    margin-top: 1.4%;
 }

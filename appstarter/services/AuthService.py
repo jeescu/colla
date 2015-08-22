@@ -51,6 +51,14 @@ class AuthService(object):
         pass
 
     def add_session(self):
+
+        try:
+            has_auth = Authentication.objects.filter(user_id=self.__user.id)
+            has_auth.delete()
+
+        except Exception as e:
+            print e
+
         authenticated_user = Authentication(
             user_id=self.__user.id,
             provider=self.__request.GET.get('provider'),
@@ -61,5 +69,5 @@ class AuthService(object):
         authenticated_user.save()
 
     def end_session(self):
-        auth_user = Authentication.objects.get(access_token=self.__session_token)
+        auth_user = Authentication.objects.filter(access_token=self.__session_token)
         auth_user.delete()

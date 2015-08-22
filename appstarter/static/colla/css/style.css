@@ -2,8 +2,7 @@ html,body {
     height: 100%;
     margin: 0;
     background-color: white;
-    font-family: 'RobotoDraft', sans-serif;
-    color: #546E7A;
+    font-family: 'Helvetica Light', 'Helvetica', Arial, sans-serif;
 }
 
 core-header-panel {
@@ -35,6 +34,10 @@ input[type="file"] {
 
 paper-item[active] {
     visibility: hidden;
+}
+
+[data-mfb-label]:after {
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .indx-color::shadow #dropShadow {
@@ -176,7 +179,7 @@ paper-item[active] {
 }
 
 .btn-lnk {
-    background:  #3F51B5;
+    background:  #53a93f;
     color: white;
     align-self: right;
 }
@@ -336,7 +339,7 @@ paper-fab {
 }
 
 .chat-user {
-    margin-bottom: 5px;
+    margin-bottom: 14px;
     cursor: pointer;
 }
 
@@ -479,7 +482,6 @@ paper-fab {
 
 .comm-name {
     font-weight: bold;
-    color:  #455A64;
     font-size: 14px;
 }
 

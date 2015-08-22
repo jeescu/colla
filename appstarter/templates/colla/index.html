@@ -8,6 +8,21 @@
 
      <meta name="viewport" 
     content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Raleway:100,200,300,400' rel='stylesheet' type='text/css'>
+
+    <!-- build:js modernizr.touch.js -->
+    <script src="{% static 'colla/lib/modernizr.touch.js' %}"></script>
+    <!-- endbuild -->
+
+    <link href="{% static 'colla/css/float.css' %}" rel="stylesheet">
+    <!-- build:css mfb.css -->
+    <link href="{% static 'colla/css/mfb.css' %}" rel="stylesheet">
+    <!-- endbuild -->
+    
     <link rel="stylesheet" type="text/css" href="{% static 'plugin/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'colla/css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'colla/css/article.css' %}">
@@ -65,12 +80,12 @@
                     <paper-item onClick="window.location.href='/colla/logout'">Log out</paper-item>
                 </core-menu>
             </span>
-            <paper-tabs class="bottom fit" selected="0" noink>
+            <paper-tabs class="bottom fit" selected="0" noink style="font-size: 15px;">
                 <paper-tab id="tab-activity"><core-icon icon="dashboard" class="visible-xs"></core-icon><span class="hidden-xs">Activity</span></paper-tab>
                 <paper-tab id="tab-project"><core-icon icon="view-carousel" class="visible-xs"></core-icon><span class="hidden-xs">Articles</span></paper-tab>
-                <paper-tab id="tab-monitor"><core-icon icon="trending-up" class="visible-xs"></core-icon><span class="hidden-xs">Forum</span></paper-tab>
-                <paper-tab id="tab-graph"><core-icon icon="error" class="visible-xs"></core-icon><span class="hidden-xs">Issues</span></paper-tab>
-                <paper-tab id="tab-issue"><core-icon icon="question-answer" class="visible-xs"></core-icon><span class="hidden-xs">Resources</span></paper-tab>
+                <paper-tab id="tab-monitor"><core-icon icon="question-answer" class="visible-xs"></core-icon><span class="hidden-xs">Forum</span></paper-tab>
+                <paper-tab id="tab-graph"><core-icon icon="bug-report" class="visible-xs"></core-icon><span class="hidden-xs">Issues</span></paper-tab>
+                <paper-tab id="tab-issue"><core-icon icon="book" class="visible-xs"></core-icon><span class="hidden-xs">Resources</span></paper-tab>
             </paper-tabs>
         </core-toolbar>
         
@@ -102,13 +117,13 @@
                                         <label id="label-img" icon="add" class="custom-btn add-image"> 
                                             <input id="id_image" type="file"  name="image" onchange="readURL(this);">
                                             <paper-icon-button id="image-input" icon="add"></paper-icon-button>
-                                            <img class="img-responsive resp-img" id="thumb" src=""/>
+                                            <img class="img-responsive resp-img" id="thumb" src="" alt=""/>
                                         </label>
-                                            <input type="hidden" id="_fb_at" value="{{ fb_at.access_token }}"/>
-                                            <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userid"/>
-                                            <input type="hidden" id="title" value="None" name="title">
-                                            <input type="hidden" value="Shared Publicly" name="share" >
-                                            <input type="hidden" value="" name="link">
+                                        <input type="hidden" id="_fb_at" value="{{ fb_at.access_token }}"/>
+                                        <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userid"/>
+                                        <input type="hidden" id="title" value="None" name="title">
+                                        <input type="hidden" value="Shared Publicly" name="share" >
+                                        <input type="hidden" value="" name="link">
                                             
                                     </div>
                                     {% endfor %}
@@ -122,9 +137,9 @@
                                         <span><paper-icon-button class="" id="new-image" icon="picture-in-picture"></paper-icon-button></span>&nbsp;
                                         <span><paper-icon-button class="" id="new-link" icon="link"></paper-icon-button></span>
                                         <div id="post-btn" class="new-post-btn btn-hide">
-                                            <paper-button id="reset-text" style="background: white">CANCEL</paper-button>
+                                            <paper-button id="reset-text" style="background: white; height: 39px">CANCEL</paper-button>
                                             <paper-button raised class="btn-lnk submit-post">
-                                                <button class="btn-submit btn-new-post" type="submit" style="height: inherit;">POST</button>
+                                                <button class="btn-submit btn-new-post" type="submit" style="height: inherit;">SHARE</button>
                                             </paper-button>
                                         </div>
                                     </paper-shadow>
@@ -320,7 +335,7 @@
                 <div class="row">
                     <!-- do loop here -->
                     <div class="col-md-6">
-                        <paper-shadow class="article-indx-fragment" z="1">
+                        <paper-shadow class="article-indx-fragment" z="0">
                             <a href="">
                                 <div class="article-thumb" style="background-image: url(../static/colla/images/office.jpg);"></div>
                             </a>
@@ -344,6 +359,7 @@
                     <!-- loop -->
                 </div>
             </div>
+            
 <!-- FORUMS FRAGMENT-->                       
             <div id="fragment-monitor" class="page-frm hidden">
                 <!-- loop here -->
@@ -434,12 +450,76 @@
         </div>
                 
 <!--New Action Buttons-->
-        <div id="action-new">
-            <paper-fab id="new-message" class="new-msg" icon="add"></paper-fab>
-        </div>
-<!--Action Button Dialogs-->
-        <paper-dialog id="message-dialog" transition="core-transition-center">
-            <p>New message</p>
+        <ul id="menu" class="mfb-component--br mfb-zoomin" data-mfb-toggle="hover">
+            <li class="mfb-component__wrap">
+                <a href="#" class="mfb-component__button--main">
+                    <i class="mfb-component__main-icon--resting ion-plus-round"></i>
+                    <i class="mfb-component__main-icon--active ion-close-round"></i>
+                </a>
+                
+                <ul class="mfb-component__list">
+                    <li id="new-article">
+                        <a href="#" data-mfb-label="New Article" class="mfb-component__button--child">
+                            <i class="mfb-component__child-icon ion-android-document"></i>
+                        </a>
+                    </li>
+                    <li id="new-question">
+                        <a href="#" data-mfb-label="Ask Question" class="mfb-component__button--child">
+                            <i class="mfb-component__child-icon ion-help-circled"></i>
+                        </a>
+                    </li>
+
+                    <li id="new-bug-report">
+                        <a href="#" data-mfb-label="New Bug Report" class="mfb-component__button--child">
+                            <i class="mfb-component__child-icon ion-bug"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        
+        <paper-dialog id="article-dialog" transition="core-transition-center" style="min-width: 60%;" layered="false">
+            <div>
+                <h4>Share your new article to your friends</h4>
+                <paper-input-decorator label="TITLE" floatinglabel="true">
+                       <input id="article-title" is="core-input" name="article-title"/>
+                </paper-input-decorator>
+
+                <paper-input-decorator class="input-comment" label="Share your ideas..">
+                    <paper-autogrow-textarea id="a1">
+                        <textarea id="t1" name="comment"></textarea>
+                    </paper-autogrow-textarea>
+                </paper-input-decorator>
+
+                <div class="create-article-cover">
+                    <h5>Add a cover (optional)</h5>
+                    <div id="image-field" class="col-xs-12 article-img-cover">
+                        <label id="label-img" icon="add" class="custom-btn article-add-image add-image"> 
+                            <input id="id-image-article" type="file"  name="image" onchange="readURL(this);">
+                            <paper-icon-button id="article-image-input" icon="add"></paper-icon-button>
+                            <img class="img-responsive resp-img" id="article-display-thumb" src="" alt=""/>
+                        </label>
+                    </div>
+                </div>
+
+                <paper-button raised class="submit-article">
+                    <button class="btn-submit btn-new-post" type="submit" style="height: inherit;">SHARE</button>
+                </paper-button>
+            </div>
+        </paper-dialog>
+        
+        <paper-dialog id="ask-dialog" transition="core-transition-center" style="min-width: 60%;" layered="false">
+            <div>
+                <h4>Ask question to your friends</h4>
+                <paper-input-decorator label="QUESTION" floatinglabel="true">
+                       <input id="article-title" is="core-input" name="article-title"/>
+                </paper-input-decorator>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="bug-report-dialog" transition="core-transition-center" style="min-width: 60%;" layered="false">
+            <div>
+                <h4>Let your friends know the issue</h4>
+            </div>
         </paper-dialog>
         
         <div id="chat-rooms" class="chat-rooms">
@@ -460,6 +540,11 @@
 <script type="text/javascript" src="{% static 'colla/js/graph.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/issue.js' %}"></script>
 -->
+<!-- build:js mfb.js -->
+<script src="{% static 'colla/js/mfb.js' %}"></script>
+<!-- endbuild -->
+<script src="{% static 'colla/js/float.js' %}"></script>
+<!-- @include ga.html -->
 </body>
 
 </html>

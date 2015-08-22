@@ -1,6 +1,5 @@
-from django.shortcuts import render
 from appstarter.models import User, Post, Authentication
-from appstarter.services import AuthService
+from appstarter.services import AuthService, PasswordHelper
 from django.utils import timezone
 from appstarter.utils import ResponseParcel
 
@@ -15,16 +14,19 @@ class AuthController(object):
         response = ResponseParcel.ResponseParcel()
         auth_service = AuthService.AuthService()
         auth_service.set_request_data(request)
+        pass_helper = PasswordHelper.PasswordHelper()
+
         now = timezone.localtime(timezone.now())
 
         if request.method == 'GET':
-            verify_request = request.COOKIES
+
             try:
                 # directing uri
                 authentication = Authentication.objects.get(access_token=auth_service.get_token())
                 auth_user = User.objects.get(pk=authentication.user_id)
 
                 # active session
+                # @TODO: Fix this
                 if authentication.expired_at > now:
                     post = Post.objects.all().order_by('-date')[:10]
                     all_users = User.objects.order_by('username')
@@ -47,7 +49,10 @@ class AuthController(object):
                 verified_user = User.objects.get(username=request.POST['username'])
                 auth_user = User.objects.get(pk=verified_user.id)
 
-                if verified_user.password == request.POST['password']:
+                request_password = request.POST['password']
+                user_password = pass_helper.decode(verified_user.password)
+
+                if user_password == request_password:
                     auth_service.set_user(auth_user)
                     auth_service.add_session()
 
@@ -59,13 +64,13 @@ class AuthController(object):
                     return response.render(request)
 
                 else:
-                    response.error()
+                    response.has_error()
                     response.set_message('Wrong Username Password')
                     return response.to_json()
 
             except Exception as e:
                 print e
-                response.error()
+                response.has_error()
                 response.set_message('Wrong Username Password')
                 return response.to_json()
         
@@ -82,7 +87,7 @@ class AuthController(object):
                 print "new social user"
                 # new soc user
                 social_user = User(
-                    user_fullname=request.GET.get('first_name'),
+                    fullname=request.GET.get('first_name'),
                     provider_user_id=request.GET.get('id')
                 )
 
@@ -104,7 +109,7 @@ class AuthController(object):
 
         except Exception as e:
             print e
-            response.error()
+            response.has_error()
             return response.to_json()
 
     def google_login(self, request):

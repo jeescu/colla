@@ -76,8 +76,16 @@ function linkToolSelected () {
     toggle(['new-image', 'new-text'], 'show', 'tool-selected');
 }
 
-function messageDialog() {
-    get('message-dialog').toggle();
+function articleDialog() {
+    get('article-dialog').toggle();
+}
+
+function askDialog() {
+    get('ask-dialog').toggle();
+}
+
+function bugReportDialog() {
+    get('bug-report-dialog').toggle();
 }
 
 function showThumb() {
@@ -99,7 +107,9 @@ function init() {
           'click');
 
     // action new button
-    addEvt(['new-message'], [messageDialog], 'click');
+    addEvt(['new-article', 'new-question', 'new-bug-report'],
+           [articleDialog, askDialog, bugReportDialog],
+           'click');
     
     // activity
     addEvt(['more'], [loadMorePost], 'click');
