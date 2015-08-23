@@ -95,7 +95,7 @@
 <!--                create-->
                 <div>
                     <paper-shadow class="indx-fragment" z="0">
-                        <form id="imageUploadForm" method="post" enctype="multipart/form-data">
+                        <form id="createPostForm" method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                             <div class="row">
                                
@@ -114,13 +114,13 @@
                                     </div>
 
                                     <div id="image-field" class="col-xs-12 frm-imgfield hidden">
-                                        <label id="label-img" icon="add" class="custom-btn add-image"> 
-                                            <input id="id_image" type="file"  name="image" onchange="readURL(this);">
+                                        <label id="post-label-img" icon="add" class="custom-btn add-image"> 
+                                            <input id="id_image" type="file"  name="image" onchange="postImgThumb(this);">
                                             <paper-icon-button id="image-input" icon="add"></paper-icon-button>
-                                            <img class="img-responsive resp-img" id="thumb" src="" alt=""/>
+                                            <img class="img-responsive resp-img" id="post-thumb" src="" alt=""/>
                                         </label>
                                         <input type="hidden" id="_fb_at" value="{{ fb_at.access_token }}"/>
-                                        <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userid"/>
+                                        <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userId"/>
                                         <input type="hidden" id="title" value="None" name="title">
                                         <input type="hidden" value="Shared Publicly" name="share" >
                                         <input type="hidden" value="" name="link">
@@ -318,9 +318,10 @@
 
                 <paper-button raised onclick="document.querySelector('#toast2').show()">Get Messages</paper-button>
 -->
-                <paper-toast id="toastPost" text="Your post has been posted."></paper-toast>
+                <paper-toast id="toastPost" text="You just shared your post"></paper-toast>
+                <paper-toast id="toastArticle" text="You just shared your article "></paper-toast>
                 <paper-toast id="toastAgree" text="You agreed on a post."></paper-toast>
-                <paper-toast id="toastComment" text="Your comment has been written."></paper-toast>
+                <paper-toast id="toastComment" text="You just wrote a comment."></paper-toast>
                 
                 <paper-toast id="toastNewPost" text="New posts are available now.">
                     <div style="color: #eeff41;" onclick="console.log('CHECK')">Check</div>
@@ -480,31 +481,35 @@
         
         <paper-dialog id="article-dialog" transition="core-transition-center" style="min-width: 60%;" layered="false">
             <div>
-                <h4>Share your new article to your friends</h4>
-                <paper-input-decorator label="TITLE" floatinglabel="true">
-                       <input id="article-title" is="core-input" name="article-title"/>
-                </paper-input-decorator>
+                <form id="createArticleForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h4>Share your new article to your friends</h4>
+                    <paper-input-decorator label="TITLE" floatinglabel="true">
+                        <input id="article-title" is="core-input" name="title"/>
+                    </paper-input-decorator>
 
-                <paper-input-decorator class="input-comment" label="Share your ideas..">
-                    <paper-autogrow-textarea id="a1">
-                        <textarea id="t1" name="comment"></textarea>
-                    </paper-autogrow-textarea>
-                </paper-input-decorator>
+                    <paper-input-decorator class="input-comment" label="Share your ideas..">
+                        <paper-autogrow-textarea id="a1">
+                            <textarea id="article-content" name="content"></textarea>
+                        </paper-autogrow-textarea>
+                    </paper-input-decorator>
 
-                <div class="create-article-cover">
-                    <h5>Add a cover (optional)</h5>
-                    <div id="image-field" class="col-xs-12 article-img-cover">
-                        <label id="label-img" icon="add" class="custom-btn article-add-image add-image"> 
-                            <input id="id-image-article" type="file"  name="image" onchange="readURL(this);">
-                            <paper-icon-button id="article-image-input" icon="add"></paper-icon-button>
-                            <img class="img-responsive resp-img" id="article-display-thumb" src="" alt=""/>
-                        </label>
+                    <div class="create-article-cover">
+                        <h5>Add a cover (optional)</h5>
+                        <div id="image-field" class="col-xs-12 article-img-cover frm-imgfield">
+                            <label id="article-label-img" icon="add" class="custom-btn article-add-image add-image"> 
+                                <input id="id-image-article" type="file"  name="image" onchange="articleImgThumb(this);">
+                                <paper-icon-button id="article-image-input" icon="add"></paper-icon-button>
+                                <img class="img-responsive resp-img" id="article-thumb" src="" alt=""/>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <paper-button raised class="submit-article">
-                    <button class="btn-submit btn-new-post" type="submit" style="height: inherit;">SHARE</button>
-                </paper-button>
+                    <paper-button raised class="submit-article">
+                        <button class="btn-submit btn-new-post" type="submit" style="height: inherit;">SHARE</button>
+                    </paper-button>
+                    <input type="hidden" id="_token" value="{{ auth_user.id }}" name="userId"/>
+                </form>
             </div>
         </paper-dialog>
         

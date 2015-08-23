@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, url
-from appstarter.controller import UserController, PostController, ProfileController, AuthController, ChatController
+from appstarter.controller import UserController, PostController, ProfileController, AuthController, ChatController, ArticleController
 
 user = UserController.UserController()
 auth = AuthController.AuthController()
 post = PostController.PostController()
 chat = ChatController.ChatController()
 profile = ProfileController.ProfileController()
+article = ArticleController.ArticleController()
 
 urlpatterns = patterns('',
     # user
@@ -27,6 +28,10 @@ urlpatterns = patterns('',
     # Agree and Comment                   
     url(r'^new-comment/$', post.comment_post, name='new_comment'),
     url(r'^new-agree/$', post.agree_post, name='agree_post'),
+
+    # Article
+    url(r'^new-article/$', article.create, name='new_article'),
+    url(r'^update-article/$', article.update, name='update_article'),
     
     # Chat                   
     url(r'^new-message/$', chat.new_message, name='new_message'),

@@ -80,10 +80,5 @@
     border-style: dotted;
     border-color:#E6E9EC;
     color: #E6E9EC;
-    height: 100px;
-}
-
-.article-add-image {
-    margin-left: 45%;
-    margin-top: 1.4%;
+    height: 200px;
 }

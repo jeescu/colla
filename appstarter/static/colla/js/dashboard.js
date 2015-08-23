@@ -88,9 +88,14 @@ function bugReportDialog() {
     get('bug-report-dialog').toggle();
 }
 
-function showThumb() {
-    toggle(['label-img'], 'show', 'add-image');
-    toggle(['thumb', 'image-input', 'label-img'], 'custom', ['img-thumb', 'hidden', 'full-width']);
+function showPostThumb() {
+    toggle(['post-label-img'], 'show', 'add-image');
+    toggle(['post-thumb', 'image-input', 'post-label-img'], 'custom', ['img-thumb', 'hidden', 'full-width']);
+}
+
+function showArticleThumb() {
+    toggle(['article-label-img'], 'show', 'add-image');
+    toggle(['article-thumb', 'article-image-input', 'article-label-img'], 'custom', ['img-thumb', 'hidden', 'full-width']);
 }
 
 function init() {

@@ -4,6 +4,7 @@ var postIMAGE = "";
 var postLINK = "";
 var postLimit = 10;
 var sndComm = get('send-comment');
+var localhost = "http://localhost:8080/colla/";
 
 function AJAXRequest(url, type, data, fn, contentType, dataType, processData) {
     $.ajax({
@@ -172,15 +173,17 @@ function getlatest() {
     return latestPost;
 }
 
-var formPostId = 0;
-$('#imageUploadForm').on('submit',(function(e) {
+var formPost = true;
+var formArticle = true;
+
+//create new post
+$('#createPostForm').on('submit',(function(e) {
     e.preventDefault();
     
     var formData = new FormData(this);
-    var local = "http://localhost:8080/colla/";
 
-    console.log('Pressed upload ajax POST')
-    formPostId = 1;
+    console.log('Submitting post')
+    formPost = false;
 
     formData.userid = token;
     formData.title = "None";
@@ -198,10 +201,10 @@ $('#imageUploadForm').on('submit',(function(e) {
         get('new-post-date').innerHTML = "Now";
         get('new-post-text').innerHTML = postTEXT.value.replace(/\n/g, "<br />");
         
-        var thumb = get('thumb').src;
+        var thumb = get('post-thumb').src;
         var img = get('new-post-pic');
         
-        if (thumb == local)
+        if (thumb == localhost)
         {
             img.style.display = "none";
         }
@@ -211,8 +214,6 @@ $('#imageUploadForm').on('submit',(function(e) {
             img.src = thumb;
         }
     }
-    
-            console.log(formData);
 
     $.ajax({
         type:'POST',
@@ -224,9 +225,43 @@ $('#imageUploadForm').on('submit',(function(e) {
         success:function(data){
             newUserPost();
             clearText();
-            formPostId = 0;
+            formPost = true;
             console.log(formData);
             getQuery('#toastPost').show();
+        },
+        error: function(data){
+            console.error("error");
+        }
+    });
+
+}));
+
+//create new article
+$('#createArticleForm').on('submit',(function(e) {
+    e.preventDefault();
+    
+    var formData = new FormData(this);
+
+    console.log('Submitting article')
+    formArticle = false
+
+    formData.userid = token;
+    formData.title = get('article-title').value;
+    formData.content = get('article-content').value.replace(/\n/g, "<br />");
+    formData.image = postIMAGE || "None";
+
+    $.ajax({
+        type:'POST',
+        url: 'new-article/',
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+            console.log(formData);
+            console.log(data)
+            formArticle = true;
+            getQuery('#toastArticle').show();
         },
         error: function(data){
             console.error("error");
@@ -262,8 +297,10 @@ $('body').on('submit', 'form', (function(e) {
     var formData = new FormData(this);
     var prevChat = e.target.name;
     
-    // prevent chat and set agree and comment only
-    if ((formPostId == 0) && (prevChat != 'chatMessage'))
+    // for chat and set agree and comment only
+    if ((formPost) && 
+        (formArticle) &&
+        (prevChat != 'chatMessage'))
     {
         console.debug(url);
         post(url, formData, toast);
@@ -338,11 +375,11 @@ function loadMorePost() {
 
 function clearText() {
     $("#id_image").closest('form').trigger('reset');
-    get('thumb').src="";
-    get('thumb').classList.remove('img-thumb');
-    get("thumb").removeAttribute("style"); 
-    get('label-img').classList.remove('full-width');
-    get('label-img').classList.add('add-image');
+    get('post-thumb').src="";
+    get('post-thumb').classList.remove('img-thumb');
+    get('post-thumb').removeAttribute("style"); 
+    get('post-label-img').classList.remove('full-width');
+    get('post-label-img').classList.add('add-image');
     get('image-input').classList.remove('hidden');
     get('post-text').value = "";
 }
@@ -361,16 +398,28 @@ function showMenu() {
     }
 }
 
-function readURL(input) {
+function postImgThumb(input) {
     if (input.files && input.files[0])
     {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $('#thumb').attr('src', e.target.result).height(166);
+            $('#post-thumb').attr('src', e.target.result).height(166);
         };
         reader.readAsDataURL(input.files[0]);
     }
-    showThumb();
+    showPostThumb();
+}
+
+function articleImgThumb(input) {
+    if (input.files && input.files[0])
+    {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#article-thumb').attr('src', e.target.result).height(166);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+    showArticleThumb();
 }
 
 function postBtn() {

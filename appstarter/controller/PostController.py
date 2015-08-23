@@ -8,7 +8,44 @@ class PostController(object):
 
     def __init__(self):
         pass
-    
+
+    # @TODO: Please resolve this
+    def add_post(self, request):
+        response = ResponseParcel.ResponseParcel()
+        try:
+            post_img = ""
+            image_data = ImageUploadForm(request.POST, request.FILES)
+
+            if image_data.is_valid():
+
+                img = PostImage(post_image=image_data.cleaned_data['image'])
+                img.save()
+                post_img = img.post_image.url[10:]
+                # prod
+                # post_img = img.post_image.url[21:]
+
+            user_post = User.objects.get(pk=request.POST.get('userId'))
+            user_post_profile = user_post.profile_set.get(user=user_post.id)
+
+            user_post.post_set.create(
+                user_pic=user_post_profile.profile_pic,
+                user_dis_name=user_post_profile.dis_name,
+                share_type=request.POST.get('share'),
+                title=request.POST.get('title') if request.POST.get('title') != "None" else "",
+                content_text=request.POST.get('text'),
+                content_image=post_img,
+                content_link=request.POST.get('link') if request.POST.get('link') != "None" else "",
+                date=timezone.now()
+            )
+
+            response.set_data({'status': 'saved', 'image': post_img})
+            return response.data_to_json()
+
+        except Exception as e:
+            print e
+            response.set_data({'status': 'error'})
+            return response.data_to_json()
+
     def get_new_post(self, request):
         response = ResponseParcel.ResponseParcel()
         post_update = dict()
@@ -193,43 +230,6 @@ class PostController(object):
             print e
             response.set_uri('/colla')
             return response.redirect()
-
-    # @TODO: Please resolve this
-    def add_post(self, request):
-        response = ResponseParcel.ResponseParcel()
-        try:
-            post_img = ""
-            image_data = ImageUploadForm(request.POST, request.FILES)
-
-            if image_data.is_valid():
-
-                img = PostImage(post_image=image_data.cleaned_data['image'])
-                img.save()
-                post_img = img.post_image.url[10:]
-                # prod
-                # post_img = img.post_image.url[21:]
-
-            user_post = User.objects.get(pk=request.POST.get('userid'))
-            user_post_profile = user_post.profile_set.get(user=user_post.id)
-
-            user_post.post_set.create(
-                user_pic=user_post_profile.profile_pic,
-                user_dis_name=user_post_profile.dis_name,
-                share_type=request.POST.get('share'),
-                title=request.POST.get('title') if request.POST.get('title') != "None" else "",
-                content_text=request.POST.get('text'),
-                content_image=post_img,
-                content_link=request.POST.get('link') if request.POST.get('link') != "None" else "",
-                date=timezone.now()
-            )
-
-            response.set_data({'status': 'saved', 'image': post_img})
-            return response.data_to_json()
-        
-        except Exception as e:
-            print e
-            response.set_data({'status': 'error'})
-            return response.data_to_json()
     
     def add_issue(self, request):
         pass

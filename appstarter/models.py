@@ -70,8 +70,12 @@ class Comment(models.Model):
 # Developers article
 class Article(models.Model):
     user = models.ForeignKey(User)
+    user_pic = models.CharField(max_length=200)
+    user_dis_name = models.CharField(max_length=100)
     title = models.CharField(max_length=50)
     content = models.CharField(max_length=800)
+    cover = models.CharField(max_length=200)
+    date = models.DateTimeField('date published')
 
 
 # QA
