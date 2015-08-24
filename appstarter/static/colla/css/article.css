@@ -48,7 +48,7 @@
 }
 
 .article-author {
-    padding-top: 22px;
+    padding-top: 13px;
     font-size: 12px;
     font-style: italic;
 }
@@ -81,4 +81,11 @@
     border-color:#E6E9EC;
     color: #E6E9EC;
     height: 200px;
+}
+
+.article-card-av {
+    position: relative;
+    bottom: 2px;
+    right: 13px;
+    margin-right: 10px;
 }

@@ -1,6 +1,6 @@
 __author__ = 'john'
 
-from appstarter.models import User, PostImage
+from appstarter.models import User, PostImage, Article
 from appstarter.forms import ImageUploadForm
 from django.utils import timezone
 from appstarter.utils import ResponseParcel
@@ -10,6 +10,20 @@ class ArticleController(object):
 
     def __init__(self):
         pass
+
+    def get(self, request):
+        response = ResponseParcel.ResponseParcel()
+        articles = dict()
+
+        try:
+            article = Article.objects.all().order_by('-date')
+            articles = self.prepare(article)
+
+        except Exception as e:
+            print e
+
+        response.set_data(articles)
+        return response.data_to_json()
 
     def create(self, request):
         response = ResponseParcel.ResponseParcel()
@@ -26,11 +40,8 @@ class ArticleController(object):
                 # post_img = img.post_image.url[21:]
 
             user = User.objects.get(pk=request.POST.get('userId'))
-            user_profile = user.profile_set.get(user=user.id)
 
             user.article_set.create(
-                user_pic=user_profile.profile_pic,
-                user_dis_name=user_profile.dis_name,
                 title=request.POST.get('title') if request.POST.get('title') != "None" else "",
                 content=request.POST.get('content'),
                 cover=cover_img,
@@ -50,3 +61,21 @@ class ArticleController(object):
 
     def remove(self, request):
         pass
+
+    def prepare(self, all_articles):
+        articles = dict()
+        count = 0
+
+        for article in all_articles:
+            count += 1
+
+            articles['article'+str(count)] = {
+                'pic': article.user.profile().profile_pic,
+                'display_name': article.user.profile().dis_name,
+                'title': article.title,
+                'content': article.content,
+                'cover': article.cover,
+                'date': str(article.date)
+            }
+
+        return articles

@@ -32,29 +32,30 @@ function toggle(tbs, act, cls) {
     }
 }
 
-function actShow() {
+function showActivity() {
     toggle(['fragment-activity'], 'show', 'hidden');
-    toggle(['fragment-project', 'fragment-monitor', 'fragment-graph', 'fragment-issue'], 'hide', 'hidden');
+    toggle(['fragment-article', 'fragment-resource', 'fragment-forum', 'fragment-issue'], 'hide', 'hidden');
 }
 
-function proShow() {
-    toggle(['fragment-project'], 'show', 'hidden');
-    toggle(['fragment-activity', 'fragment-monitor', 'fragment-graph', 'fragment-issue'], 'hide', 'hidden');
+function showArticle() {
+    toggle(['fragment-article'], 'show', 'hidden');
+    toggle(['fragment-activity', 'fragment-resource', 'fragment-forum', 'fragment-issue'], 'hide', 'hidden');
+    getArticles();
 }
 
-function monShow() {
-    toggle(['fragment-monitor'], 'show', 'hidden');
-    toggle(['fragment-project', 'fragment-activity', 'fragment-graph', 'fragment-issue'], 'hide', 'hidden');
+function showResource() {
+    toggle(['fragment-resource'], 'show', 'hidden');
+    toggle(['fragment-article', 'fragment-activity', 'fragment-forum', 'fragment-issue'], 'hide', 'hidden');
 }
 
-function graphShow() {
-    toggle(['fragment-graph'], 'show', 'hidden');
-    toggle(['fragment-project', 'fragment-monitor', 'fragment-activity', 'fragment-issue'], 'hide', 'hidden');
+function showForum() {
+    toggle(['fragment-forum'], 'show', 'hidden');
+    toggle(['fragment-article', 'fragment-resource', 'fragment-activity', 'fragment-issue'], 'hide', 'hidden');
 }
 
-function issueShow() {
+function showIssue() {
     toggle(['fragment-issue'], 'show', 'hidden');
-    toggle(['fragment-project', 'fragment-monitor', 'fragment-graph', 'fragment-activity'], 'hide', 'hidden');
+    toggle(['fragment-article', 'fragment-resource', 'fragment-forum', 'fragment-activity'], 'hide', 'hidden');
 }
 
 function textToolSelected() {
@@ -102,8 +103,8 @@ function init() {
     token = get('_token').value;
     
     // tabs
-    addEvt(['tab-activity', 'tab-project', 'tab-monitor', 'tab-graph', 'tab-issue'], 
-          [actShow, proShow, monShow, graphShow, issueShow],
+    addEvt(['tab-activity', 'tab-article', 'tab-forum', 'tab-issue', 'tab-resource'], 
+          [showActivity, showArticle, showForum, showIssue, showResource],
           'click');
     
     // New Post Tool

@@ -53,6 +53,8 @@
     <link rel="import" href="{% static 'plugin/polymer/components/core-header-panel/core-header-panel.htm' %}l">
     <link rel="import" href="{% static 'plugin/polymer/components/core-drawer-panel/core-drawer-panel.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-icons/core-icons.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-icons/social-icons.html' %}">
+    <link rel="import" href="{% static 'plugin/polymer/components/core-icons/communication-icons.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/paper-icon-button/paper-icon-button.html' %}">
     <link rel="import" href="{% static 'plugin/polymer/components/core-scaffold/core-scaffold.html' %}">
 
@@ -62,9 +64,8 @@
     <core-header-panel flex class="indx-color">
         <core-toolbar id="mainheader" class="medium-tall">
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
-            {%  for profile in auth_user.profile %}
             <span flex>Dashboard</span>
-            <input type="hidden" id="user-prof-pic" value="{{ profile.profile_pic }}">
+            <input type="hidden" id="user-prof-pic" value="{{ auth_user.profile.profile_pic }}">
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
                 <paper-icon-button class="hidden-xs" id="helpbutton" icon="help"></paper-icon-button>
@@ -82,10 +83,10 @@
             </span>
             <paper-tabs class="bottom fit" selected="0" noink style="font-size: 15px;">
                 <paper-tab id="tab-activity"><core-icon icon="dashboard" class="visible-xs"></core-icon><span class="hidden-xs">Activity</span></paper-tab>
-                <paper-tab id="tab-project"><core-icon icon="view-carousel" class="visible-xs"></core-icon><span class="hidden-xs">Articles</span></paper-tab>
-                <paper-tab id="tab-monitor"><core-icon icon="question-answer" class="visible-xs"></core-icon><span class="hidden-xs">Forum</span></paper-tab>
-                <paper-tab id="tab-graph"><core-icon icon="bug-report" class="visible-xs"></core-icon><span class="hidden-xs">Issues</span></paper-tab>
-                <paper-tab id="tab-issue"><core-icon icon="book" class="visible-xs"></core-icon><span class="hidden-xs">Resources</span></paper-tab>
+                <paper-tab id="tab-article"><core-icon icon="view-carousel" class="visible-xs"></core-icon><span class="hidden-xs">Articles</span></paper-tab>
+                <paper-tab id="tab-forum"><core-icon icon="question-answer" class="visible-xs"></core-icon><span class="hidden-xs">Forum</span></paper-tab>
+                <paper-tab id="tab-issue"><core-icon icon="bug-report" class="visible-xs"></core-icon><span class="hidden-xs">Issues</span></paper-tab>
+                <paper-tab id="tab-resource"><core-icon icon="book" class="visible-xs"></core-icon><span class="hidden-xs">Resources</span></paper-tab>
             </paper-tabs>
         </core-toolbar>
         
@@ -99,8 +100,8 @@
                                     {% csrf_token %}
                             <div class="row">
                                
-                                <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ profile.profile_pic }}"/></div>
-                                    <input type="hidden" id="user-post-name" value="{{ profile.dis_name }}"/>
+                                <div class="new-frm-av col-xs-2 col-sm-2 col-md-1.5 col-lg-1"><img id="user-post-img" src="{{ auth_user.profile.profile_pic }}"/></div>
+                                    <input type="hidden" id="user-post-name" value="{{ auth_user.profile.dis_name }}"/>
                                 <div class="col-xs-1"></div>
                                 <div class="new-frm-msg col-xs-10 col-sm-10 col-md-10.5 col-lg-11">
                                     <div id="text-field" class="col-xs-12 frm-txtfield">
@@ -126,7 +127,6 @@
                                         <input type="hidden" value="" name="link">
                                             
                                     </div>
-                                    {% endfor %}
 
                                 </div>
                             </div>
@@ -213,9 +213,9 @@
                     <input id="post{{ forloop.counter }}"type="hidden" value="{{ user_post.id }}">
                     <paper-shadow class="indx-fragment" z="0">
                         <div class="row">
-                            <div class="col-xs-1 frm-av"><img src="{{ user_post.user_pic }}"/></div>
+                            <div class="col-xs-1 frm-av"><img src="{{ user_post.user.profile.profile_pic }}"/></div>
                             <div class="col-xs-8">
-                                <div class="col-xs-12 frm-name">{{ user_post.user_dis_name }}</div>
+                                <div class="col-xs-12 frm-name">{{ user_post.user.profile.dis_name }}</div>
                                 <div class="col-xs-12 frm-share sub-color">{{ user_post.share_type }}</div>
                             </div>
                             <div class="frm-date">{{ user_post.date }}</div>
@@ -228,9 +228,7 @@
                                     <form id="{{ user_post.id }}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" value="{{ user_post.id }}" name="post_id">
-                                        {% for profile in auth_user.profile %}
-                                        <input type="hidden" value="{{ profile.dis_name }}" name="user_name">
-                                        {% endfor %}
+                                        <input type="hidden" value="{{ auth_user.profile.dis_name }}" name="user_name">
                                         <input id="submit-agree{{ user_post.id }}" type="submit" class="hidden">
                                         <core-tooltip>
                                             <paper-button class="btn-frm-info agree-post">
@@ -260,10 +258,7 @@
                                     {% csrf_token %}
                                     <div class="txt-comm" >
                                         <input type="hidden" value="{{ user_post.id }}" name="post_id" />
-                                        {% for profile in auth_user.profile %}
-                                        <input type="hidden" value="{{ profile.profile_pic }}" name="pic" />
-                                        <input type="hidden" value="{{ profile.dis_name  }}" name="user_name" />
-                                         {% endfor %}
+                                        <input type="hidden" value="{{ auth_user.id }}" name="user_id" />
                                         <paper-input-decorator class="input-comment" label="Add new comment...">
                                             <paper-autogrow-textarea id="a1">
                                                 <textarea id="t1" name="comment"></textarea>
@@ -284,9 +279,9 @@
                             <!-- Comment start loop-->
                             {% for comment in user_post.comment %}
                                 <paper-shadow z="0" class="comment-board">
-                                    <div class="col-xs-2 comm-av"><img src="{{ comment.user_pic_url }}"/></div>
+                                    <div class="col-xs-2 comm-av"><img src="{{ comment.user.profile.profile_pic }}"/></div>
                                     <div class="col-xs-10">
-                                        <div class="col-xs-12 comm-name">{{ comment.user_name }}</div>
+                                        <div class="col-xs-12 comm-name">{{ comment.user.profile.dis_name }}</div>
                                         <div class="col-xs-12 comm-time sub-color">{{ comment.comment_date }}</div>
                                     </div>
                                     <div class="col-xs-12 comm-text">
@@ -318,8 +313,8 @@
 
                 <paper-button raised onclick="document.querySelector('#toast2').show()">Get Messages</paper-button>
 -->
-                <paper-toast id="toastPost" text="You just shared your post"></paper-toast>
-                <paper-toast id="toastArticle" text="You just shared your article "></paper-toast>
+                <paper-toast id="toastPost" text="You just shared your post."></paper-toast>
+                <paper-toast id="toastArticle" text="You just shared your article."></paper-toast>
                 <paper-toast id="toastAgree" text="You agreed on a post."></paper-toast>
                 <paper-toast id="toastComment" text="You just wrote a comment."></paper-toast>
                 
@@ -331,10 +326,11 @@
                 </paper-toast>
             </div>
 <!-- ARTICLE FRAGMENT-->                    
-            <div id="fragment-project" class="page-frm hidden">
+            <div id="fragment-article" class="page-frm hidden">
                 <!-- cards default layout -->
-                <div class="row">
+                <div id="article-dynamic" class="row">
                     <!-- do loop here -->
+<!--
                     <div class="col-md-6">
                         <paper-shadow class="article-indx-fragment" z="0">
                             <a href="">
@@ -349,20 +345,24 @@
                             </div>
                             <div class="article-separator"></div>
                             <div class="article-author">
-                                <span>By: John Edward Escuyos</span>
-                                <!-- like article -->
+                                <span>
+                                    <div class="col-xs-2 comm-av article-card-av"><img src=""/></div>
+                                    By: John Edward Escuyos
+                                </span>
+                                 like article 
                                 <span>
                                     <paper-icon-button class="article-btn-like"  icon="grade" onclick="" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>
                                 </span>
                             </div>
                         </paper-shadow>
                     </div>
+-->
                     <!-- loop -->
                 </div>
             </div>
             
 <!-- FORUMS FRAGMENT-->                       
-            <div id="fragment-monitor" class="page-frm hidden">
+            <div id="fragment-forum" class="page-frm hidden">
                 <!-- loop here -->
                 <paper-shadow class="forum-indx-fragment" z="0">
                     <div class="row">
@@ -382,13 +382,13 @@
                 <!-- loop -->
             </div>
                     
-            <div id="fragment-graph" class="page-frm hidden">
+            <div id="fragment-issue" class="page-frm hidden">
                 <paper-shadow class="indx-fragment" z="0">
                     <span>Project Issues.</span>
                 </paper-shadow>
             </div>
                     
-            <div id="fragment-issue" class="page-frm hidden">
+            <div id="fragment-resource" class="page-frm hidden">
                 <paper-shadow class="indx-fragment" z="0">
                     <span>Best Resources</span>
                 </paper-shadow>
@@ -399,8 +399,8 @@
         <div class="col-sm-2 hidden-xs">
             <paper-shadow class="side-bar" z="0">
                 <div class="side-bar-act">
-                    <paper-icon-button id="notification" icon="markunread-mailbox"></paper-icon-button>
-                    <paper-icon-button id="chat" icon="question-answer"></paper-icon-button>
+                    <paper-icon-button id="notification" icon="social:notifications"></paper-icon-button>
+                    <paper-icon-button id="chat" icon="communication:chat"></paper-icon-button>
                 </div>
                 <paper-shadow id="notification-board" class="side-bar-content" z="0">
 <!--                    dummy-->
@@ -435,16 +435,14 @@
                 </paper-shadow>
                 <paper-shadow id="chat-board" class="side-bar-content" z="0" style="display:none;">
                     {% for user in users %}
-                        {% for info in user.profile %}
                             {% if auth_user.id != user.id %}
                                 <div class="chat-user open-chat-head">
                                     <input id="user_id" type="hidden" value="{{ user.id }}">
-                                    <span class="comm-av"><img src="{{ info.profile_pic }}"/></span>
-                                    <span class="detail-board">{{ info.dis_name }}</span>
+                                    <span class="comm-av"><img src="{{ user.profile.profile_pic }}"/></span>
+                                    <span class="detail-board">{{ user.profile.dis_name }}</span>
                                     <div class="status-board" state="{{ user.log }}"></div>
                                 </div>
                             {% endif %}
-                        {% endfor %}
                     {% endfor %}
                 </paper-shadow>
             </paper-shadow>
@@ -538,6 +536,7 @@
 <script type="text/javascript" src="{% static 'colla/js/fbSdk.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/dashboard.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/activity.js' %}"></script>
+<script type="text/javascript" src="{% static 'colla/js/article.js' %}"></script>
 <script type="text/javascript" src="{% static 'colla/js/chat.js' %}"></script>
 <!--
 <script type="text/javascript" src="{% static 'colla/js/project.js' %}"></script>

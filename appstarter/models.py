@@ -11,7 +11,7 @@ class User(models.Model):
     provider_user_id = models.CharField(max_length=200, null=True)
 
     def profile(self):
-        return Profile.objects.filter(user=self.id)
+        return Profile.objects.get(user=self.id)
 
 
 class Authentication(models.Model):
@@ -36,8 +36,6 @@ class Profile(models.Model):
 
 class Post(models.Model):
     user = models.ForeignKey(User)
-    user_pic = models.CharField(max_length=200)
-    user_dis_name = models.CharField(max_length=50)
     share_type = models.CharField(max_length=50)
     date = models.DateTimeField('date published')
     title = models.CharField(max_length=50)
@@ -61,8 +59,7 @@ class Agree(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
-    user_pic_url = models.CharField(max_length=200)
-    user_name = models.CharField(max_length=50)
+    user = models.ForeignKey(User)
     comment_date = models.DateTimeField(default=datetime.now())
     comment = models.CharField(max_length=500)
 
@@ -70,8 +67,6 @@ class Comment(models.Model):
 # Developers article
 class Article(models.Model):
     user = models.ForeignKey(User)
-    user_pic = models.CharField(max_length=200)
-    user_dis_name = models.CharField(max_length=100)
     title = models.CharField(max_length=50)
     content = models.CharField(max_length=800)
     cover = models.CharField(max_length=200)

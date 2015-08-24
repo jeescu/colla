@@ -60,6 +60,7 @@ var postUpdate = function (post) {
 
 // write post: temp
 function appendPost(userPost, csrftoken, userDisName, userProfPic, postArea, incrementType) {
+    console.log(userPost)
     var post_form = '<div id="post_activity"><input id="post" type="hidden" value="'+userPost['post_id']+'"><paper-shadow class="indx-fragment" z="0">';
     post_form += '<div class="row"><div class="col-xs-1 frm-av"><img src="'+userPost['pic']+'"/></div><div class="col-xs-8">';
     post_form += '<div class="col-xs-12 frm-name">'+userPost['display_name']+'</div>';
@@ -108,8 +109,7 @@ function appendPost(userPost, csrftoken, userDisName, userProfPic, postArea, inc
     post_form += '<form id="'+userPost['post_id']+'" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'
     post_form += '<div class="txt-comm" >'
     post_form += '<input type="hidden" value="'+userPost['post_id']+'" name="post_id" />'
-    post_form += '<input type="hidden" value="'+userProfPic+'" name="pic" />'
-    post_form += '<input type="hidden" value="'+userDisName+'" name="user_name" />'
+    post_form += '<input type="hidden" value="'+userPost['user'].id+'" name="user_id" />'
     post_form += '<paper-input-decorator label="Add new comment...">'
     post_form += '<paper-autogrow-textarea id="a1"><textarea id="t1" name="comment"></textarea></paper-autogrow-textarea></paper-input-decorator></div>'
     post_form += '<div class="snd-comm hidden-xs"><input id="submit-comment'+userPost['post_id']+'" type="submit" class="hidden"/><paper-icon-button class="send-comment" icon="send"></paper-icon-button>'
@@ -228,40 +228,6 @@ $('#createPostForm').on('submit',(function(e) {
             formPost = true;
             console.log(formData);
             getQuery('#toastPost').show();
-        },
-        error: function(data){
-            console.error("error");
-        }
-    });
-
-}));
-
-//create new article
-$('#createArticleForm').on('submit',(function(e) {
-    e.preventDefault();
-    
-    var formData = new FormData(this);
-
-    console.log('Submitting article')
-    formArticle = false
-
-    formData.userid = token;
-    formData.title = get('article-title').value;
-    formData.content = get('article-content').value.replace(/\n/g, "<br />");
-    formData.image = postIMAGE || "None";
-
-    $.ajax({
-        type:'POST',
-        url: 'new-article/',
-        data:formData,
-        cache:false,
-        contentType: false,
-        processData: false,
-        success:function(data){
-            console.log(formData);
-            console.log(data)
-            formArticle = true;
-            getQuery('#toastArticle').show();
         },
         error: function(data){
             console.error("error");
@@ -408,18 +374,6 @@ function postImgThumb(input) {
         reader.readAsDataURL(input.files[0]);
     }
     showPostThumb();
-}
-
-function articleImgThumb(input) {
-    if (input.files && input.files[0])
-    {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#article-thumb').attr('src', e.target.result).height(166);
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-    showArticleThumb();
 }
 
 function postBtn() {

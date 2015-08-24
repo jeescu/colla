@@ -25,11 +25,8 @@ class PostController(object):
                 # post_img = img.post_image.url[21:]
 
             user_post = User.objects.get(pk=request.POST.get('userId'))
-            user_post_profile = user_post.profile_set.get(user=user_post.id)
 
             user_post.post_set.create(
-                user_pic=user_post_profile.profile_pic,
-                user_dis_name=user_post_profile.dis_name,
                 share_type=request.POST.get('share'),
                 title=request.POST.get('title') if request.POST.get('title') != "None" else "",
                 content_text=request.POST.get('text'),
@@ -111,8 +108,8 @@ class PostController(object):
                 
             post['post'+str(count)] = {
                 "post_id": posts.id,
-                "pic": posts.user_pic,
-                "display_name": posts.user_dis_name,
+                "pic": posts.user.profile.profile_pic,
+                "display_name": posts.user.profile.dis_name,
                 "share": posts.share_type,
                 "date": str(posts.date),
                 "title": posts.title,
@@ -128,31 +125,36 @@ class PostController(object):
         return post
     
     def get_update_post(self, all_post, latest_post):
-        post = dict()
+        posts = dict()
         count = 0
-                
-        for posts in all_post:
-            count += 1
-            
-            if posts.id != latest_post:
-                post['post'+str(count)] = {
-                    "post_id": posts.id,
-                    "pic": posts.user_pic,
-                    "display_name": posts.user_dis_name,
-                    "share": posts.share_type,
-                    "date": str(posts.date),
-                    "title": posts.title,
-                    "text": posts.content_text,
-                    "image": posts.content_image,
-                    "link": posts.content_link,
-                    "agrees": posts.agrees,
-                    "comments": posts.comments
-                }
-                
-            else:
-                break
+
+        try:
+            for post in all_post:
+                count += 1
+
+                if post.id != latest_post:
+                    posts['post'+str(count)] = {
+                        "post_id": post.id,
+                        "user": post.user,
+                        "pic": post.user.profile().profile_pic,
+                        "display_name": post.user.profile().dis_name,
+                        "share": post.share_type,
+                        "date": str(post.date),
+                        "title": post.title,
+                        "text": post.content_text,
+                        "image": post.content_image,
+                        "link": post.content_link,
+                        "agrees": post.agrees,
+                        "comments": post.comments
+                    }
+
+                else:
+                    break
+        except Exception as e:
+            print "Error updating post"
+            print e
         
-        return post
+        return posts
     
     def get_more_post(self, request):
         response = ResponseParcel.ResponseParcel()
@@ -177,12 +179,13 @@ class PostController(object):
         response = ResponseParcel.ResponseParcel()
         try:
             post_id = request.POST.get('post_id')
+            user_id = request.POST.get('user_id')
+
             post_comment = Post.objects.get(pk=post_id)
             post_comment.comments += 1
             post_comment.save()
             post_comment.comment_set.create(
-                user_pic_url=request.POST.get('pic'),
-                user_name=request.POST.get('user_name'),
+                user_id=user_id,
                 comment_date=timezone.now(),
                 comment=request.POST.get('comment')
             )

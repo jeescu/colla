@@ -40,11 +40,7 @@
     <core-toolbar id="sec-color" class="profile-bar">
         <paper-icon-button id="navicon" onclick="history.back();" icon="arrow-back"></paper-icon-button>
         <span flex>Profile</span>
-        
-        {% for user_profile in user.profile %}
-        
-        
-        
+    
         <span>
             <paper-icon-button icon="create"></paper-icon-button>
             <paper-icon-button class="hidden-sm hidden-md hidden-lg hidden-xl" icon="more-vert"></paper-icon-button>
@@ -57,10 +53,10 @@
                 
                 <label id="label-img" icon="add" class="custom-btn add-image profile-holder"> 
                     <input id="id_image" type="file"  name="image" onchange="readImage(this);">
-                    <img id="thumb" src="{{ user_profile.profile_pic }}" class="profile-picture"/>
+                    <img id="thumb" src="{{ user.profile.profile_pic }}" class="profile-picture"/>
                     <div class="profile-pic-lbl">
-                        <span style="font-size: 19.5px">{{ user_profile.first_name }} {{ user_profile.last_name }}</span>
-                        <h4 style="color: #78909C">{{ user_profile.company_name }}</h4>
+                        <span style="font-size: 19.5px">{{ user.profile.first_name }} {{ user.profile.last_name }}</span>
+                        <h4 style="color: #78909C">{{ user.profile.company_name }}</h4>
                     </div>
                 </label>
                 
@@ -68,16 +64,16 @@
                     <div class="col-sm-6 col-xs-12">
                         <input type="hidden" name="user_id" value="{{ user.id }}" />
                         <paper-input-decorator class="profile-input" label="DISPLAY NAME" floatinglabel="true">
-                            <input id="disname" is="core-input" name="display_name" value="{{ user_profile.dis_name }}"/>
+                            <input id="disname" is="core-input" name="display_name" value="{{ user.profile.dis_name }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="FIRST NAME" floatinglabel="true">
-                            <input id="firstname" is="core-input" name="first_name" value="{{ user_profile.first_name }}"/>
+                            <input id="firstname" is="core-input" name="first_name" value="{{ user.profile.first_name }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="LAST NAME" floatinglabel="true">
-                            <input id="lastname" is="core-input" name="last_name" value="{{ user_profile.last_name }}"/>
+                            <input id="lastname" is="core-input" name="last_name" value="{{ user.profile.last_name }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="M.I." floatinglabel="true">
-                            <input id="mi" is="core-input" name="middle_name" value="{{ user_profile.middle_name }}"/>
+                            <input id="mi" is="core-input" name="middle_name" value="{{ user.profile.middle_name }}"/>
                         </paper-input-decorator>
                     </div>
                     <div class="col-sm-6 col-xs-12">
@@ -85,17 +81,16 @@
                             <input id="username" is="core-input" name="username" value="{{ user.username }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="POSITION" floatinglabel="true">
-                            <input id="position" is="core-input" name="position" value="{{ user_profile.position }}"/>
+                            <input id="position" is="core-input" name="position" value="{{ user.profile.position }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="COMPANY NAME" floatinglabel="true">
-                            <input id="company" is="core-input" name="company" value="{{ user_profile.company_name }}"/>
+                            <input id="company" is="core-input" name="company" value="{{ user.profile.company_name }}"/>
                         </paper-input-decorator>
                         <paper-input-decorator class="profile-input" label="E-MAIL ADDRESS" floatinglabel="true">
-                            <input id="mail" is="core-input" name="mail" value="{{ user_profile.mail_address }}"/>
+                            <input id="mail" is="core-input" name="mail" value="{{ user.profile.mail_address }}"/>
                         </paper-input-decorator>
                     </div>
                 </div>
-                {% endfor %}
 
                 <div class="btn-action">
                     <paper-button raised class="btn-signup col-xs-12 col-sm-2 col-sm-offset-10">

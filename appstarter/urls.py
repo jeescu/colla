@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^new-agree/$', post.agree_post, name='agree_post'),
 
     # Article
+    url(r'^get-article/$', article.get, name='get_article'),
     url(r'^new-article/$', article.create, name='new_article'),
     url(r'^update-article/$', article.update, name='update_article'),
     
