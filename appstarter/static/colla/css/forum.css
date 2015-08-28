@@ -1,26 +1,44 @@
 .forum-indx-fragment {
     top: 20px;
     margin-bottom: 10px;
-    padding: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
     background: white;
     border-radius: 3px;
     box-shadow: 0px 1px 1px -1px #CFD8DC;
     border: 1px solid #F8F8F8;
 }
 
-.forum-text-question {
-    margin-top: 14px;
+.forum-user-image {
+    margin-top: 3px;
+}
+.forum-text-name {
+    margin-top: 3px;
     font-size: 17px;
+    font-weight: bold;
+}
+
+.forum-text-question {
+    margin-top: 5px;
+    font-size: 14px;
 }
 
 .forum-question-state-check {
     float: right;
     margin-top: 5px;
     color: green;
+    position: absolute;
+    right: 25px
 }
 
 .forum-question-state-wrong {
     float: right;
     margin-top: 5px;
     color: red;
+}
+
+.forum-item {
+    padding-bottom: 25px;
+    padding-top: 25px;
+    border-bottom: 1px solid #f5f5f5;
 }

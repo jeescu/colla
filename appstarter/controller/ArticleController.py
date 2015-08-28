@@ -11,7 +11,7 @@ class ArticleController(object):
     def __init__(self):
         pass
 
-    def get(self, request):
+    def browse(self, request):
         response = ResponseParcel.ResponseParcel()
         articles = dict()
 
@@ -24,6 +24,9 @@ class ArticleController(object):
 
         response.set_data(articles)
         return response.data_to_json()
+
+    def read(self, request):
+        pass
 
     def create(self, request):
         response = ResponseParcel.ResponseParcel()

@@ -47,7 +47,7 @@ function articleImgThumb(input) {
 }
 
 function getArticles() {
-     AJAXRequest("get-article", "GET", null, prepareArticles, "application/json;charset=utf-8", "json")
+     AJAXRequest("article/browse", "GET", null, prepareArticles, "application/json;charset=utf-8", "json")
 }
 
 var prepareArticles = function(articles) {
@@ -62,14 +62,14 @@ function displayArticles(article) {
     console.log(article)
     var articleForm = '<div class="col-md-6">';
         articleForm+='<paper-shadow class="article-indx-fragment" z="0">';
-         articleForm +='  <a href="">';
-        articleForm +='       <div class="article-thumb" style="background-image: url('+article.cover+')"></div>';
-        articleForm +='   </a>';
+         articleForm +='  <div class="article-thumb-cover">';
+        articleForm +='       <img src="'+article.cover+'"/>';
+        articleForm +='   </div>';
          articleForm +='  <div class="article-title"><span>'+article.title+'</span></div>';
         articleForm  +='  <div class="article-content-preview">';
          articleForm +='      <span>'+ (article.content.length > 44) ? article.content.substring(0, 44) + " . ." : article.content; +'</span>';
          articleForm   +='    <div class="article-more">';
-        articleForm  +='         <paper-icon-button icon="more-vert" onclick="" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>';
+        articleForm  +='         <paper-icon-button icon="open-in-new" onclick="" role="button" tabindex="0" aria-label="more-vert"></paper-icon-button>';
         articleForm  +='      </div>';
         articleForm  +='  </div>';
         articleForm  +='  <div class="article-separator"></div>';

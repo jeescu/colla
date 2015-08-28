@@ -81,7 +81,7 @@
                     <paper-item onClick="window.location.href='/colla/logout'">Log out</paper-item>
                 </core-menu>
             </span>
-            <paper-tabs class="bottom fit" selected="0" noink style="font-size: 15px;">
+            <paper-tabs class="bottom fit" selected="0" noink style="font-size: 15.4px;">
                 <paper-tab id="tab-activity"><core-icon icon="dashboard" class="visible-xs"></core-icon><span class="hidden-xs">Activity</span></paper-tab>
                 <paper-tab id="tab-article"><core-icon icon="view-carousel" class="visible-xs"></core-icon><span class="hidden-xs">Articles</span></paper-tab>
                 <paper-tab id="tab-forum"><core-icon icon="question-answer" class="visible-xs"></core-icon><span class="hidden-xs">Forum</span></paper-tab>
@@ -365,17 +365,32 @@
             <div id="fragment-forum" class="page-frm hidden">
                 <!-- loop here -->
                 <paper-shadow class="forum-indx-fragment" z="0">
-                    <div class="row">
-                        <div class="new-frm-av col-xs-2 col-md-1">
+                    <div class="row forum-item">
+                        <div class="new-frm-av forum-user-image col-xs-2 col-md-1">
                             <img id="user-post-img" src="/static/colla/images/profile_img/av-default.png">
                         </div>
-                        <a href="">
-                            <div class="col-xs-8 col-md-9 forum-text-question">
-                                <span>Why we need to do these things repeatedly?</span>
-                            </div>
-                        </a>
-                        <div class="col-xs-1 col-md-2">
-                            <paper-icon-button class="forum-question-state-check" icon="check" onclick="" role="button" tabindex="0" aria-label="check"></paper-icon-button>
+                        <div class="col-xs-8 col-md-9 forum-text-name">
+                            <span>Name</span>
+                        </div>
+                        <div class="col-xs-8 col-md-9 forum-text-question">
+                            <span>Why we need to do these things repeatedly?</span>
+                        </div>
+                        <div class="">
+                            <paper-icon-button class="forum-question-state-check" icon="chevron-right" onclick="" role="button" tabindex="0" aria-label="check"></paper-icon-button>
+                        </div>
+                    </div>
+                    <div class="row forum-item">
+                        <div class="new-frm-av forum-user-image col-xs-2 col-md-1">
+                            <img id="user-post-img" src="/static/colla/images/profile_img/av-default.png">
+                        </div>
+                        <div class="col-xs-8 col-md-9 forum-text-name">
+                            <span>Name</span>
+                        </div>
+                        <div class="col-xs-8 col-md-9 forum-text-question">
+                            <span>Why we need to do these things repeatedly?</span>
+                        </div>
+                        <div class="">
+                            <paper-icon-button class="forum-question-state-check" icon="chevron-right" onclick="" role="button" tabindex="0" aria-label="check"></paper-icon-button>
                         </div>
                     </div>
                 </paper-shadow>
@@ -529,7 +544,7 @@
 <!-- chat rooms go here -->
             
         </div>
-        
+         
     </core-header-panel>
 
 <script type="text/javascript" src="{% static 'plugin/jquery-1.11.2.js' %}"></script>
