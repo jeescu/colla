@@ -45,28 +45,32 @@ class AuthController(object):
                 return response.render(request)
 
         if request.method == 'POST':
+            user_name = request.POST['username']
+            password = request.POST['password']
+
             try:
-                verified_user = User.objects.get(username=request.POST['username'])
-                auth_user = User.objects.get(pk=verified_user.id)
 
-                request_password = request.POST['password']
-                user_password = pass_helper.decode(verified_user.password)
+                if user_name != '' and password != '':
+                    verified_user = User.objects.get(username=user_name)
+                    auth_user = User.objects.get(pk=verified_user.id)
 
-                if user_password == request_password:
-                    auth_service.set_user(auth_user)
-                    auth_service.add_session()
+                    request_password = password
+                    user_password = pass_helper.decode(verified_user.password)
 
-                    post = Post.objects.all().order_by('-date')[:10]
-                    all_users = User.objects.order_by('username')
+                    if user_password == request_password:
+                        auth_service.set_user(auth_user)
+                        auth_service.add_session()
+                        post = Post.objects.all().order_by('-date')[:10]
+                        all_users = User.objects.order_by('username')
 
-                    response.set_uri('colla/index.html')
-                    response.set_data({'auth_user': auth_user, 'post': post, 'users': all_users})
-                    return response.render(request)
+                        response.set_uri('colla/index.html')
+                        response.set_data({'auth_user': auth_user, 'post': post, 'users': all_users})
+                        return response.render(request)
 
-                else:
-                    response.has_error()
-                    response.set_message('Wrong Username Password')
-                    return response.to_json()
+                # returns error
+                response.has_error()
+                response.set_message('Wrong Username Password')
+                return response.to_json()
 
             except Exception as e:
                 print e

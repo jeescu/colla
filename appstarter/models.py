@@ -73,12 +73,26 @@ class Article(models.Model):
     date = models.DateTimeField('date published')
 
 
-# QA
+class Board(models.Model):
+    board_name = models.CharField(max_length=50)
+    board_description = models.CharField(max_length=200)
+
+
+class Tag(models.Model):
+    tag_name = models.CharField(max_length=50)
+    tag_color = models.CharField(max_length=50)
+
+
 class Forum(models.Model):
     user = models.ForeignKey(User)
     question = models.CharField(max_length=500)
     detail = models.CharField(max_length=1000)
     mark_answered = models.IntegerField(default=0)
+
+
+class ForumTag(models.Model):
+    forum = models.ForeignKey(Forum)
+    tag = models.ForeignKey(Tag)
 
 
 class ForumComments(models.Model):
@@ -98,6 +112,11 @@ class Issue(models.Model):
 class IssueComments(models.Model):
     user = models.ForeignKey(User)
     comment = models.CharField(max_length=2000)
+
+
+class BoardIssue(models.Model):
+    board = models.ForeignKey(Board)
+    issue = models.ForeignKey(Issue)
 
 
 class Resources(models.Model):
@@ -142,6 +161,7 @@ class GroupUser(models.Model):
     group = models.ForeignKey(Post)
     group_joined_user_id = models.IntegerField(default=0)
     group_joined_date = models.DateTimeField('date published')
+
 
 # @TODO: Please resolve this
 def gen_post_file_name(instance, filename):

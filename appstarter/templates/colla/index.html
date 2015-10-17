@@ -2,17 +2,18 @@
 <html>
 
 <head>
-
-{% load staticfiles %}
-<title>Dashboard</title>
-
+    <link rel="shortcut icon" href="/static/colla/images/applogo.ico" type="image/ico" />
+    {% load staticfiles %}
+    <title>Dashboard</title>
+    
      <meta name="viewport" 
     content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Raleway:100,200,300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
 
     <!-- build:js modernizr.touch.js -->
     <script src="{% static 'colla/lib/modernizr.touch.js' %}"></script>
@@ -62,9 +63,14 @@
 
 <body fullbleed vertical layout unresolved>
     <core-header-panel flex class="indx-color">
-        <core-toolbar id="mainheader" class="medium-tall">
+        <core-toolbar id="mainheader" class="medium-tall animate">
             <paper-icon-button src="/static/colla/images/logo.png"></paper-icon-button>
-            <span flex>Dashboard</span>
+<!--
+            <a href="http://98labs.com">
+                <img class="main-logo" src="/static/colla/images/98labslogo1.png">
+            </a>
+-->
+            <span flex style="font-family: 'Product Sans', Arial, sans-serif;"><b><font color="#C12328">98</font></b>Labs Inc.</span>
             <input type="hidden" id="user-prof-pic" value="{{ auth_user.profile.profile_pic }}">
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
@@ -513,7 +519,7 @@
                             <label id="article-label-img" icon="add" class="custom-btn article-add-image add-image"> 
                                 <input id="id-image-article" type="file"  name="image" onchange="articleImgThumb(this);">
                                 <paper-icon-button id="article-image-input" icon="add"></paper-icon-button>
-                                <img class="img-responsive resp-img" id="article-thumb" src="" alt=""/>
+                                <img class="img-responsive resp-img" id="article-thumb" src="" alt="No cover"/>
                             </label>
                         </div>
                     </div>
