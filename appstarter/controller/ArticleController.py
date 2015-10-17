@@ -28,6 +28,7 @@ class ArticleController(object):
     def read(self, request):
         pass
 
+    # @FIXME: please resolve this
     def create(self, request):
         response = ResponseParcel.ResponseParcel()
         try:
@@ -40,7 +41,7 @@ class ArticleController(object):
                 img.save()
                 cover_img = img.post_image.url[10:]
                 # prod
-                # post_img = img.post_image.url[21:]
+                # cover_img = img.post_image.url[21:]
 
             user = User.objects.get(pk=request.POST.get('userId'))
 
