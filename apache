@@ -45,6 +45,7 @@ Deploying to production:
 7) Create DB and Sync (If not present)
 
 8) Check permission for your directory must chmod 777
+# images folder
 NOTE: Pasting File/Folder will changed perms, so check it
 
 9) Change Environment in config to 'production'

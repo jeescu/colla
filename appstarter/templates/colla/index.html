@@ -226,7 +226,7 @@
                             </div>
                             <div class="frm-date">{{ user_post.date|date:'M d, Y' }}</div>
                             <div class="col-xs-12 frm-txt">
-                                <p>{{ user_post.content_text|linebreaksbr }}</p>
+                                <p>{% autoescape off %}{{ user_post.content_text|linebreaksbr }}{% endautoescape %}</p>
                             </div>
                             <div class="col-xs-12 frm-pic"><img class="img-responsive resp-img" src="{{ user_post.content_image }}"/></div>
                             <div class="col-xs-12 frm-dtl">
