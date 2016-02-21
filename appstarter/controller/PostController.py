@@ -2,6 +2,7 @@ from appstarter.models import User, Post, PostImage
 from appstarter.forms import ImageUploadForm
 from django.utils import timezone
 from appstarter.utils import ResponseParcel
+from appstarter import config
 
 
 class PostController(object):
@@ -20,9 +21,8 @@ class PostController(object):
 
                 img = PostImage(post_image=image_data.cleaned_data['image'])
                 img.save()
-                post_img = img.post_image.url[10:]
-                # prod
-                # post_img = img.post_image.url[21:]
+                post_img = img.post_image.url[config.env_img_concat_index:]
+                print config.env_img_concat_index
 
             user_post = User.objects.get(pk=request.POST.get('userId'))
 
@@ -69,7 +69,6 @@ class PostController(object):
                 pass
             else:
                 get_update = Post.objects.all().order_by('-date')
-               
                 post_update = self.get_update_post(get_update, get_client_latest_post)
 
         response.set_data(post_update)

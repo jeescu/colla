@@ -15,13 +15,6 @@ core-toolbar {
     color: white;
 }
 
-paper-tabs {
-/*    background: rgb(38, 40, 44);*/
-    background: white;
-    color: rgb(38, 40, 44);
-    border-bottom: 1px solid #f2f2f2;
-}
-
 paper-tabs::shadow #selectionBar {
   background-color: white;
 }   

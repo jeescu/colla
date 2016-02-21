@@ -20,11 +20,13 @@ $('#createArticleForm').on('submit',(function(e) {
         cache:false,
         contentType: false,
         processData: false,
-        success:function(data){
+        success:function(data) {
             console.log(formData);
             console.log(data)
-            formArticle = true;
+            console.log(getQuery('#article-dialog'));
             getQuery('#toastArticle').show();
+            getQuery('#article-dialog').toggle()
+            formArticle = true;
         },
         error: function(data){
             console.error("error");

@@ -70,7 +70,7 @@
                 <img class="main-logo" src="/static/colla/images/98labslogo1.png">
             </a>
 -->
-            <span flex style="font-family: 'Product Sans', Arial, sans-serif;"><b><font color="#C12328">98</font></b>Labs Inc.</span>
+            <span flex style="font-family: 'Product Sans', Arial, sans-serif;"><b><font color="#C12328">98</font></b>colla</span>
             <input type="hidden" id="user-prof-pic" value="{{ auth_user.profile.profile_pic }}">
             <span>
                 <paper-icon-button id="searchbutton" icon="search"></paper-icon-button>
@@ -224,7 +224,7 @@
                                 <div class="col-xs-12 frm-name">{{ user_post.user.profile.dis_name }}</div>
                                 <div class="col-xs-12 frm-share sub-color">{{ user_post.share_type }}</div>
                             </div>
-                            <div class="frm-date">{{ user_post.date }}</div>
+                            <div class="frm-date">{{ user_post.date|date:'M d, Y' }}</div>
                             <div class="col-xs-12 frm-txt">
                                 <p>{{ user_post.content_text|linebreaksbr }}</p>
                             </div>
@@ -320,7 +320,6 @@
                 <paper-button raised onclick="document.querySelector('#toast2').show()">Get Messages</paper-button>
 -->
                 <paper-toast id="toastPost" text="You just shared your post."></paper-toast>
-                <paper-toast id="toastArticle" text="You just shared your article."></paper-toast>
                 <paper-toast id="toastAgree" text="You agreed on a post."></paper-toast>
                 <paper-toast id="toastComment" text="You just wrote a comment."></paper-toast>
                 
@@ -365,6 +364,7 @@
 -->
                     <!-- loop -->
                 </div>
+                <paper-toast id="toastArticle" text="You just shared your article."></paper-toast>
             </div>
             
 <!-- FORUMS FRAGMENT-->                       

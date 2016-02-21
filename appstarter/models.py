@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from appstarter import config
 import os
 import uuid
 
@@ -163,19 +164,15 @@ class GroupUser(models.Model):
     group_joined_date = models.DateTimeField('date published')
 
 
-# @TODO: Please resolve this
+# @WATCHME: Path from environment
 def gen_post_file_name(instance, filename):
-    # prod
-    # path = 'ProStarter/appstarter/static/colla/images/post_img/'
-    path = 'appstarter/static/colla/images/post_img/'
+    path = config.post_image_upload_path
     f, ext = os.path.splitext(filename)
     return path+'%s%s' % (uuid.uuid4().hex, ext)
 
 
 def gen_profile_file_name(instance, filename):
-    # prod
-    # path = 'ProStarter/appstarter/static/colla/images/profile_img/'
-    path = 'appstarter/static/colla/images/profile_img/'
+    path = config.profile_image_upload_path
     f, ext = os.path.splitext(filename)
     return path+'%s%s' % (uuid.uuid4().hex, ext)
 

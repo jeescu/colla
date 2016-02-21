@@ -45,9 +45,9 @@ Deploying to production:
 7) Create DB and Sync (If not present)
 
 8) Check permission for your directory must chmod 777
-NOTE: Pasting File/Folder will changed perms, so check wisely
+NOTE: Pasting File/Folder will changed perms, so check it
 
-9) Change Switch commented line of codes from 'PostController', 'ArticleController' and 'Models'
+9) Change Environment in config to 'production'
 NOTE: In production differs the directory path, so it's a must
 
 8) restart apache

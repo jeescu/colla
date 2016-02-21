@@ -1,6 +1,7 @@
 from appstarter.models import User, Profile, Post, Comment, Agree, ProfileImage, Authentication
 from appstarter.forms import ImageUploadForm
 from appstarter.utils import ResponseParcel
+from appstarter import config
 import os
     
 class ProfileController(object):
@@ -49,14 +50,12 @@ class ProfileController(object):
                 img.save()
 
                 try:
-                    self.delete_profile_img(profile_update.profile_pic)
+                    self.delete_profile_img(config.profile_update.profile_pic)
                     
                 except:
                     pass
 
-                profile_img_update = img.profile_image.url[10:]
-                # prod
-                # profile_img_update = img.profile_image.url[21:]
+                profile_img_update = img.profile_image.url[config.env_img_concat_index:]
                 profile_update.profile_pic = profile_img_update
 
             profile_update.dis_name = request.POST['display_name']

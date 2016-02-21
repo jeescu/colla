@@ -4,6 +4,7 @@ from appstarter.models import User, PostImage, Article
 from appstarter.forms import ImageUploadForm
 from django.utils import timezone
 from appstarter.utils import ResponseParcel
+from appstarter import config
 
 
 class ArticleController(object):
@@ -39,9 +40,7 @@ class ArticleController(object):
 
                 img = PostImage(post_image=image_data.cleaned_data['image'])
                 img.save()
-                cover_img = img.post_image.url[10:]
-                # prod
-                # cover_img = img.post_image.url[21:]
+                cover_img = img.post_image.url[config.env_img_concat_index:]
 
             user = User.objects.get(pk=request.POST.get('userId'))
 
